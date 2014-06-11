@@ -1,0 +1,39 @@
+<style>
+    body
+    {
+        padding-top: 70px;
+    }
+</style>
+
+<div class="navbar navbar-default navbar-fixed-top" ng-controller="HeaderController">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Guarderia</a>
+        </div>
+        <center>
+            <div class="navbar-collapse collapse" id="navbar-main">
+                <ul class="nav navbar-nav">
+                    <li ng-show="isSuperAdmin == true" ng-class="{active: menu == 'guarderias'}">
+                        <a href="/#/guarderias">Guarderias</a>
+                    </li>
+                    <li ng-show="isAdmin == true" ng-class="{active: menu == 'alumnos'}">
+                        <a href="/#/alumnos">Alumnos</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-class="{active: menu == 'profile'}">
+                        <a href="/#/profile">{{ currentUser._id }}</a>
+                    </li>
+                    <li>
+                        <a href="javascript: void(0)" ng-click="logout()" class="text-danger">Cerrar Sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </center>
+    </div>
+</div>

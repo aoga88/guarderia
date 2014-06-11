@@ -1,0 +1,4 @@
+function ProfileController($scope, $location)
+{
+	
+}

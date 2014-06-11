@@ -1,0 +1,81 @@
+<ng-include src="'/views/common/header.html'"></ng-include>
+
+<div class="container">
+	<div class="row">
+		<h1>Guarderias</h1>
+	</div>
+
+	<div class="row visible-xs">
+		<div class="col-xs-12">
+			<a class="btn btn-success" href="/#/apps/0">Registrar Guarderia</a>
+		</div>
+	</div>
+	<br/>
+
+	<div class="row">
+
+		<div class="col-lg-12">
+			<div class="alert alert-danger" ng-show="noApps">
+				No hay Guarderias registrados
+			</div>
+			<br/><br/>
+			<table class="table table-condensed hidden-xs" >
+				<thead>
+					<tr>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th>
+							<a class="btn btn-success" href="/#/guarderias/0">Registrar Guarderia</a>
+						</th>
+					</tr>
+				</thead>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Razon Social</th>
+						<th>Estado</th>
+						<th>Ciudad</th>
+						<th>Telefono 1</th>
+						<th>Telefono 2</th>
+						<th>Email</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="app in apps" ng-class="{danger: app.active == false}">
+						<td>{{app._id.$id}}</td>
+						<td>{{app.razon_social}}</td>
+						<td>{{app.estado}}</td>
+						<td>{{app.ciudad}}</td>
+						<td>{{app.posiciones}}</td>
+						<td>{{app.tel1}}</td>
+						<td>{{app.tel2}}</td>
+						<td>{{app.email}}</td>
+						<td>
+							<a href="/#/guarderias/{{app._id.$id}}" class="btn btn-info"><span class="glyphicon glyphicon-edit"></span></a>
+							<button class="btn btn-danger" ng-click="inactiveApp(app._id.$id, app)" ng-show="app.active == true"><span class="glyphicon glyphicon-chevron-down"></span></button>
+							<button class="btn btn-success" ng-click="activeApp(app._id.$id, app)" ng-show="app.active == false"><span class="glyphicon glyphicon-chevron-up"></span></button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="list-group visible-xs">
+		  <a class="list-group-item" ng-repeat="app in apps" href="/#/guarderias/{{app._id.$id}}">
+		    <h4 class="list-group-item-heading">{{app.app}}</h4>
+		    <p class="list-group-item-text">
+		    	<strong>Razon Social:</strong>{{app.razon_social}} <br/>
+		    	<strong>Estado:</strong>{{app.estado}} <br/>
+		    	<strong>Ciudad:</strong>{{app.ciudad}} <br/>
+		    	<strong>Posiciones:</strong>{{app.posiciones}} <br/>
+		    </p>
+		  </a>
+		</div>
+	</div>
+</div>

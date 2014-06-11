@@ -1,0 +1,4 @@
+function AlumnosController($scope, $location)
+{
+	
+}

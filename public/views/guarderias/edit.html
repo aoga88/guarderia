@@ -1,0 +1,141 @@
+<ng-include src="'/views/common/header.html'"></ng-include>
+
+<div class="container" ng-init="load()">
+	<div class="row">
+		<h1>{{data.app}}</h1>
+	</div>
+
+	<div class="row">
+		<form role="form" ng-submit="save()" class="col-md-12" name="newAppForm">
+			<div class="form-group has-feedback col-md-6" ng-class="{'has-success': newAppForm.razon_social.$valid, 'has-error': newAppForm.razon_social.$invalid}">
+        		<label class="control-label">Razon Social:</label>
+        		<input type="text" ng-model="entityApp.razon_social" ng-required="true" class="form-control" name="razon_social"/>
+        	</div>
+        	<div class="form-group has-feedback col-md-6"
+        		 ng-class="{'has-success': newAppForm.direccion.$valid, 'has-error': newAppForm.direccion.$invalid}">
+        		<label class="control-label">Direccion:</label>
+        		<input type="text" ng-model="entityApp.direccion" ng-required="true" class="form-control" name="direccion"/>
+        	</div>
+        	<div class="form-group has-feedback col-md-3"
+        		 ng-class="{'has-success': newAppForm.cp.$valid, 'has-error': newAppForm.cp.$invalid}">
+        		<label class="control-label">C.P.:</label>
+        		<input type="number" ng-model="entityApp.cp" ng-required="true" class="form-control" name="cp"/>
+        	</div>
+        	<div class="form-group has-feedback col-md-3"
+        		 ng-class="{'has-success': newAppForm.ciudad.$valid, 'has-error': newAppForm.ciudad.$invalid}">
+        		<label class="control-label">Ciudad:</label>
+        		<input type="text" ng-model="entityApp.ciudad" ng-required="true" class="form-control" name="ciudad"/>
+        	</div>
+        	<div class="form-group has-feedback col-md-6"
+        		 ng-class="{'has-success': newAppForm.estado.$valid, 'has-error': newAppForm.estado.$invalid}">
+        		<label class="control-label">Estado:</label>
+        		<input type="text" ng-model="entityApp.estado" ng-required="true" class="form-control" name="estado"/>
+        	</div>
+        	<div class="form-group has-feedback col-md-6"
+        		 ng-class="{'has-success': newAppForm.nombre_cto1.$valid, 'has-error': newAppForm.nombre_cto1.$invalid}">
+        		<label class="control-label">Nombre de contacto 1:</label>
+        		<input type="text" ng-model="entityApp.nombre_cto1" ng-required="true" class="form-control" name="nombre_cto1"/>
+        	</div>
+        	<div class="form-group has-feedback col-md-6"
+        		 ng-class="{'has-success': newAppForm.nombre_cto2.$valid, 'has-error': newAppForm.nombre_cto2.$invalid}">
+        		<label class="control-label">Nombre de contacto 2:</label>
+        		<input type="text" ng-model="entityApp.nombre_cto2" ng-required="false" class="form-control" name="nombre_cto2"/>
+        	</div>
+        	<div class="form-group has-feedback col-md-6"
+        		 ng-class="{'has-success': newAppForm.tel1.$valid, 'has-error': newAppForm.tel1.$invalid}">
+        		<label class="control-label">Telefono 1:</label>
+        		<input type="number" ng-model="entityApp.tel1" ng-required="true" class="form-control" name="tel1"/>
+        	</div>
+        	<div class="form-group has-feedback col-md-6"
+        		 ng-class="{'has-success': newAppForm.tel2.$valid, 'has-error': newAppForm.tel2.$invalid}">
+        		<label class="control-label">Telefono 2:</label>
+        		<input type="number" ng-model="entityApp.tel2" ng-required="false" class="form-control" name="tel2"/>
+        	</div>
+        	<div class="form-group has-feedback col-md-6"
+        		 ng-class="{'has-success': newAppForm.email.$valid, 'has-error': newAppForm.email.$invalid}">
+        		<label class="control-label">Email:</label>
+        		<input type="email" ng-model="entityApp.email" ng-required="true" class="form-control" name="email"/>
+        	</div>
+
+			<div class="form-group col-md-12">
+				<button type="submit" class="btn btn-success" ng-disabled="newAppForm.$invalid">Guardar cambios</button>
+				<span class="alert alert-success" ng-show="successSave">Los cambios han sido guardados</span>
+				<span class="alert alert-danger" ng-show="errorSave">Ha ocurrido un error, por favor intenta mas tarde</span>
+			</div>
+		</form>
+	</div>
+
+	<div class="row" ng-show="appId != 0">
+		<div class="col-md-12">
+			<div class="panel panel-info">
+			    <div class="panel-heading">
+			        <h3 class="panel-title">Usuarios</h3>
+			    </div>
+			    <div class="panel-body">
+			    	<div class="row">
+			    		<div class="col-md-12">
+			    			<button ng-show="!showNewUserForm" class="btn btn-success col-md-4 pull-right" ng-click="showNewUserForm = true">Agregar Usuario</button>
+			    		</div>
+			    		<div class="col-md-12" ng-show="showNewUserForm">
+			    			<form role="form" ng-submit="newUserAction()" name="newUserForm">
+			    				<div class="form-group has-feedback" ng-class="{'has-success': newUserForm.email.$valid, 'has-error': newUserForm.email.$invalid}">
+									<label class="control-label">E-mail:</label>
+									<input type="email" class="form-control" ng-blur="userExists({_id: newUser._id})" ng-required="true" ng-model="newUser._id" name="email">
+									<p class="text-danger" ng-show="emailRepeated">El correo ya se encuentra registrado.</p>
+								</div>
+								<div class="form-group has-feedback" ng-class="{'has-success': newUserForm.name.$valid, 'has-error': newUserForm.name.$invalid}">
+									<label class="control-label">Nombre(s):</label>
+									<input type="text" class="form-control" ng-required="true" ng-model="newUser.name" name="name" />
+								</div>
+								<div class="form-group has-feedback" ng-class="{'has-success': newUserForm.apPaterno.$valid, 'has-error': newUserForm.apPaterno.$invalid}">
+									<label class="control-label">Apellido Paterno:</label>
+									<input type="text" class="form-control" ng-required="true" ng-model="newUser.apPaterno" name="apPaterno" />
+								</div>
+								<div class="form-group has-feedback" ng-class="{'has-success': newUserForm.apMaterno.$valid, 'has-error': newUserForm.apMaterno.$invalid}">
+									<label class="control-label">Apellido Materno:</label>
+									<input type="text" class="form-control" ng-required="true" ng-model="newUser.apMaterno" name="apMaterno" />
+								</div>
+								<div class="checkbox">
+									<input type="checkbox" ng-click="toggleRole('admin')" />
+									<label>Administrador</label>
+								</div>
+								<div class="checkbox">
+									<input type="checkbox" ng-click="toggleRole('maestro')" />
+									<label>Maestro</label>
+								</div>
+								<div class="checkbox">
+									<input type="checkbox" ng-click="toggleRole('padre')" />
+									<label>Papá/Mamá</label>
+								</div>
+								<div class="form-group">
+									<button type="submit" class="btn btn-success" ng-disabled="newUserForm.$invalid || newUser.roles.length == 0">Guardar</button>
+								</div>
+			    			</form>
+			    		</div>
+			    	</div>
+			    	<hr/>
+			        <div class="alert alert-danger" ng-show="!showNewUserForm && users.length == 0">No hay usuarios registrados en la guarderia</div>
+			        <table class="table table-condensed" ng-show="users.length != 0">
+			        	<thead>
+			        		<tr>
+			        			<th>E-mail</th>
+			        			<th>Nombre</th>
+			        			<th></th>
+			        		</tr>
+			        	</thead>
+			        	<tbody>
+			        		<tr ng-repeat="user in users" ng-class="{danger: user.active == false}">
+			        			<td>{{ user._id }}</td>
+			        			<td>{{ user.name }} {{ user.apPaterno }} {{user.apMaterno}}</td>
+			        			<td>
+			        				<button class="btn btn-warning" ng-show="user.active == true" ng-click="inactiveUser(user._id, user)"><span class="glyphicon glyphicon-chevron-down"></span></button>
+			        				<button class="btn btn-success" ng-show="user.active == false" ng-click="activeUser(user._id, user)"><span class="glyphicon glyphicon-chevron-up"></span></button>
+			        			</td>
+			        		</tr>
+			        	</tbody>
+			        </table>
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
