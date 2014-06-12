@@ -77,18 +77,25 @@ define([
 
         .config(['$routeProvider', function($routeProvider) {
             $routeProvider
-                .when('/', {
+                  .when('/', {
                     resolve: {
                         isLoggedIn: isLoggedIn
                     },
                       templateUrl: 'views/dashboard.html',
                   })
-                .when('/profile', {
+                  .when('/profile', {
                     resolve: {
                         isLoggedIn: isLoggedIn
                     },
                       controller: ProfileController,
                       templateUrl: 'views/profile/index.html'
+                  })
+                  .when('/profile/new-password', {
+                    resolve: {
+                        isLoggedIn: isLoggedIn
+                    },
+                      controller: ProfileController,
+                      templateUrl: 'views/profile/new-password.html'
                   })
                   .when('/login', {
                       controller: LoginController,
