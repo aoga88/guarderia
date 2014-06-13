@@ -124,6 +124,14 @@ define([
                       controller: AlumnosController,
                       templateUrl: 'views/alumnos/index.html'
                   })
+                  .when('/alumnos/:id', {
+                      resolve: {
+                        isLoggedIn: isLoggedIn,
+                        isSuperAdmin: isAdmin
+                    },
+                      controller: AlumnosController,
+                      templateUrl: 'views/alumnos/edit.html'
+                  })
                   .otherwise({
                       redirectTo: '/'
                   });

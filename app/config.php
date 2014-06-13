@@ -43,6 +43,13 @@ return [
 				'requiredLogin' => true
 			],
 
+			'/alumno/current' => [
+				'module'     => 'alumno',
+				'controller' => 'index',
+				'action'     => 'current',
+				'requiredLogin' => true,
+			],
+
 		],
 
 		'POST' => [
@@ -86,7 +93,21 @@ return [
 				'controller'    => 'index',
 				'action'        => 'find',
 				'requiredLogin' => true
-			]
+			],
+
+			'/alumno/find' => [
+				'module'        => 'alumno',
+				'controller'    => 'index',
+				'action'        => 'find',
+				'requiredLogin' => true
+			],
+
+			'/alumno' => [
+				'module'        => 'alumno',
+				'controller'    => 'index',
+				'action'        => 'save',
+				'requiredLogin' => true
+			],
 		],
 
 		'DELETE' => [

@@ -12,7 +12,7 @@
     ?>
 
     <link rel="stylesheet/less" type="text/css" href="/css/app.less?<?php echo $commit?>" />
-    <link rel="stylesheet" type="text/css" href="/css/blitzer/jquery-ui-1.10.4.custom.min.css?<?php echo $commit?>" />
+    <link rel="stylesheet" type="text/css" href="/css/custom-theme/jquery-ui-1.9.2.custom.css?<?php echo $commit?>" />
     <script type="text/javascript" src="/js/less-1.7.0.min.js"></script>
     <script data-main="/js/main.js?<?php echo $commit?>" src="/js/require.js"></script>
   

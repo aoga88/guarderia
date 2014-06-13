@@ -1,0 +1,53 @@
+<ng-include src="'/views/common/header.html'"></ng-include>
+
+<div class="container" ng-init="load()">
+	<div class="row">
+		<h1 ng-show="alumnoId == 0">Nuevo Alumno</h1>
+		<h1 ng-show="alumnoId != 0">Editar Alumno</h1>
+	</div>
+
+	<div class="row">
+		<form role="form" name="alumnoForm">
+			<div class="form-group has-feedback col-md-12" ng-class="{'has-success': alumnoForm.nombre.$valid, 'has-error': alumnoForm.nombre.$invalid}">
+				<label class="control-label">
+					Nombre(s):
+				</label>
+				<input type="text" name="nombre" ng-model="actualAlumno.nombre" class="form-control" ng-required="true" />
+			</div>
+			<div class="form-group has-feedback col-md-6" ng-class="{'has-success': alumnoForm.apPaterno.$valid, 'has-error': alumnoForm.apPaterno.$invalid}">
+				<label class="control-label">
+					Apellido Paterno:
+				</label>
+				<input type="text" name="apPaterno" ng-model="actualAlumno.apPaterno" class="form-control" ng-required="true" />
+			</div>
+			<div class="form-group has-feedback col-md-6" ng-class="{'has-success': alumnoForm.apMaterno.$valid, 'has-error': alumnoForm.apMaterno.$invalid}">
+				<label class="control-label">
+					Apellido Materno:
+				</label>
+				<input type="text" name="apMaterno" ng-model="actualAlumno.apMaterno" class="form-control" ng-required="true" />
+			</div>
+			<div class="form-group has-feedback col-md-6" ng-class="{'has-success': alumnoForm.fechaNacimiento.$valid, 'has-error': alumnoForm.fechaNacimiento.$invalid}">
+				<label class="control-label">
+					Fecha de nacimiento:
+				</label>
+				<input type="text" datepicker name="fechaNacimiento" ng-model="actualAlumno.fechaNacimiento" class="form-control" ng-required="true" />
+			</div>
+			<div class="form-group has-feedback col-md-12" ng-class="{'has-success': alumnoForm.nombreMadre.$valid, 'has-error': alumnoForm.nombreMadre.$invalid}">
+				<label class="control-label">
+					Nombre de la madre:
+				</label>
+				<input type="text" name="nombreMadre" ng-model="actualAlumno.nombreMadre" class="form-control" ng-required="true" />
+			</div>
+			<div class="form-group has-feedback col-md-12" ng-class="{'has-success': alumnoForm.nombrePadre.$valid, 'has-error': alumnoForm.nombrePadre.$invalid}">
+				<label class="control-label">
+					Nombre del padre:
+				</label>
+				<input type="text" name="nombrePadre" ng-model="actualAlumno.nombrePadre" class="form-control" ng-required="true" />
+			</div>
+			<!-- TIPO DE SANGRE -->
+			<!-- ALERGIAS -->
+			<!-- FOTO -->
+			
+		</form>
+	</div>
+</div>

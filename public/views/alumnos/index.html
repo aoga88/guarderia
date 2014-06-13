@@ -1,1 +1,22 @@
 <ng-include src="'/views/common/header.html'"></ng-include>
+
+<div class="container" ng-init="list()">
+	<div class="row">
+		<h1>Alumnos</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<a class="btn btn-success" href="/#/alumnos/0">Registrar Alumno</a>
+		</div>
+	</div>
+	<br/>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="alert alert-danger" ng-show="alumnos.length == 0">
+				No hay Alumnos registrados
+			</div>
+			<br/><br/>
+		</div>
+	</div>
+</div>

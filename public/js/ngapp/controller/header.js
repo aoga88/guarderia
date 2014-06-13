@@ -50,4 +50,9 @@ function HeaderController($scope, $http, $q, $location)
     {
         $scope.menu = 'profile';
     }
+
+    if ($location.path().indexOf('/users') !== -1)
+    {
+        $scope.menu = 'users';
+    }
 }
