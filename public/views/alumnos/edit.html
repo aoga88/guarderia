@@ -26,28 +26,67 @@
 				</label>
 				<input type="text" name="apMaterno" ng-model="actualAlumno.apMaterno" class="form-control" ng-required="true" />
 			</div>
-			<div class="form-group has-feedback col-md-6" ng-class="{'has-success': alumnoForm.fechaNacimiento.$valid, 'has-error': alumnoForm.fechaNacimiento.$invalid}">
+			<div class="form-group has-feedback col-md-3" ng-class="{'has-success': alumnoForm.fechaNacimiento.$valid, 'has-error': alumnoForm.fechaNacimiento.$invalid}">
 				<label class="control-label">
 					Fecha de nacimiento:
 				</label>
 				<input type="text" datepicker name="fechaNacimiento" ng-model="actualAlumno.fechaNacimiento" class="form-control" ng-required="true" />
 			</div>
-			<div class="form-group has-feedback col-md-12" ng-class="{'has-success': alumnoForm.nombreMadre.$valid, 'has-error': alumnoForm.nombreMadre.$invalid}">
+			<div class="form-group has-feedback col-md-3 col-md-offset-6" ng-class="{'has-success': alumnoForm.tipoSangre.$valid, 'has-error': alumnoForm.tipoSangre.$invalid}">
 				<label class="control-label">
-					Nombre de la madre:
+					Tipo de sangre:
 				</label>
-				<input type="text" name="nombreMadre" ng-model="actualAlumno.nombreMadre" class="form-control" ng-required="true" />
+				<select name="tipoSangre" ng-model="actualAlumno.tipoSangre" class="form-control" 
+				ng-options="value for value in tiposSangre"
+				ng-required="true"></select>
 			</div>
-			<div class="form-group has-feedback col-md-12" ng-class="{'has-success': alumnoForm.nombrePadre.$valid, 'has-error': alumnoForm.nombrePadre.$invalid}">
+			<h3 class="col-md-6">Datos del padre</h3>
+			<h3 class="col-md-6">Datos de la madre</h3>
+			<div class="form-group has-feedback col-md-6" ng-class="{'has-success': alumnoForm.nombreMadre.$valid, 'has-error': alumnoForm.nombreMadre.$invalid}">
 				<label class="control-label">
-					Nombre del padre:
+					Nombre de la padre:
 				</label>
-				<input type="text" name="nombrePadre" ng-model="actualAlumno.nombrePadre" class="form-control" ng-required="true" />
+				<input type="text" name="nombreMadre" ng-model="actualAlumno.nombrePadre" class="form-control" ng-required="true" />
 			</div>
-			<!-- TIPO DE SANGRE -->
+			<div class="form-group has-feedback col-md-6" ng-class="{'has-success': alumnoForm.nombrePadre.$valid, 'has-error': alumnoForm.nombrePadre.$invalid}">
+				<label class="control-label">
+					Nombre del madre:
+				</label>
+				<input type="text" name="nombrePadre" ng-model="actualAlumno.nombreMadre" class="form-control" ng-required="true" />
+			</div>
+			<div class="col-md-6" >
+				<label class="control-label">Teléfono de contacto:</label>
+				<input type="text" ng-model="papaTel" class="form-control" />
+				<button type="button" ng-click="addPapaTel()" class="btn btn-primary" ng-disabled="papaTel == null || papaTel == ''">Agregar</button>
+			</div>
+			<div class="col-md-6" >
+				<label class="control-label">Teléfono de contacto:</label>
+				<input type="text" ng-model="mamaTel" class="form-control" />
+				<button type="button" ng-click="addMamaTel()" class="btn btn-primary" ng-disabled="mamaTel == null || mamaTel == ''">Agregar</button>
+			</div>
+			<div class="col-md-6">
+				<table class="table table-striped">
+					<tr ng-repeat="tel in actualAlumno.papaTel">
+						<td>{{ tel }}</td>
+						<td> <a href="javascript: void(0)" ng-click="removePapaTel($index)">X</a> </td>
+					</tr>
+				</table>
+			</div>
+			<div class="col-md-6">
+				<table class="table table-striped">
+					<tr ng-repeat="tel in actualAlumno.mamaTel">
+						<td>{{ tel }}</td>
+						<td> <a href="javascript: void(0)" ng-click="removeMamaTel($index)">X</a> </td>
+					</tr>
+				</table>
+			</div>
+			<div class="col-md-12">
+				<button type="button" ng-click="save()" class="btn btn-success" ng-disabled="alumnoForm.$invalid || actualAlumno.papaTel.length == 0 || actualAlumno.mamaTel.length == 0">Guardar</button>
+				<a href="/#/alumnos" class="btn btn-danger">Cancelar</a>
+			</div>
 			<!-- ALERGIAS -->
 			<!-- FOTO -->
-			
+			<span class="alert alert-success" ng-show="successSave">Los cambios han sido guardados</span>
 		</form>
 	</div>
 </div>

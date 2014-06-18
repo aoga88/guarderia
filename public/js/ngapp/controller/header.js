@@ -32,7 +32,7 @@ function HeaderController($scope, $http, $q, $location)
     {
         $http.get('/api/logout')
         .success(function() {
-            $location.path('/').replace();
+            $location.path('/login').replace();
         });
     }
 

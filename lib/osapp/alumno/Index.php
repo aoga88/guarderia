@@ -41,16 +41,16 @@ class Index extends Controller
         parent::validateRoles(['admin', 'superadmin']);
         $config  = osrestConfig('auth');
         $roles   = Auth::getSession($config, 'roles');
+        $data    = json_decode(file_get_contents("php://input"));
+        $currentApp = Auth::getSession($config, 'app');
 
-        if (!in_array('superadmin', $roles)) {
-            $currentApp = Auth::getSession($config, 'app');
-            if ($currentApp !== $data->_id) {
-                throw new Exception("notAllowed", 1);
-            }
+        if (!isset($data->app)) {
+            $data->app = new MongoId($currentApp);
+        } else {
+            unset($data->app);
         }
 
         $model_alumno = new Model_Alumno();
-        $data         = json_decode(file_get_contents("php://input"));
 
         if (isset($data->_id) && $data->_id != 0) {
             $conditions = ['_id' => new MongoId($data->_id)];
@@ -76,20 +76,19 @@ class Index extends Controller
     public function find()
     {
         parent::validateRoles(['superadmin', 'admin']);
-        $config  = osrestConfig('auth');
-        $roles   = Auth::getSession($config, 'roles');
-        $conditions = json_decode(file_get_contents("php://input"));
+        $config       = osrestConfig('auth');
+        $roles        = Auth::getSession($config, 'roles');
+        $conditions   = json_decode(file_get_contents("php://input"));
+        $model_alumno = new Model_Alumno();
+        $result       = $model_alumno->find($conditions);
+        $data         = iterator_to_array($result);
 
         if (!in_array('superadmin', $roles)) {
             $currentApp = Auth::getSession($config, 'app');
-            if ($currentApp !== $conditions->app) {
+            if ($currentApp !== $data[$conditions->_id->__toString()]['app']->__toString()) {
                 throw new Exception("notAllowed", 1);
             }
         }
-
-        $model_alumno  = new Model_Alumno();
-
-        $result = $model_alumno->find($conditions);
 
         $this->response->sendMessage(iterator_to_array($result))
             ->setCode(200);

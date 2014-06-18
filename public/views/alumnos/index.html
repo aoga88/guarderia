@@ -18,5 +18,28 @@
 			</div>
 			<br/><br/>
 		</div>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Tipo de Sangre</th>
+					<th>Papá</th>
+					<th>Mamá</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="alumno in alumnos">
+					<td>{{ alumno.nombre }}</td>
+					<td>{{ alumno.tipoSangre }}</td>
+					<td>{{ alumno.nombrePadre }}</td>
+					<td>{{ alumno.nombreMadre }}</td>
+					<td>
+						<a href="/#/alumnos/{{ alumno._id.$id }}">Ver Detalle</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </div>
