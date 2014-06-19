@@ -40,6 +40,49 @@
 				ng-options="value for value in tiposSangre"
 				ng-required="true"></select>
 			</div>
+			<h3 class="col-md-6">Contactos</h3>
+			<h3 class="col-md-6">&nbsp;</h3>
+			<div class="col-md-6">
+				<table ng-show="actualAlumno.contactos.length != 0" class="table table-condensed">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="contacto in actualAlumno.contactos">
+							<td>{{ contacto.nombre }}</td>
+							<td>
+								<a href="javascript: void(0)" ng-click="actualContacto = contacto">Detalle</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group has-feedback" ng-class="{'has-success': actualContacto.nombre != '', 'has-error': !actualContacto.nombre || actualContacto.nombre == ''}">
+					<label class="control-label">Nombre:</label>
+					<input type="text" class="form-control" ng-model="actualContacto.nombre" />
+				</div>
+				<div class="form-group has-feedback" ng-class="{'has-success': actualContacto.email != '', 'has-error': !actualContacto.email || actualContacto.email == ''}">
+					<label class="control-label">Correo:</label>
+					<input type="email" class="form-control" ng-model="actualContacto.email" />
+				</div>
+				<div class="form-group" >
+					<label class="control-label">Teléfono de contacto:</label>
+					<input type="text" ng-model="actualTel" class="form-control" />
+					<button type="button" ng-click="addTel(actualContacto)" class="btn btn-primary" ng-disabled="actualTel == null || actualTel == ''">Agregar</button>
+				</div>
+				<div class="form-group">
+					<table class="table table-striped">
+						<tr ng-repeat="tel in actualContacto.telefonos">
+							<td>{{ tel }}</td>
+							<td> <a href="javascript: void(0)" ng-click="removeTel($index)">X</a> </td>
+						</tr>
+					</table>
+				</div>
+			</div>
 			<h3 class="col-md-6">Datos del padre</h3>
 			<h3 class="col-md-6">Datos de la madre</h3>
 			<div class="form-group has-feedback col-md-6" ng-class="{'has-success': alumnoForm.nombreMadre.$valid, 'has-error': alumnoForm.nombreMadre.$invalid}">
