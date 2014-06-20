@@ -1,4 +1,4 @@
-function AlumnosController($scope, $location, $routeParams, $timeout, Alumno)
+function AlumnosController($scope, $location, $routeParams, $timeout, Alumno, User, Apps)
 {
 	$scope.alumnos      = [];
 	$scope.currentUser  = {};
@@ -11,6 +11,12 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno)
 	$scope.papaTel      = null;
 	$scope.mamaTel      = null;
 	$scope.sucessSave   = false;
+	$scope.showContactForm = false;
+
+	Apps.getCurrent()
+    .then(function(data) {
+    	$scope.currentApp = data.response.app;
+    });
 
 	$scope.list = function()
 	{
@@ -24,20 +30,33 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno)
 
 	$scope.load = function()
     {
+    	if ($scope.alumnoId === "0")
+    	{
+    		$scope.actualAlumno = {
+    			contactos: []
+    		};
+    		return false;
+    	}
+
         Alumno.find({_id: $scope.alumnoId})
         .then(function(data){
             $scope.actualAlumno = data.response[$scope.alumnoId];
         });
     }
 
-	$scope.addPapaTel = function()
+	$scope.addTel = function()
 	{
-		if (typeof $scope.actualAlumno.papaTel === 'undefined')
+		if (typeof $scope.actualContacto === 'undefined')
 		{
-			$scope.actualAlumno.papaTel = [];
+			$scope.actualContacto = {};
 		}
 
-		var index = $scope.actualAlumno.papaTel.indexOf($scope.papaTel);
+		if (typeof $scope.actualContacto.telefonos === 'undefined')
+		{
+			$scope.actualContacto.telefonos = [];
+		}
+
+		var index = $scope.actualContacto.telefonos.indexOf($scope.actualTel);
 
 		if (index !== -1)
 		{
@@ -45,37 +64,44 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno)
 			return false;
 		}
 
-		$scope.actualAlumno.papaTel.push($scope.papaTel);
-		$scope.papaTel = null;
+		$scope.actualContacto.telefonos.push($scope.actualTel);
+		$scope.actualTel = null;
 	}
 
-	$scope.removePapaTel = function($index)
+	$scope.addContacto = function()
 	{
-		$scope.actualAlumno.papaTel.splice($index, 1);
-	}
-
-	$scope.addMamaTel = function()
-	{
-		if (typeof $scope.actualAlumno.mamaTel === 'undefined')
+		if (typeof $scope.actualAlumno.contactos === 'undefined')
 		{
-			$scope.actualAlumno.mamaTel = [];
+			$scope.actualAlumno.contactos = [];
 		}
 
-		var index = $scope.actualAlumno.mamaTel.indexOf($scope.mamaTel);
+		var index = $scope.actualAlumno.contactos.indexOf($scope.actualContacto);
 
-		if (index !== -1)
+		if (index === -1)
 		{
-			alert("El telefono ya ha sido registrado");
+			$scope.actualAlumno.contactos.push($scope.actualContacto);	
+		}
+		
+		$scope.actualContacto  = {};
+		$scope.showContactForm = false;
+	}
+
+	$scope.removeTel = function($index)
+	{
+		$scope.actualContacto.telefonos.splice($index, 1);
+	}
+
+	$scope.buscaUsuario = function()
+	{
+		if (typeof $scope.actualContacto._id === 'undefined')
+		{
 			return false;
 		}
 
-		$scope.actualAlumno.mamaTel.push($scope.mamaTel);
-		$scope.mamaTel = null;
-	}
-
-	$scope.removeMamaTel = function($index)
-	{
-		$scope.actualAlumno.mamaTel.splice($index, 1);
+		User.find({_id: $scope.actualContacto._id, app: $scope.currentApp})
+		.then(function(data) {
+			$scope.actualContacto = data.response[$scope.actualContacto._id];
+		});
 	}
 
 	$scope.save = function()
@@ -87,7 +113,17 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno)
 			$timeout(function(){
                 $scope.successSave = false
             }, 2000);
-			
 		});
+	}
+
+	$scope.eliminarContacto = function(index)
+	{
+		$scope.actualAlumno.contactos.splice(index, 1);
+	}
+
+	$scope.verDetalle = function(item)
+	{
+		$scope.actualContacto = item;
+		$scope.showContactForm = true;
 	}
 }

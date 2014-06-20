@@ -55,4 +55,9 @@ function HeaderController($scope, $http, $q, $location)
     {
         $scope.menu = 'maestros';
     }
+
+    if ($location.path().indexOf('/actividades') !== -1)
+    {
+        $scope.menu = 'actividades';
+    }
 }

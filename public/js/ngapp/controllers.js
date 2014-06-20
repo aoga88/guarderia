@@ -4,4 +4,5 @@ requirejs([
     'js/ngapp/controller/apps',
     'js/ngapp/controller/alumnos',
     'js/ngapp/controller/profile',
+    'js/ngapp/controller/actividades',
 ]);

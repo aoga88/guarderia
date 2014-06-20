@@ -83,4 +83,18 @@ class Index extends Controller
         $this->response->sendMessage(iterator_to_array($result))
             ->setCode(200);
     }
+
+    /**
+     * Gets current app
+     *
+     * @return void
+     */
+    public function current()
+    {
+        $config     = osrestConfig('auth');
+        $currentApp = Auth::getSession($config, 'app');
+
+        $this->response->sendMessage(['app' => $currentApp])
+             ->setCode(200);
+    }
 }

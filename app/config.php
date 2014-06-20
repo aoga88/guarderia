@@ -43,8 +43,22 @@ return [
 				'requiredLogin' => true
 			],
 
+			'/app/current' => [
+				'module'		=> 'app',
+				'controller'	=> 'index',
+				'action'		=> 'current',
+				'requiredLogin' => true
+			],
+
 			'/alumno/current' => [
 				'module'     => 'alumno',
+				'controller' => 'index',
+				'action'     => 'current',
+				'requiredLogin' => true,
+			],
+
+			'/actividad/current' => [
+				'module'     => 'actividad',
 				'controller' => 'index',
 				'action'     => 'current',
 				'requiredLogin' => true,
@@ -104,6 +118,13 @@ return [
 
 			'/alumno' => [
 				'module'        => 'alumno',
+				'controller'    => 'index',
+				'action'        => 'save',
+				'requiredLogin' => true
+			],
+
+			'/actividad' => [
+				'module'        => 'actividad',
 				'controller'    => 'index',
 				'action'        => 'save',
 				'requiredLogin' => true

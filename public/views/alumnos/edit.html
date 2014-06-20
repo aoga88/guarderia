@@ -41,7 +41,10 @@
 				ng-required="true"></select>
 			</div>
 			<h3 class="col-md-6">Contactos</h3>
-			<h3 class="col-md-6">&nbsp;</h3>
+			<h3 class="col-md-6">
+				<button type="button" class="btn btn-success" ng-click="actualContacto = {}; showContactForm = true" ng-show="!showContactForm">Nuevo contacto</button>
+				&nbsp;
+			</h3>
 			<div class="col-md-6">
 				<table ng-show="actualAlumno.contactos.length != 0" class="table table-condensed">
 					<thead>
@@ -52,27 +55,30 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="contacto in actualAlumno.contactos">
-							<td>{{ contacto.nombre }}</td>
+							<td>{{ contacto.name }}</td>
 							<td>
-								<a href="javascript: void(0)" ng-click="actualContacto = contacto">Detalle</a>
+								<a href="javascript: void(0)" ng-click="verDetalle(contacto)">Detalle</a>
+							</td>
+							<td>
+								<a href="javascript: void(0)" ng-click="eliminarContacto($index)">Eliminar</a>
 							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
-			<div class="col-md-6">
-				<div class="form-group has-feedback" ng-class="{'has-success': actualContacto.nombre != '', 'has-error': !actualContacto.nombre || actualContacto.nombre == ''}">
-					<label class="control-label">Nombre:</label>
-					<input type="text" class="form-control" ng-model="actualContacto.nombre" />
-				</div>
-				<div class="form-group has-feedback" ng-class="{'has-success': actualContacto.email != '', 'has-error': !actualContacto.email || actualContacto.email == ''}">
+			<div class="col-md-6" ng-show="showContactForm">
+				<div class="form-group has-feedback" ng-class="{'has-success': actualContacto._id != '', 'has-error': !actualContacto._id || actualContacto._id == ''}">
 					<label class="control-label">Correo:</label>
-					<input type="email" class="form-control" ng-model="actualContacto.email" />
+					<input type="email" ng-blur="buscaUsuario()" class="form-control" ng-model="actualContacto._id" />
+				</div>
+				<div class="form-group has-feedback" ng-class="{'has-success': actualContacto.name != '', 'has-error': !actualContacto.name || actualContacto.name == ''}">
+					<label class="control-label">Nombre:</label>
+					<input type="text" class="form-control" ng-model="actualContacto.name" />
 				</div>
 				<div class="form-group" >
 					<label class="control-label">Teléfono de contacto:</label>
 					<input type="text" ng-model="actualTel" class="form-control" />
-					<button type="button" ng-click="addTel(actualContacto)" class="btn btn-primary" ng-disabled="actualTel == null || actualTel == ''">Agregar</button>
+					<button type="button" ng-click="addTel()" class="btn btn-primary" ng-disabled="actualTel == null || actualTel == ''">Agregar</button>
 				</div>
 				<div class="form-group">
 					<table class="table table-striped">
@@ -82,49 +88,13 @@
 						</tr>
 					</table>
 				</div>
-			</div>
-			<h3 class="col-md-6">Datos del padre</h3>
-			<h3 class="col-md-6">Datos de la madre</h3>
-			<div class="form-group has-feedback col-md-6" ng-class="{'has-success': alumnoForm.nombreMadre.$valid, 'has-error': alumnoForm.nombreMadre.$invalid}">
-				<label class="control-label">
-					Nombre de la padre:
-				</label>
-				<input type="text" name="nombreMadre" ng-model="actualAlumno.nombrePadre" class="form-control" ng-required="true" />
-			</div>
-			<div class="form-group has-feedback col-md-6" ng-class="{'has-success': alumnoForm.nombrePadre.$valid, 'has-error': alumnoForm.nombrePadre.$invalid}">
-				<label class="control-label">
-					Nombre del madre:
-				</label>
-				<input type="text" name="nombrePadre" ng-model="actualAlumno.nombreMadre" class="form-control" ng-required="true" />
-			</div>
-			<div class="col-md-6" >
-				<label class="control-label">Teléfono de contacto:</label>
-				<input type="text" ng-model="papaTel" class="form-control" />
-				<button type="button" ng-click="addPapaTel()" class="btn btn-primary" ng-disabled="papaTel == null || papaTel == ''">Agregar</button>
-			</div>
-			<div class="col-md-6" >
-				<label class="control-label">Teléfono de contacto:</label>
-				<input type="text" ng-model="mamaTel" class="form-control" />
-				<button type="button" ng-click="addMamaTel()" class="btn btn-primary" ng-disabled="mamaTel == null || mamaTel == ''">Agregar</button>
-			</div>
-			<div class="col-md-6">
-				<table class="table table-striped">
-					<tr ng-repeat="tel in actualAlumno.papaTel">
-						<td>{{ tel }}</td>
-						<td> <a href="javascript: void(0)" ng-click="removePapaTel($index)">X</a> </td>
-					</tr>
-				</table>
-			</div>
-			<div class="col-md-6">
-				<table class="table table-striped">
-					<tr ng-repeat="tel in actualAlumno.mamaTel">
-						<td>{{ tel }}</td>
-						<td> <a href="javascript: void(0)" ng-click="removeMamaTel($index)">X</a> </td>
-					</tr>
-				</table>
+				<div class="form-group">
+					<button type="button" class="btn btn-success" ng-disabled="!actualContacto || !actualContacto.telefonos || actualContacto.telefonos.length == 0 || !actualContacto.name || actualContacto.name == '' || !actualContacto._id || actualContacto._id == ''" ng-click="addContacto()">Guardar Contacto</button>
+					<button type="button" class="btn btn-danger" ng-click="actualContacto = {}; showContactForm = false">Cancelar</button>
+				</div>
 			</div>
 			<div class="col-md-12">
-				<button type="button" ng-click="save()" class="btn btn-success" ng-disabled="alumnoForm.$invalid || actualAlumno.papaTel.length == 0 || actualAlumno.mamaTel.length == 0">Guardar</button>
+				<button type="button" ng-click="save()" class="btn btn-success" ng-disabled="alumnoForm.$invalid || actualAlumno.contactos.length == 0">Guardar</button>
 				<a href="/#/alumnos" class="btn btn-danger">Cancelar</a>
 			</div>
 			<!-- ALERGIAS -->

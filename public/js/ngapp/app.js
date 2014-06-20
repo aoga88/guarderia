@@ -119,7 +119,7 @@ define([
                   .when('/alumnos', {
                       resolve: {
                         isLoggedIn: isLoggedIn,
-                        isSuperAdmin: isAdmin
+                        isAdmin: isAdmin
                     },
                       controller: AlumnosController,
                       templateUrl: 'views/alumnos/index.html'
@@ -127,10 +127,18 @@ define([
                   .when('/alumnos/:id', {
                       resolve: {
                         isLoggedIn: isLoggedIn,
-                        isSuperAdmin: isAdmin
+                        isAdmin: isAdmin
                     },
                       controller: AlumnosController,
                       templateUrl: 'views/alumnos/edit.html'
+                  })
+                  .when('/actividades', {
+                      resolve: {
+                        isLoggedIn: isLoggedIn,
+                        isAdmin: isAdmin
+                    },
+                      controller: ActividadesController,
+                      templateUrl: 'views/actividades/index.html'
                   })
                   .otherwise({
                       redirectTo: '/'
