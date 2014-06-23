@@ -71,6 +71,13 @@ return [
 				'requiredLogin' => true,
 			],
 
+			'/grupo/current' => [
+				'module'     => 'grupo',
+				'controller' => 'index',
+				'action'     => 'current',
+				'requiredLogin' => true,
+			],
+
 		],
 
 		'POST' => [
@@ -146,6 +153,20 @@ return [
 
 			'/maestro/find' => [
 				'module'        => 'maestro',
+				'controller'    => 'index',
+				'action'        => 'find',
+				'requiredLogin' => true
+			],
+
+			'/grupo' => [
+				'module'        => 'grupo',
+				'controller'    => 'index',
+				'action'        => 'save',
+				'requiredLogin' => true
+			],
+
+			'/grupo/find' => [
+				'module'        => 'grupo',
 				'controller'    => 'index',
 				'action'        => 'find',
 				'requiredLogin' => true

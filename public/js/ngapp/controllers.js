@@ -6,4 +6,5 @@ requirejs([
     'js/ngapp/controller/profile',
     'js/ngapp/controller/actividades',
     'js/ngapp/controller/maestros',
+    'js/ngapp/controller/grupos',
 ]);

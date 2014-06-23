@@ -156,6 +156,22 @@ define([
                       controller: MaestrosController,
                       templateUrl: 'views/maestro/edit.html'
                   })
+                  .when('/grupos', {
+                      resolve: {
+                        isLoggedIn: isLoggedIn,
+                        isAdmin: isAdmin
+                    },
+                      controller: GruposController,
+                      templateUrl: 'views/grupos/index.html'
+                  })
+                  .when('/grupos/:id', {
+                      resolve: {
+                        isLoggedIn: isLoggedIn,
+                        isAdmin: isAdmin
+                    },
+                      controller: GruposController,
+                      templateUrl: 'views/grupos/edit.html'
+                  })
                   .otherwise({
                       redirectTo: '/'
                   });

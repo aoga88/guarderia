@@ -1,0 +1,47 @@
+<ng-include src="'/views/common/header.html'"></ng-include>
+
+<div class="container" ng-init="list()">
+	<div class="row">
+		<h1>Grupos</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<a class="btn btn-success" href="/#/grupos/0">Registrar Grupo</a>
+		</div>
+	</div>
+	<br/>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="alert alert-danger" ng-show="grupos.length == 0">
+				No hay Grupos registrados
+			</div>
+			<br/><br/>
+		</div>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Alumnos</th>
+					<th>Maestros</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="grupo in grupos">
+					<td>{{ grupo.nombre }}</td>
+					<td>{{ grupo.alumnos.length }}</td>
+					<td>
+						<span ng-repeat="maestro in grupo.maestros">
+							{{ maestro.name }} {{ maestro.apPaterno }} {{ maestro.apMaterno }}, 
+						</span>
+					</td>
+					<td>
+						<a href="/#/grupos/{{ grupo._id.$id }}">Ver Detalle</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

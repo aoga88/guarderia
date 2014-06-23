@@ -60,4 +60,9 @@ function HeaderController($scope, $http, $q, $location)
     {
         $scope.menu = 'actividades';
     }
+
+    if ($location.path().indexOf('/grupos') !== -1)
+    {
+        $scope.menu = 'grupos';
+    }
 }
