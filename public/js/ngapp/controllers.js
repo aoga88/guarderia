@@ -5,4 +5,5 @@ requirejs([
     'js/ngapp/controller/alumnos',
     'js/ngapp/controller/profile',
     'js/ngapp/controller/actividades',
+    'js/ngapp/controller/maestros',
 ]);

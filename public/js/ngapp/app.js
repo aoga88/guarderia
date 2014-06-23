@@ -66,7 +66,7 @@ define([
         })
         .error(function(data) {
             $location.path('/login').replace();
-            $timeout(defer.reject(data));
+            $timeout(defer.reject());
         });
 
         return defer.promise;
@@ -139,6 +139,22 @@ define([
                     },
                       controller: ActividadesController,
                       templateUrl: 'views/actividades/index.html'
+                  })
+                  .when('/maestro', {
+                      resolve: {
+                        isLoggedIn: isLoggedIn,
+                        isAdmin: isAdmin
+                    },
+                      controller: MaestrosController,
+                      templateUrl: 'views/maestro/index.html'
+                  })
+                  .when('/maestro/:id', {
+                      resolve: {
+                        isLoggedIn: isLoggedIn,
+                        isAdmin: isAdmin
+                    },
+                      controller: MaestrosController,
+                      templateUrl: 'views/maestro/edit.html'
                   })
                   .otherwise({
                       redirectTo: '/'

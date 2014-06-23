@@ -51,9 +51,9 @@ function HeaderController($scope, $http, $q, $location)
         $scope.menu = 'profile';
     }
 
-    if ($location.path().indexOf('/maestros') !== -1)
+    if ($location.path().indexOf('/maestro') !== -1)
     {
-        $scope.menu = 'maestros';
+        $scope.menu = 'maestro';
     }
 
     if ($location.path().indexOf('/actividades') !== -1)

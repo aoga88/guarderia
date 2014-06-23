@@ -37,10 +37,11 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="actividad in actividades">
+				<tr ng-repeat="actividad in actividades" ng-class="{danger: actividad.active == false}">
 					<td>{{ actividad.nombre }}</td>
 					<td>
-						<button class="btn btn-default" ng-click="verDetalle(actividad)">Ver Detalle</button>
+						<button class="btn btn-danger" ng-click="desactivar(actividad)" ng-show="actividad.active == true">Desactivar</button>
+						<button class="btn btn-success" ng-click="activar(actividad)" ng-show="actividad.active == false">Activar</button>
 					</td>
 				</tr>
 			</tbody>

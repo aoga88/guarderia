@@ -16,8 +16,12 @@ use OsRest\Classes\Controller;
 use OsApp\Models\Alumno as Model_Alumno;
 use OsApp\Models\User as Model_User;
 use MongoId;
+use MongoDate;
 use OsRest\Auth\Authentication as Auth;
 use Exception;
+use Swift_Message;
+use Swift_SmtpTransport;
+use Swift_Mailer;
 
 /**
  * Index.php

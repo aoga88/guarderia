@@ -34,4 +34,30 @@ function ActividadesController($scope, $location, $timeout, Actividad, Apps)
 			$scope.showForm = false;
 		});
 	}
+
+	$scope.desactivar = function(actividad)
+	{
+		var entity    = actividad;
+		var entityId  = actividad._id.$id;
+		entity.active = false;
+		delete entity._id;
+
+		Actividad.save(entity, entityId)
+		.then(function(data) {
+			actividad = data.response;
+		})
+	}
+
+	$scope.activar = function(actividad)
+	{
+		var entity    = actividad;
+		var entityId  = actividad._id.$id;
+		entity.active = true;
+		delete entity._id;
+
+		Actividad.save(entity, entityId)
+		.then(function(data) {
+			actividad = data.response;
+		});
+	}
 }

@@ -1,0 +1,55 @@
+<ng-include src="'/views/common/header.html'"></ng-include>
+
+<div class="container" ng-init="load()">
+	<div class="row">
+		<h1 ng-show="maestroId == 0">Nuevo Maestro</h1>
+		<h1 ng-show="maestroId != 0">Editar Maestro</h1>
+	</div>
+
+	<div class="row">
+		<form role="form" name="maestroForm">
+			<div class="form-group has-feedback col-md-12" ng-class="{'has-success': maestroForm.email.$valid, 'has-error': maestroForm.email.$invalid}">
+				<label class="control-label">
+					Correo electrónico:
+				</label>
+				<input type="email" name="email" ng-model="actualMaestro.email" ng-blur="buscaUsuario()" class="form-control" ng-required="true" />
+			</div>
+			<div class="form-group has-feedback col-md-12" ng-class="{'has-success': maestroForm.nombre.$valid, 'has-error': maestroForm.nombre.$invalid}">
+				<label class="control-label">
+					Nombre(s):
+				</label>
+				<input type="text" name="nombre" ng-model="actualMaestro.name" class="form-control" ng-required="true" />
+			</div>
+			<div class="form-group has-feedback col-md-6" ng-class="{'has-success': maestroForm.apPaterno.$valid, 'has-error': maestroForm.apPaterno.$invalid}">
+				<label class="control-label">
+					Apellido Paterno:
+				</label>
+				<input type="text" name="apPaterno" ng-model="actualMaestro.apPaterno" class="form-control" ng-required="true" />
+			</div>
+			<div class="form-group has-feedback col-md-6" ng-class="{'has-success': maestroForm.apMaterno.$valid, 'has-error': maestroForm.apMaterno.$invalid}">
+				<label class="control-label">
+					Apellido Materno:
+				</label>
+				<input type="text" name="apMaterno" ng-model="actualMaestro.apMaterno" class="form-control" ng-required="true" />
+			</div>
+			<div class="form-group col-md-6" >
+				<label class="control-label">Teléfono de contacto:</label>
+				<input type="text" ng-model="actualTel" class="form-control" />
+				<button type="button" ng-click="addTel()" class="btn btn-primary" ng-disabled="actualTel == null || actualTel == ''">Agregar</button>
+			</div>
+			<div class="form-group col-md-6">
+				<label>Teléfonos:</label>
+				<table class="table table-striped">
+					<tr ng-repeat="tel in actualMaestro.telefonos">
+						<td>{{ tel }}</td>
+						<td> <a href="javascript: void(0)" ng-click="removeTel($index)">X</a> </td>
+					</tr>
+				</table>
+			</div>
+			<div class="col-md-12">
+				<button type="button" ng-click="save()" class="btn btn-success" ng-disabled="maestroForm.$invalid || !actualMaestro.telefonos || actualMaestro.telefonos.length == 0">Guardar</button>
+				<a href="/#/maestro" class="btn btn-danger">Cancelar</a>
+			</div>
+		</form>
+	</div>
+</div>

@@ -70,8 +70,12 @@ class Index extends Controller
             }
         }
 
+        if (!isset($data->active)) {
+        	$data->active = true;
+        }
+
         if (isset($data->_id)) {
-            $conditions = ['_id' => $data->_id];
+            $conditions = ['_id' => new MongoId($data->_id)];
             unset($data->_id);
             $result = $model_actividad->update($conditions, ['$set' => $data]);
         } else {

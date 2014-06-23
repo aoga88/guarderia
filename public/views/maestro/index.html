@@ -1,0 +1,47 @@
+<ng-include src="'/views/common/header.html'"></ng-include>
+
+<div class="container" ng-init="list()">
+	<div class="row">
+		<h1>Maestros</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<a class="btn btn-success" href="/#/maestro/0">Registrar Maestro</a>
+		</div>
+	</div>
+	<br/>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="alert alert-danger" ng-show="maestros.length == 0">
+				No hay Maestros registrados
+			</div>
+			<br/><br/>
+		</div>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Correo</th>
+					<th>Telefono</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="maestro in maestros">
+					<td>{{ maestro.name }} {{ maestro.apPaterno }} {{ maestro.apMaterno }}</td>
+					<td>{{ maestro.email }}</td>
+					<td>
+						<span ng-repeat="telefono in maestro.telefonos">
+							{{ telefono }}, 
+						</span>
+					</td>
+					<td>
+						<a href="/#/maestro/{{ maestro._id.$id }}">Ver Detalle</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

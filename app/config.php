@@ -9,16 +9,16 @@ return [
 
 		'GET' => [
 			'/user/current' => [
-				'module'     => 'user',
-				'controller' => 'index',
-				'action'     => 'current',
+				'module'        => 'user',
+				'controller'    => 'index',
+				'action'        => 'current',
 				'requiredLogin' => true,
 			],
 
 			'/user/:id' => [
-				'module' => 'user',
-				'controller' => 'index',
-				'action' => 'info',
+				'module'        => 'user',
+				'controller'    => 'index',
+				'action'        => 'info',
 				'requiredLogin' => true,
 			],
 
@@ -59,6 +59,13 @@ return [
 
 			'/actividad/current' => [
 				'module'     => 'actividad',
+				'controller' => 'index',
+				'action'     => 'current',
+				'requiredLogin' => true,
+			],
+
+			'/maestro/current' => [
+				'module'     => 'maestro',
 				'controller' => 'index',
 				'action'     => 'current',
 				'requiredLogin' => true,
@@ -127,6 +134,20 @@ return [
 				'module'        => 'actividad',
 				'controller'    => 'index',
 				'action'        => 'save',
+				'requiredLogin' => true
+			],
+
+			'/maestro' => [
+				'module'        => 'maestro',
+				'controller'    => 'index',
+				'action'        => 'save',
+				'requiredLogin' => true
+			],
+
+			'/maestro/find' => [
+				'module'        => 'maestro',
+				'controller'    => 'index',
+				'action'        => 'find',
 				'requiredLogin' => true
 			],
 		],
