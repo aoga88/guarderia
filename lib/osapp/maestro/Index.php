@@ -83,9 +83,11 @@ class Index extends Controller
         if (isset($data->_id) && $data->_id !== "0") {
             $conditions = ['_id' => new MongoId($data->_id)];
             unset($data->_id);
+            unset($data->created);
             $result = $model_maestro->update($conditions, ['$set' => $data]);
         } else {
             unset($data->_id);
+            $data->created = new MongoDate();
             $result = $model_maestro->insert($data);
         }
 

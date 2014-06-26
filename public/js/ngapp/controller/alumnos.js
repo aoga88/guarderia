@@ -12,6 +12,7 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno, Us
 	$scope.mamaTel      = null;
 	$scope.sucessSave   = false;
 	$scope.showContactForm = false;
+	$scope.actualActividades = {};
 
 	Apps.getCurrent()
     .then(function(data) {
@@ -41,6 +42,30 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno, Us
         Alumno.find({_id: $scope.alumnoId})
         .then(function(data){
             $scope.actualAlumno = data.response[$scope.alumnoId];
+
+            if (typeof $scope.actualAlumno.actividades !== 'undefined') {
+            	angular.forEach($scope.actualAlumno.actividades, function(actividad) {
+            		
+            		var jsDate  = new Date(actividad.fecha.sec * 1000); 
+            		var txtDate = jsDate.getDate() + '/' + ( jsDate.getMonth() + 1) + '/' + jsDate.getFullYear();
+            		var hour    = jsDate.getHours() + ':00';
+            		
+            		if (typeof $scope.actualActividades[txtDate] === 'undefined')
+            		{
+            			$scope.actualActividades[txtDate] = {};
+            		}
+
+            		if (typeof $scope.actualActividades[txtDate][hour] === 'undefined')
+            		{
+            			$scope.actualActividades[txtDate][hour] = [];
+            		}
+
+            		actividad.hora = jsDate.getHours() + ':' + jsDate.getMinutes();
+            		$scope.actualActividades[txtDate][hour].push(actividad);
+            		
+            	});	
+            }
+            
         });
     }
 
@@ -125,5 +150,19 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno, Us
 	{
 		$scope.actualContacto = item;
 		$scope.showContactForm = true;
+	}
+
+	$scope.getActividad = function(fecha, hora) {
+		if (typeof $scope.actualActividades[fecha] === 'undefined')
+		{
+			return [];
+		}
+
+		if (typeof $scope.actualActividades[fecha][hora] === 'undefined')
+		{
+			return [];
+		}
+
+		return $scope.actualActividades[fecha][hora];
 	}
 }

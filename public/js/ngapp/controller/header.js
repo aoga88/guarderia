@@ -1,8 +1,10 @@
 function HeaderController($scope, $http, $q, $location)
 {
-    $scope.menu = '';
+    $scope.menu         = '';
     $scope.isSuperAdmin = false;
-    $scope.isAdmin = false;
+    $scope.isAdmin      = false;
+    $scope.isPadre      = false;
+    $scope.isMaestro    = false;
 
     var defer = $q.defer();
 
@@ -20,6 +22,14 @@ function HeaderController($scope, $http, $q, $location)
 
         if (roles.indexOf('admin') !== -1) {
             $scope.isAdmin = true;
+        }
+
+        if (roles.indexOf('maestro') !== -1) {
+            $scope.isMaestro = true;
+        }
+
+        if (roles.indexOf('padre') !== -1) {
+            $scope.isPadre = true;
         }
 
     })
@@ -64,5 +74,10 @@ function HeaderController($scope, $http, $q, $location)
     if ($location.path().indexOf('/grupos') !== -1)
     {
         $scope.menu = 'grupos';
+    }
+
+    if ($location.path().indexOf('/registro') !== -1)
+    {
+        $scope.menu = 'registro';
     }
 }

@@ -102,5 +102,19 @@ function User($http, $q) {
 
             return defer.promise;
         },
+
+        getCurrent: function() {
+            var defer = $q.defer();
+
+            $http.get('/api/user/current')
+            .success( function(data) {
+                defer.resolve(data);
+            })
+            .error( function(data) {
+                defer.reject(data);
+            });
+
+            return defer.promise;
+        }
     }
 };

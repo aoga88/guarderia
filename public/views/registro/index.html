@@ -1,0 +1,91 @@
+<ng-include src="'/views/common/header.html'"></ng-include>
+
+<div class="container" ng-init="list()">
+	<div class="row">
+		<h1>Registro</h1>
+	</div>
+	<div class="row">
+		<div class="alert alert-success" ng-show="showSuccess">Las actividades han sido registradas.</div>
+	</div>
+	<div class="row" ng-show="isAdmin || isMaestro">
+		<div class="col-md-6 col-sm-12">
+			<button class="btn btn-lg col-md-12 col-sm-12 col-xs-12" ng-class="{'btn-warning': showGrupo, 'btn-default': !showGrupo}" ng-click="registroGrupal()">Registro Grupal</button>
+			<table class="table table-striped" ng-show="showGrupo">
+				<thead>
+					<tr>
+						<th>Grupo</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<input type="text" ng-model="grupoFilter" class="form-control" placeholder="Buscar..."/>
+						</td>
+					</tr>
+					<tr ng-repeat="grupo in grupos | filter:grupoFilter" ng-class="{'success': grupo.selected == true}">
+						<td>
+							<a href="javascript: void(0)" ng-click="toggleGrupo(grupo)">
+								{{ grupo.nombre }}
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<button class="btn btn-lg col-md-12 col-sm-12 col-xs-12" ng-class="{'btn-warning': showIndividual, 'btn-default': !showIndividual}" ng-click="registroIndividual()">Registro Individual</button>
+			<table class="table table-striped" ng-show="showIndividual">
+				<thead>
+					<tr>
+						<th>Alumno</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<input type="text" ng-model="alumnoFilter" class="form-control" placeholder="Buscar..."/>
+						</td>
+					</tr>
+					<tr ng-repeat="alumno in alumnos | filter:alumnoFilter" ng-class="{'success': alumno.selected == true}">
+						<td>
+							<a href="javascript: void(0)" ng-click="toggleAlumno(alumno)">
+								{{ alumno.nombre }} {{ alumno.apPaterno }} {{ alumno.apMaterno }}
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-6">
+			<a class="btn btn-lg btn-info col-md-12">Actividades</a>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Actividad</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<input type="text" ng-model="actividadFilter" class="form-control" placeholder="Buscar..."/>
+						</td>
+					</tr>
+					<tr ng-repeat="actividad in actividades | filter:actividadFilter" ng-class="{'success': actividad.selected == true}">
+						<td ng-show="actividad.active == true">
+							<a href="javascript: void(0)" ng-click="toggleActividad(actividad)">
+								{{ actividad.nombre }}
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<button class="btn btn-lg btn-success col-md-12" ng-disabled="!actualRegistro.actividades || actualRegistro.actividades.length == 0 || (!actualRegistro.grupos && !actualRegistro.alumnos) || (actualRegistro.grupos.length == 0 || actualRegistro.alumnos.length == 0)" ng-click="save()">
+				Registrar 
+				<span ng-show="actualRegistro.actividades.length > 1">Actividades</span>
+				<span ng-hide="actualRegistro.actividades.length > 1">Actividad</span>
+			</button>
+		</div>
+	</div>
+</div>

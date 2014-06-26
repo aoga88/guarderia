@@ -1,0 +1,38 @@
+<ng-include src="'/views/common/header.html'"></ng-include>
+
+<div class="container" ng-init="load()" ng-controller="CalendarioController">
+	<div class="row">
+		<h3 class="text-warning">Calendario de {{ actualAlumno.nombre }} {{ actualAlumno.apPaterno }} {{ actualAlumno.apMaterno }}</h3>
+	</div>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					<a href="javascript: void(0)" ng-click="anterior()" class="btn btn-success btn-xs">Anterior</a>
+					<a href="javascript: void(0)" ng-click="siguiente()" class="btn btn-success btn-xs">Siguiente</a>
+				</th>
+				<td ng-repeat="(dia,info) in dias"
+					ng-class="getClass(dia, null)">
+					{{info.nombre}}<br/>
+					{{info.fecha}}
+				</td>
+			</tr>
+		</thead>
+		<tbody ng-repeat="(hora,value) in horas">
+			<tr>
+				<th>{{hora}}</th>
+				<td ng-repeat="(dia,info) in dias"
+					ng-class="getClass(dia,info.horas[hora])">
+
+					<button ng-repeat="ac in actualActividades[info.fecha][hora]" 
+					   class="btn btn-primary btn-xs calendar-activity"
+					   ng-click="doAlert(ac.hora + ' ' + ac.actividad);">
+						{{ac.actividad}}
+					</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>

@@ -62,6 +62,7 @@ class Index extends Controller
             $conditions = ['_id' => new MongoId($data->_id)];
             $alumnoId = $data->_id;
             unset($data->_id);
+            unset($data->created);
             $aresult  = $model_alumno->update($conditions, ['$set' => $data]);
             $data->_id = new MongoId($alumnoId);
         } else {

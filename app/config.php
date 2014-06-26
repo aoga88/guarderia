@@ -171,6 +171,20 @@ return [
 				'action'        => 'find',
 				'requiredLogin' => true
 			],
+
+			'/registro' => [
+				'module'        => 'registro',
+				'controller'    => 'index',
+				'action'        => 'save',
+				'requiredLogin' => true
+			],
+
+			'/registro/actividades' => [
+				'module'        => 'registro',
+				'controller'    => 'index',
+				'action'        => 'actividades',
+				'requiredLogin' => true
+			],
 		],
 
 		'DELETE' => [

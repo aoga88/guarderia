@@ -72,6 +72,56 @@ define([
         return defer.promise;
     }
 
+    function isPadre($http, $q, $timeout, $location) {
+        var defer = $q.defer();
+
+        $http.get('/api/user/current')
+        .success(function(data){
+            var roles = data.response.roles;
+            defer.resolve(data);
+            return;
+            if (roles.indexOf('padre') === -1)
+            {
+                $location.path('/login').replace();
+                $timeout(defer.reject(data));
+                return;
+            } else {
+                defer.resolve(data);
+            }
+        })
+        .error(function(data) {
+            $location.path('/login').replace();
+            $timeout(defer.reject());
+        });
+
+        return defer.promise;
+    }
+
+    function isMaestro($http, $q, $timeout, $location) {
+        var defer = $q.defer();
+
+        $http.get('/api/user/current')
+        .success(function(data){
+            var roles = data.response.roles;
+            defer.resolve(data);
+            return;
+            if (roles.indexOf('maestro') === -1)
+            {
+                $location.path('/login').replace();
+                $timeout(defer.reject(data));
+                return;
+            } else {
+                defer.resolve(data);
+            }
+        })
+        .error(function(data) {
+            $location.path('/login').replace();
+            $timeout(defer.reject());
+        });
+
+        return defer.promise;
+    }
+
     angular.element(document).ready(function() {
         angular.module('app', ['ngRoute', 'appServices', 'ui.date'])
 
@@ -132,6 +182,16 @@ define([
                       controller: AlumnosController,
                       templateUrl: 'views/alumnos/edit.html'
                   })
+                  .when('/alumnos/:id/calendario', {
+                      resolve: {
+                        isLoggedIn: isLoggedIn,
+                        isAdmin: isAdmin,
+                        isPadre: isPadre,
+                        isMaestro: isMaestro
+                    },
+                      controller: AlumnosController,
+                      templateUrl: 'views/alumnos/calendario.html'
+                  })
                   .when('/actividades', {
                       resolve: {
                         isLoggedIn: isLoggedIn,
@@ -171,6 +231,16 @@ define([
                     },
                       controller: GruposController,
                       templateUrl: 'views/grupos/edit.html'
+                  })
+                  .when('/registro', {
+                      resolve: {
+                        isLoggedIn: isLoggedIn,
+                        isAdmin: isAdmin,
+                        isPadre: isPadre,
+                        isMaestro: isMaestro
+                    },
+                      controller: RegistroController,
+                      templateUrl: 'views/registro/index.html'
                   })
                   .otherwise({
                       redirectTo: '/'

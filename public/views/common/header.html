@@ -33,6 +33,10 @@
                     <li ng-show="isAdmin == true" ng-class="{active: menu == 'grupos'}">
                         <a href="/#/grupos">Grupos</a>
                     </li>
+                    <li ng-show="isAdmin == true || isMaestro == true || isPadre == true" 
+                    ng-class="{active: menu == 'registro'}">
+                        <a href="/#/registro">Registro</a>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li ng-class="{active: menu == 'profile'}">
