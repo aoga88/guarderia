@@ -15,6 +15,8 @@ namespace OsApp\Alumno;
 use OsRest\Classes\Controller;
 use OsApp\Models\Alumno as Model_Alumno;
 use OsApp\Models\User as Model_User;
+use OsApp\Models\Maestro as Model_Maestro;
+use OsApp\Models\Grupo as Model_Grupo;
 use MongoId;
 use MongoDate;
 use OsRest\Auth\Authentication as Auth;
@@ -43,7 +45,7 @@ class Index extends Controller
      */
     public function save()
     {
-        parent::validateRoles(['admin', 'superadmin']);
+        parent::validateRoles(['admin', 'superadmin', 'padre', 'maestro']);
         $config  = osrestConfig('auth');
         $roles   = Auth::getSession($config, 'roles');
         $data    = json_decode(file_get_contents("php://input"));
@@ -154,19 +156,63 @@ EOD;
      */
     public function find()
     {
-        parent::validateRoles(['superadmin', 'admin']);
+        parent::validateRoles(['admin', 'maestro', 'padre']);
         $config       = osrestConfig('auth');
         $roles        = Auth::getSession($config, 'roles');
+        $loggedUser   = Auth::getSession($config);
         $conditions   = json_decode(file_get_contents("php://input"));
         $model_alumno = new Model_Alumno();
         $result       = $model_alumno->find($conditions);
         $data         = iterator_to_array($result);
+        $isValid      = false;
 
         if (!in_array('superadmin', $roles)) {
             $currentApp = Auth::getSession($config, 'app');
             if ($currentApp !== $data[$conditions->_id->__toString()]['app']->__toString()) {
                 throw new Exception("notAllowed", 1);
             }
+        }
+
+        if (in_array('maestro', $roles)) {
+            $model_maestro = new Model_Maestro();
+            $maestro       = $model_maestro->findOne(['email' => $loggedUser['_id']]);
+            $maestroId     = $maestro['_id']->__toString();
+
+            $model_grupo = new Model_Grupo();
+            $grupos      = $model_grupo->find(['maestros' => ['$in' => [$maestroId]]]);
+            $alumnos     = [];
+            
+            foreach($grupos as $grupo) {
+                $alumnos = array_merge($alumnos, $grupo['alumnos']);
+            }
+
+            foreach ($alumnos as $index => $alumno) {
+                if ($alumno instanceof MongoId) {
+                    $alumnos[$index] = $alumno->__toString();
+                }
+            }
+
+            if (in_array($conditions->_id, $alumnos)) {
+                $isValid = true;
+            }
+        }
+
+        if (in_array('padre', $roles)) {
+            $alumnos = $loggedUser['alumnos'];
+
+            foreach ($alumnos as $index => $alumno) {
+                if ($alumno instanceof MongoId) {
+                    $alumnos[$index] = $alumno->__toString();
+                }
+            }
+
+            if (in_array($conditions->_id, $alumnos)) {
+                $isValid = true;
+            }
+        }
+
+        if ($isValid || in_array('admin', $roles)) {
+            $result = $model_alumno->find($conditions);
         }
 
         $this->response->sendMessage(iterator_to_array($result))
@@ -180,14 +226,48 @@ EOD;
      */
     public function current()
     {
-        parent::validateRoles(['admin']);
+        parent::validateRoles(['admin', 'maestro', 'padre']);
         $config       = osrestConfig('auth');
+        $roles        = Auth::getSession($config, 'roles');
         $loggedUser   = Auth::getSession($config);
         $app          = $loggedUser['app'];
         $model_alumno = new Model_Alumno();
-        $result       = $model_alumno->find(['app' => new MongoId($app)]);
 
-        $this->response->sendMessage(iterator_to_array($result))
+        $alumnos = [];
+
+        if (in_array('maestro', $roles)) {
+            $model_maestro = new Model_Maestro();
+            $maestro = $model_maestro->findOne(['email' => $loggedUser['_id']]);
+            $maestroId = $maestro['_id']->__toString();
+
+            $model_grupo = new Model_Grupo();
+            $grupos = $model_grupo->find(['maestros' => ['$in' => [$maestroId]]]);
+            
+            foreach($grupos as $grupo) {
+                $alumnos = array_merge($alumnos, $grupo['alumnos']);
+            }
+        }
+
+        if (in_array('padre', $roles)) {
+            //var_dump($loggedUser);
+            $alumnos = array_merge($alumnos, $loggedUser['alumnos']);
+        }
+
+        foreach ($alumnos as $index => $alumno) {
+            if (!$alumno instanceof MongoId) {
+                $alumnos[$index] = new MongoId($alumno);
+            }
+        }
+
+        $alumnos = $model_alumno->find(['_id' => ['$in' => $alumnos]]);
+        $alumnos = iterator_to_array($alumnos);
+
+        if (in_array('admin', $roles)) {
+            $result = $model_alumno->find(['app' => new MongoId($app)]);
+            $alumnos = iterator_to_array($result);
+        }
+
+        $this->response->sendMessage($alumnos)
             ->setCode(200);
     }
 }

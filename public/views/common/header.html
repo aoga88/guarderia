@@ -21,7 +21,7 @@
                     <li ng-show="isSuperAdmin == true" ng-class="{active: menu == 'guarderias'}">
                         <a href="/#/guarderias">Guarderias</a>
                     </li>
-                    <li ng-show="isAdmin == true" ng-class="{active: menu == 'alumnos'}">
+                    <li ng-show="isAdmin == true || isMaestro == true || isPadre == true" ng-class="{active: menu == 'alumnos'}">
                         <a href="/#/alumnos">Alumnos</a>
                     </li>
                     <li ng-show="isAdmin == true" ng-class="{active: menu == 'maestro'}">
@@ -30,10 +30,10 @@
                     <li ng-show="isAdmin == true" ng-class="{active: menu == 'actividades'}">
                         <a href="/#/actividades">Actividades</a>
                     </li>
-                    <li ng-show="isAdmin == true" ng-class="{active: menu == 'grupos'}">
+                    <li ng-show="isAdmin == true || isMaestro == true" ng-class="{active: menu == 'grupos'}">
                         <a href="/#/grupos">Grupos</a>
                     </li>
-                    <li ng-show="isAdmin == true || isMaestro == true || isPadre == true" 
+                    <li ng-show="isAdmin == true || isMaestro == true" 
                     ng-class="{active: menu == 'registro'}">
                         <a href="/#/registro">Registro</a>
                     </li>

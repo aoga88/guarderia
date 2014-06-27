@@ -39,7 +39,7 @@ class Index extends Controller
      */
     public function current()
     {
-        parent::validateRoles(['admin']);
+        parent::validateRoles(['admin', 'maestro']);
         $config          = osrestConfig('auth');
         $loggedUser      = Auth::getSession($config);
         $app             = $loggedUser['app'];

@@ -65,7 +65,7 @@ class Response
      */
     public function __toString()
     {
-        header('Content-Type: application/json');
+        //header('Content-Type: application/json');
         http_response_code($this->_code);
         return json_encode($this->_response);
     }

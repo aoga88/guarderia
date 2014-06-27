@@ -13,10 +13,12 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno, Us
 	$scope.sucessSave   = false;
 	$scope.showContactForm = false;
 	$scope.actualActividades = {};
+	$scope.isAdmin        = false;
 
-	Apps.getCurrent()
+    User.getCurrent()
     .then(function(data) {
     	$scope.currentApp = data.response.app;
+    	$scope.isAdmin = data.response.roles.indexOf('admin') !== -1;
     });
 
 	$scope.list = function()

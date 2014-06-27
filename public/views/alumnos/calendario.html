@@ -25,11 +25,12 @@
 				<td ng-repeat="(dia,info) in dias"
 					ng-class="getClass(dia,info.horas[hora])">
 
-					<button ng-repeat="ac in actualActividades[info.fecha][hora]" 
-					   class="btn btn-primary btn-xs calendar-activity"
-					   ng-click="doAlert(ac.hora + ' ' + ac.actividad);">
-						{{ac.actividad}}
-					</button>
+					<div ng-repeat="ac in actualActividades[info.fecha][hora]">
+						<button class="btn btn-primary btn-xs calendar-activity"
+						   ng-click="doAlert(ac.hora + ' ' + ac.actividad);">
+							{{ac.actividad}}
+						</button>
+					</div>
 				</td>
 			</tr>
 		</tbody>

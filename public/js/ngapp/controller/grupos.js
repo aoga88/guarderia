@@ -1,13 +1,15 @@
-function GruposController($scope, $location, $timeout, $routeParams, Apps, Grupo, Alumno, Maestro) {
+function GruposController($scope, $location, $timeout, $routeParams, User, Grupo, Alumno, Maestro) {
 	$scope.grupos = [];
 	$scope.grupoId = $routeParams.id;
     $scope.alumnos = [];
     $scope.maestros = [];
     $scope.actualGrupo = {};
+    $scope.isAdmin = false;
 
-	Apps.getCurrent()
+    User.getCurrent()
     .then(function(data) {
-    	$scope.currentApp = data.response.app;
+        $scope.currentApp = data.response.app;
+        $scope.isAdmin = data.response.roles.indexOf('admin') !== -1;
     });
 
     $scope.list = function()

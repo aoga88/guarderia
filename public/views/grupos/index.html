@@ -5,7 +5,7 @@
 		<h1>Grupos</h1>
 	</div>
 
-	<div class="row">
+	<div class="row" ng-show="isAdmin">
 		<div class="col-xs-12">
 			<a class="btn btn-success" href="/#/grupos/0">Registrar Grupo</a>
 		</div>
@@ -37,7 +37,7 @@
 							{{ maestro.name }} {{ maestro.apPaterno }} {{ maestro.apMaterno }}, 
 						</span>
 					</td>
-					<td>
+					<td ng-show="isAdmin">
 						<a href="/#/grupos/{{ grupo._id.$id }}">Ver Detalle</a>
 					</td>
 				</tr>

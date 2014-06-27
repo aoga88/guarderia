@@ -9,7 +9,9 @@ function LoginController($scope, $location, User)
 
     $scope.redirect = {
         'superadmin' : '/apps',
-        'admin' : '/dashboard'
+        'admin' : '/dashboard',
+        'maestro' : '/dashboard',
+        'padre' : '/dashboard'
     };
 
     $scope.login = function(view) {

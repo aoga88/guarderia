@@ -62,7 +62,7 @@ class Index extends Controller
      */
     public function save()
     {    
-        parent::validateRoles(['admin']);
+        parent::validateRoles(['admin', 'maestro']);
         $data       = json_decode(file_get_contents("php://input"));
         $config     = osrestConfig('auth');
         $roles      = Auth::getSession($config, 'roles');

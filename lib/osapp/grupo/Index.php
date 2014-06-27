@@ -44,13 +44,20 @@ class Index extends Controller
      */
     public function current()
     {
-        parent::validateRoles(['admin']);
+        parent::validateRoles(['admin', 'maestro']);
         $config        = osrestConfig('auth');
         $loggedUser    = Auth::getSession($config);
         $app           = $loggedUser['app'];
         $model_grupo   = new Model_Grupo();
         $model_maestro = new Model_Maestro();
-        $result        = $model_grupo->find(['app' => $app]);
+        $conditions    = ['app' => $app];
+
+        if (in_array('maestro', $loggedUser['roles'])) {
+            $maestro = $model_maestro->findOne(['email' => $loggedUser['_id']]);
+            $conditions['maestros'] = ['$in' => [$maestro['_id']->__toString()]];
+        }
+
+        $result        = $model_grupo->find($conditions);
         $result        = iterator_to_array($result);
 
         foreach($result as $index => $grupo) {

@@ -1,6 +1,7 @@
 function CalendarioController($scope, Registro, Alumno) {
 
 	$scope.horas = {
+		'06:00': {},
 		'07:00': {},
 		'08:00': {},
 		'09:00': {},
@@ -16,6 +17,7 @@ function CalendarioController($scope, Registro, Alumno) {
 		'19:00': {},
 		'20:00': {},
 		'21:00': {},
+		'22:00': {},
 	};
 
 	$scope.dias = {

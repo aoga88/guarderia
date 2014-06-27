@@ -100,7 +100,7 @@ class Index extends Controller
      */
     public function find()
     {
-        parent::validateRoles(['superadmin', 'admin']);
+        parent::validateRoles(['superadmin', 'admin', 'maestro', 'padre']);
         $conditions = json_decode(file_get_contents("php://input"));
 
         $config    = osrestConfig('auth');
@@ -197,7 +197,7 @@ EOD;
      */
     public function save()
     {    
-        parent::validateRoles(['superadmin', 'admin']);
+        parent::validateRoles(['superadmin', 'admin', 'maestro', 'padre']);
         $model_user = new Model_User();
         $data       = json_decode(file_get_contents("php://input"));
 
