@@ -15,6 +15,7 @@ namespace OsApp\App;
 use OsRest\Classes\Controller;
 use OsApp\Models\App as Model_App;
 use MongoId;
+use MongoDate;
 use OsRest\Auth\Authentication as Auth;
 
 /**
@@ -60,6 +61,22 @@ class Index extends Controller
                 unset($data->_id);
             }
 
+            $fechaCorte = $data->pagos[0]->fecha;
+            $parts = explode("/", $fechaCorte);
+            $day   = $parts[0];
+            $month = $parts[1];
+            $year  = $parts[2];
+
+            $fechaCorte = strtotime($year . '-' . $month . '-' . $day . ' 00:00:00');
+            $data->pagos[0]->fecha = new MongoDate($fechaCorte);
+            $data->pagos[0]->pago = new MongoDate($fechaCorte);
+
+            $fechaSiguiente = strtotime(date("Y-m-d", strtotime($year . '-' . $month . '-' . $day)) . " +1 month");
+            $data->pagos[] = [
+                'fecha' => new MongoDate($fechaSiguiente),
+                'monto' => 50.00
+            ];
+            
             $result = $model_app->insert($data);
         }
 
@@ -95,6 +112,23 @@ class Index extends Controller
         $currentApp = Auth::getSession($config, 'app');
 
         $this->response->sendMessage(['app' => $currentApp])
+             ->setCode(200);
+    }
+
+    /**
+     * Gets current app
+     *
+     * @return void
+     */
+    public function currentApp()
+    {
+        $config     = osrestConfig('auth');
+        $currentApp = Auth::getSession($config, 'app');
+
+        $model_app = new Model_App();
+        $app = $model_app->findOne(['_id' => new MongoId($currentApp)]);
+
+        $this->response->sendMessage($app)
              ->setCode(200);
     }
 }

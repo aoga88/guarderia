@@ -10,7 +10,6 @@ function Actividad($http, $q) {
             })
             .error( function(data) {
                 defer.reject(data);
-                console.log('error');
             });
 
             return defer.promise;

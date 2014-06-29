@@ -1,0 +1,191 @@
+<ng-include src="'/views/common/header.html'"></ng-include>
+
+<div class="container" ng-init="getCurrent()">
+	<div class="row">
+		<h1>Información</h1>
+	</div>
+
+	<!-- <div class="row">
+		<h3 class="text-danger">ID de Guarderia: {{entityApp._id.$id}}</h3>
+	</div> -->
+
+	<div class="col-sm-12 col-xs-12" ng-class="{'col-md-6': showPagoForm, 'col-md-12': !showPagoForm}">
+		<div class="panel panel-danger">
+			<div class="panel-heading">
+				<h3 class="panel-title">Pagos</h3>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-12">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Fecha Limite</th>
+									<th>Fecha de Pago</th>
+									<th>Monto</th>
+									<th>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="pago in entityApp.pagos" ng-class="{success: pago.pago}">
+									<td>{{ formatDate(pago.fecha) }}</td>
+									<td>{{ formatDate(pago.pago) }}</td>
+									<td>{{ pago.monto | currency}}</td>
+									<td>
+										<span class="label label-success" ng-show="pago.pago">Pagado</span>
+										<!-- <a href="javascript: void(0)" ng-show="!pago.pago" ng-click="showPagar(pago, $index)">Pagar</a> -->
+										<form ng-show="!pago.pago" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+										<input type="hidden" name="cmd" value="_s-xclick">
+										<input type="hidden" name="hosted_button_id" value="GBGJ782CAZBFG">
+										<table>
+										<tr><td><input type="hidden" name="on0" value="guarderiaId"></td></tr><tr><td><input type="hidden" name="os0" maxlength="200" value="{{entityApp._id.$id}}"></td></tr>
+										<tr><td><input type="hidden" name="on1" value="indexPago"></td></tr><tr><td><input type="hidden" name="os1" maxlength="200" value="{{$index}}"></td></tr>
+										</table>
+										<!-- <input type="image" src="https://www.paypalobjects.com/es_XC/i/btn/btn_paynow_SM.gif" border="0" name="submit" alt="PayPal, la forma más segura y rápida de pagar en línea."> -->
+										<button type="submit" class="btn btn-danger">Pagar ahora</button>
+										<span class="label label-success">Pago seguro con PayPal</span>
+										<img alt="" border="0" src="https://www.paypalobjects.com/es_XC/i/scr/pixel.gif" width="1" height="1">
+										</form>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6" ng-show="showPagoForm">
+		<div class="panel panel-warning">
+		    <div class="panel-heading">
+		        <h3 class="panel-title">Realizar Pago</h3>
+		    </div>
+		    <div class="panel-body">
+		    	<div class="row">
+		    		<div class="col-md-12">
+		    			<form class="form-horizontal col-md-12" name="pagoForm">
+					          <div class="form-group col-md-12 has-feedback" ng-class="{'has-success': pagoForm.name.$valid, 'has-error': pagoForm.name.$invalid}">
+					            <label class="control-label">Nombre(s)</label>
+					            <div class="row-fluid">
+					            	<div class="col-md-12">
+					              		<input type="text" name="name" ng-model="actualPago.firstName" class="form-control" pattern="\w+ \w+.*" ng-required="true">
+					              	</div>
+					            </div>
+					          </div>
+
+					          <div class="form-group col-md-12 has-feedback" ng-class="{'has-success': pagoForm.lastName.$valid, 'has-error': pagoForm.lastName.$invalid}">
+					            <label class="control-label">Apellidos</label>
+					            <div class="row-fluid">
+					            	<div class="col-md-12">
+					              		<input type="text" name="lastName" ng-model="actualPago.lastName" class="form-control" pattern="\w+ \w+.*" ng-required="true">
+					              	</div>
+					            </div>
+					          </div>
+					       
+					          <div class="form-group col-md-12 has-feedback" ng-class="{'has-success': pagoForm.tarjeta.$valid, 'has-error': pagoForm.tarjeta.$invalid}">
+					            <label class="control-label">Tarjeta de crédito</label>
+					              <div class="row-fluid">
+					              	<div class="col-md-12">
+				                      <input type="text" class="form-control" autocomplete="off" maxlength="16" ng-pattern="/^\d{16}$/" ng-model="actualPago.tarjeta" name="tarjeta" ng-required="true">
+				                    </div>
+				                  </div>
+					          </div>
+
+					          <div class="form-group col-md-12 has-feedback">
+						          <label class="radio-inline">
+									<input type="radio" name="inlineRadioOptions" ng-model="actualPago.tipo" value="visa"> Visa
+									</label>
+									<label class="radio-inline">
+									<input type="radio" name="inlineRadioOptions" ng-model="actualPago.tipo" value="mastercard"> MasterCard
+								  </label>
+							  </div>
+					       
+					          <div class="form-group col-md-12 has-feedback" ng-class="{'has-success': pagoForm.ano.$valid && pagoForm.mes.$valid, 'has-error': pagoForm.ano.$invalid || pagoForm.mes.$invalid}">
+					            <label class="control-label">Expiración</label>
+					              <div class="row-fluid">
+					                <div class="col-md-6">
+					                  <select class="form-control" ng-required="true" name="ano" ng-model="actualPago.expiracion.mes" ng-options="value for value in meses">
+					                  </select>
+					                </div>
+					                <div class="col-md-6">
+					                  <select class="form-control" ng-required="true" name="mes" ng-model="actualPago.expiracion.ano" ng-options="value for value in anos">
+					                  </select>
+					                </div>
+					              </div>
+					          </div>
+
+					          <div class="form-group col-md-12 has-feedback" ng-class="{'has-success': pagoForm.codigo.$valid, 'has-error': pagoForm.codigo.$invalid}">
+					              <label class="control-label">Código de Seguridad</label>
+				                  <input type="text" class="form-control" autocomplete="off" maxlength="3" ng-pattern="/^\d{3}/" ng-required="true" name="codigo" ng-model="actualPago.codigo" />
+					          </div>
+
+					          <div class="form-group col-md-12 has-feedback" ng-class="{'has-success': pagoForm.direccion1.$valid, 'has-error': pagoForm.direccion1.$invalid}">
+					          	<label class="control-label">Dirección</label>
+					          	<div class="row-fluid">
+					          		<div class="col-md-12">
+						          		<input type="text" class="form-control" name="direccion1" ng-model="actualPago.direccion.calle" ng-required="true" />
+						          	</div>
+					          	</div>
+					          </div>
+
+					          <div class="form-group col-md-6 has-feedback" ng-class="{'has-success': pagoForm.ciudad.$valid, 'has-error': pagoForm.ciudad.$invalid}">
+					          	<label class="control-label">Ciudad</label>
+					          	<div class="row-fluid">
+					          		<div class="col-md-12">
+					          			<input type="text" class="form-control" name="ciudad" ng-model="actualPago.direccion.ciudad" ng-required="true" />
+					          		</div>
+					          	</div>
+					          </div>
+
+					          <div class="form-group col-md-6 has-feedback" ng-class="{'has-success': pagoForm.estado.$valid, 'has-error': pagoForm.estado.$invalid}">
+					          	<label class="control-label">Estado</label>
+					          	<div class="row-fluid">
+					          		<div class="col-md-12">
+					          			<input type="text" class="form-control" name="estado" ng-model="actualPago.direccion.estado" ng-required="true" />
+					          		</div>
+					          	</div>
+					          </div>
+
+					          <!-- <div class="form-group col-md-4 has-feedback" ng-class="{'has-success': pagoForm.pais.$valid, 'has-error': pagoForm.pais.$invalid}">
+					          	<label class="control-label">Pais</label>
+					          	<div class="row-fluid">
+					          		<div class="col-md-12">
+					          			<input type="text" class="form-control" name="pais" ng-model="actualPago.direccion.pais" ng-required="true" />
+					          		</div>
+					          	</div>
+					          </div> -->
+
+					          <div class="form-group col-md-4 has-feedback" ng-class="{'has-success': pagoForm.cp.$valid, 'has-error': pagoForm.cp.$invalid}">
+					          	<label class="control-label">C.P.</label>
+					          	<div class="row-fluid">
+					          		<div class="col-md-12">
+					          			<input type="text" class="form-control" name="cp" ng-model="actualPago.direccion.cp" ng-required="true" />
+					          		</div>
+					          	</div>
+					          </div>
+
+					          <div class="col-md-4">
+					          	<br/>
+					          	<ul class="nav nav-pills nav-stacked">
+								  <li class="active">
+								    <a href="#">
+								      <span class="badge pull-right">{{ actualPago.monto | currency}} USD</span>
+								      Pago
+								    </a>
+								  </li>
+								</ul>
+					          </div>
+					       
+					          <div class="col-md-12">
+					            <button type="button" ng-disabled="pagoForm.$invalid" ng-click="realizarPago()" class="btn btn-primary">Realizar pago</button>
+					            <button type="button" class="btn btn-danger" ng-click="cancelaPago()">Cancelar</button>
+					          </div>
+					        </fieldset>
+					      </form>
+		    		</div>
+		    	</div>
+		    </div>
+		</div>
+	</div>
+</div>

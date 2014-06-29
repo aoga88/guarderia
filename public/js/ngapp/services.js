@@ -7,6 +7,7 @@ requirejs([
     'js/ngapp/service/actividad',
     'js/ngapp/service/grupo',
     'js/ngapp/service/registro',
+    'js/ngapp/service/pago',
 ], function(angular){
     angular.module('appServices', [])
         .factory('User',      ["$http", "$q", User])
@@ -16,5 +17,6 @@ requirejs([
         .factory('Maestro',   ["$http", "$q", Maestro])
         .factory('Grupo',     ["$http", "$q", Grupo])
         .factory('Registro',  ["$http", "$q", Registro])
+        .factory('Pago',  ["$http", "$q", Pago])
     ;
 });

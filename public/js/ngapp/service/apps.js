@@ -10,7 +10,6 @@ function Apps($http, $q) {
             })
             .error( function(data) {
                 defer.reject(data);
-                console.log('error');
             });
 
             return defer.promise;
@@ -34,6 +33,20 @@ function Apps($http, $q) {
             var defer = $q.defer();
 
             $http.get('/api/app/current')
+            .success( function(data) {
+                defer.resolve(data);
+            })
+            .error( function(data) {
+                defer.reject(data);
+            });
+
+            return defer.promise;
+        },
+
+        current: function() {
+            var defer = $q.defer();
+
+            $http.get('/api/app/current-app')
             .success( function(data) {
                 defer.resolve(data);
             })

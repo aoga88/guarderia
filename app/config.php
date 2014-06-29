@@ -50,6 +50,13 @@ return [
 				'requiredLogin' => true
 			],
 
+			'/app/current-app' => [
+				'module'		=> 'app',
+				'controller'	=> 'index',
+				'action'		=> 'currentApp',
+				'requiredLogin' => true
+			],
+
 			'/alumno/current' => [
 				'module'     => 'alumno',
 				'controller' => 'index',
@@ -183,6 +190,13 @@ return [
 				'module'        => 'registro',
 				'controller'    => 'index',
 				'action'        => 'actividades',
+				'requiredLogin' => true
+			],
+
+			'/pago' => [
+				'module'        => 'app',
+				'controller'    => 'pago',
+				'action'        => 'pagar',
 				'requiredLogin' => true
 			],
 		],

@@ -242,6 +242,14 @@ define([
                       controller: RegistroController,
                       templateUrl: 'views/registro/index.html'
                   })
+                  .when('/pagos', {
+                      resolve: {
+                        isLoggedIn: isLoggedIn,
+                        isAdmin: isAdmin
+                    },
+                      controller: AplicationController,
+                      templateUrl: 'views/pagos/index.html'
+                  })
                   .otherwise({
                       redirectTo: '/'
                   });

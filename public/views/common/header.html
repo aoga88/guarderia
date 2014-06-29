@@ -37,6 +37,10 @@
                     ng-class="{active: menu == 'registro'}">
                         <a href="/#/registro">Registro</a>
                     </li>
+                    <li ng-show="isAdmin == true" 
+                    ng-class="{active: menu == 'pagos'}">
+                        <a href="/#/pagos">Pagos</a>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li ng-class="{active: menu == 'profile'}">

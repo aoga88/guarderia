@@ -80,4 +80,9 @@ function HeaderController($scope, $http, $q, $location)
     {
         $scope.menu = 'registro';
     }
+
+    if ($location.path().indexOf('/pagos') !== -1)
+    {
+        $scope.menu = 'pagos';
+    }
 }

@@ -1,18 +1,27 @@
-function AplicationController($scope, $routeParams, $timeout, $location, Apps, User)
+function AplicationController($scope, $routeParams, $timeout, $location, Apps, User, Pago)
 {
-    $scope.noApps = true;
-    $scope.apps = {};
-    $scope.data = {};
-    $scope.appId = $routeParams.id;
-    $scope.sucessSave = false;
-    $scope.errorSave  = false;
-    $scope.noUsers = true;
+    $scope.noApps          = true;
+    $scope.apps            = {};
+    $scope.data            = {};
+    $scope.appId           = $routeParams.id;
+    $scope.sucessSave      = false;
+    $scope.errorSave       = false;
+    $scope.noUsers         = true;
     $scope.showNewUserForm = false;
-    $scope.newUser = {
+    $scope.newUser         = {
         roles: []
     };
-    $scope.users = [];
+    $scope.users         = [];
     $scope.emailRepeated = false;
+    $scope.showPagoForm  = false;
+
+    $scope.meses = [
+        '01', '02', '03', '04', '05', '07', '08', '09', '10', '11', '12'
+    ];
+
+    $scope.anos = [
+        '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'
+    ];
 
     Apps.find({})
     .then(function(data){
@@ -63,6 +72,17 @@ function AplicationController($scope, $routeParams, $timeout, $location, Apps, U
 
     $scope.save = function()
     {
+        if ($scope.appId === '0') {
+            $scope.entityApp.pagos = [
+                 {
+                    fecha: $scope.entityApp.fechaCorte, 
+                    pago: $scope.entityApp.fechaCorte, 
+                    monto: 0.0
+                 }
+                ];
+            delete $scope.entityApp.fechaCorte;
+        }
+
         Apps.save($scope.entityApp, $scope.appId)
         .then(function(data){
             $scope.successSave = true;
@@ -151,6 +171,61 @@ function AplicationController($scope, $routeParams, $timeout, $location, Apps, U
             $scope.showNewUserForm = false;
             $scope.newUser = {};
             $scope.users.push(data.response);
+        });
+    }
+
+    $scope.formatDate = function(date) {
+
+        if (typeof date === 'undefined') {
+            return '';
+        }
+
+        var fecha = new Date(date.sec * 1000);
+        var day = fecha.getDate();
+        var month = fecha.getMonth();
+
+        if (day < 10) {
+            day = '0' + day;
+        }
+
+        if (month < 10) {
+            month = '0' + month;
+        }
+
+        var format = day + '/' + month + '/' + fecha.getFullYear();
+        return format;
+    }
+
+    $scope.showPagar = function(pago, index) {
+        console.log(pago);
+        $scope.showPagoForm = true;
+        $scope.actualPago   = pago;
+        $scope.indexPago    = index;
+    }
+
+    $scope.realizarPago = function()
+    {
+        Pago.send($scope.entityApp, $scope.indexPago)
+        .then( function(data) {
+            console.log(data);
+        });
+    }
+
+    $scope.getCurrent = function() {
+        Apps.current()
+        .then(function(data) {
+            $scope.entityApp = data.response;
+        });
+    }
+
+    $scope.cancelaPago = function() {
+        $scope.showPagoForm = false;
+    }
+
+    $scope.marcarPagado = function(entityApp, indexPago) {
+        Pago.registrar(entityApp, indexPago)
+        .then(function(data) {
+            entityApp.pagos[indexPago] = data.response;
         });
     }
 }
