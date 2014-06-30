@@ -113,6 +113,7 @@ class Index extends Controller
             $data->deleted  = false;
             $data->app      = $currentApp;
             $data->_id      = $data->email;
+            $data->token    = uniqid();
             unset($data->email);
 
             $htmlMessage = <<<EOD

@@ -45,9 +45,13 @@ class Pago extends Controller
         $model_app = new Model_App();
         $pago->pago = new MongoDate();
 
+        $fecha = strtotime(gmdate("Y-m-d", $pago->fecha->sec) . ' +1 month');
+
         $model_app->update(['_id' => new MongoId($data->guarderia->_id)], [
         		'$set' => [
-        			'pagos.' . $data->indexPago . '.pago' => new MongoDate()
+        			'pagos.' . $data->indexPago . '.pago' => new MongoDate(),
+                    'pagos.' . ($data->indexPago + 1) . '.fecha' => new MongoDate($fecha),
+                    'pagos.' . ($data->indexPago + 1) . '.monto' => 500
         		]
         	]);
 

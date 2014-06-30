@@ -55,6 +55,7 @@ class Index extends Controller
         if (isset($data->_id) && $data->_id != 0) {
             $conditions = ['_id' => new MongoId($data->_id)];
             unset($data->_id);
+
             $result = $model_app->update($conditions, ['$set' => $data]);
         } else {
             if (isset($data->_id)) {

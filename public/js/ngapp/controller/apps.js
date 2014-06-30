@@ -197,7 +197,6 @@ function AplicationController($scope, $routeParams, $timeout, $location, Apps, U
     }
 
     $scope.showPagar = function(pago, index) {
-        console.log(pago);
         $scope.showPagoForm = true;
         $scope.actualPago   = pago;
         $scope.indexPago    = index;

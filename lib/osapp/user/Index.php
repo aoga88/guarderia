@@ -106,16 +106,20 @@ class Index extends Controller
         $config    = osrestConfig('auth');
         $roles     = Auth::getSession($config, 'roles');
 
-        if (!in_array('superadmin', $roles)) {
+        if (!in_array('superadmin', $roles) && !in_array('padre', $roles)) {
             $currentApp = Auth::getSession($config, 'app');
             if ($currentApp !== $conditions->app) {
                 throw new Exception("notAllowed", 1);
             }
         }
 
+        if (isset($conditions->app)) {
+            unset($conditions->app);
+        }
+
         $model_user  = new Model_User();
         
-        $result = $model_user->find($conditions);
+        $result = $model_user->realFind($conditions);
 
         $this->response->sendMessage(iterator_to_array($result))
             ->setCode(200);
@@ -149,6 +153,7 @@ class Index extends Controller
         $data->created  = new MongoDate();
         $data->active   = true;
         $data->deleted  = false;
+        $data->token    = uniqid();
         $result         = $model_user->insert($data);
 
         $htmlMessage = <<<EOD
@@ -204,7 +209,7 @@ EOD;
         $config    = osrestConfig('auth');
         $roles     = Auth::getSession($config, 'roles');
 
-        if (!in_array('superadmin', $roles)) {
+        if (!in_array('superadmin', $roles) && !in_array('padre', $roles)) {
             $currentApp = Auth::getSession($config, 'app');
             if ($currentApp !== $data->app) {
                 throw new Exception("notAllowed", 1);
@@ -214,6 +219,12 @@ EOD;
         if (isset($data->_id)) {
             $conditions = ['_id' => $data->_id];
             unset($data->_id);
+            if (isset($data->alumnos)) {
+                foreach ($data->alumnos as $index => $alumno) {
+                    $alumno = (array) $alumno;
+                    $data->alumnos[$index] = new MongoId($alumno['$id']);
+                }
+            }
             $result = $model_user->update($conditions, ['$set' => $data]);
         } else {
             $result = $model_user->insert($data);

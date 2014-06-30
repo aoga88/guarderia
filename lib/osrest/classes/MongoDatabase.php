@@ -95,9 +95,25 @@ abstract class MongoDatabase extends MongoCollection
     {
         if (isset($condition->_id)) {
             if (strlen($condition->_id) == 24) {
-                $condition->_id = new MongoId($condition->_id);
+                $newId = new MongoId($condition->_id);
+                
+                if ($newId->isValid()) {
+                    $condition->_id = $newId;    
+                }
             }
         }
+        return parent::find($condition);
+    }
+
+    /**
+     * Finds the condition
+     *
+     * @param array $condition The condition
+     *
+     * @return void
+     */ 
+    public function realFind($condition = [])
+    {
         return parent::find($condition);
     }
 

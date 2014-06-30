@@ -42,6 +42,16 @@ class Restful
      */
     public function readUrl()
     {
+        header("Access-Control-Allow-Credentials: true");
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+        header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization");
+
+        if($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+           header( "HTTP/1.1 200 OK" );
+           return;
+        }
+
         $method = $_SERVER['REQUEST_METHOD'];
         $url    = str_replace('/api/', '', $_SERVER['REQUEST_URI']);
         $parts  = explode('/', $url);

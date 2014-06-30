@@ -105,6 +105,7 @@ class Index extends Controller
                 $contacto->active   = true;
                 $contacto->deleted  = false;
                 $contacto->alumnos  = [$alumnoId];
+                $contacto->token    = uniqid();
 
                 $htmlMessage = <<<EOD
                 <html>
@@ -166,13 +167,6 @@ EOD;
         $data         = iterator_to_array($result);
         $isValid      = false;
 
-        if (!in_array('superadmin', $roles)) {
-            $currentApp = Auth::getSession($config, 'app');
-            if ($currentApp !== $data[$conditions->_id->__toString()]['app']->__toString()) {
-                throw new Exception("notAllowed", 1);
-            }
-        }
-
         if (in_array('maestro', $roles)) {
             $model_maestro = new Model_Maestro();
             $maestro       = $model_maestro->findOne(['email' => $loggedUser['_id']]);
@@ -230,7 +224,7 @@ EOD;
         $config       = osrestConfig('auth');
         $roles        = Auth::getSession($config, 'roles');
         $loggedUser   = Auth::getSession($config);
-        $app          = $loggedUser['app'];
+        
         $model_alumno = new Model_Alumno();
 
         $alumnos = [];
@@ -263,6 +257,7 @@ EOD;
         $alumnos = iterator_to_array($alumnos);
 
         if (in_array('admin', $roles)) {
+            $app          = $loggedUser['app'];
             $result = $model_alumno->find(['app' => new MongoId($app)]);
             $alumnos = iterator_to_array($result);
         }
