@@ -96,10 +96,7 @@ abstract class MongoDatabase extends MongoCollection
         if (isset($condition->_id)) {
             if (strlen($condition->_id) == 24) {
                 $newId = new MongoId($condition->_id);
-                
-                if ($newId->isValid()) {
-                    $condition->_id = $newId;    
-                }
+                $condition->_id = $newId;
             }
         }
         return parent::find($condition);
