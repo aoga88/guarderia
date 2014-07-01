@@ -128,6 +128,14 @@ function RegistroController($scope, $location, $timeout, User, Grupo, Alumno, Ac
     	Registro.save($scope.actualRegistro)
     	.then(function(data){
     		$scope.showSuccess = true;
+
+            angular.forEach(data.response, function(actividades, alumnoId) {
+                angular.forEach(actividades, function(actividad) {
+                    notifications[alumnoId].emit('notification', 'Registro de actividad para ' 
+                    + actividad.alumno + ': ' + actividad.actividad);
+                })
+            });
+
     		$timeout(function(){
                 $scope.showSuccess = false;
                 $scope.actualRegistro = {};

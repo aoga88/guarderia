@@ -1,4 +1,4 @@
-function HeaderController($scope, $http, $q, $location)
+function HeaderController($scope, $http, $q, $location, Alumno)
 {
     $scope.menu         = '';
     $scope.isSuperAdmin = false;
@@ -31,6 +31,20 @@ function HeaderController($scope, $http, $q, $location)
         if (roles.indexOf('padre') !== -1) {
             $scope.isPadre = true;
         }
+
+        Alumno.current()
+            .then(function(data){
+                angular.forEach(data.response, function(alumno, index){
+
+                    notifications[index] = io.connect(ioServer + '/guarderia_' + index);
+
+                    notifications[index].on('notification', function(msg) {
+                        $('.bottom-right').notify({
+                            message: { text: msg }
+                          }).show(); 
+                    });
+                });
+            })
 
     })
     .error(function(data) {

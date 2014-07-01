@@ -74,6 +74,8 @@ class Index extends Controller
             }
         }
 
+        $notifications = [];
+
         if (isset($data->grupos)) {
             $model = new Model_Grupo();
             foreach ($data->grupos as $grupoId) {
@@ -119,6 +121,15 @@ class Index extends Controller
                         'fecha' => new MongoDate(),
                         'actividad' => $actividad
                     ];
+
+                    if (!isset($notifications[$alumnoId])) {
+                        $notifications[$alumnoId] = [];
+                    }
+
+                    $notifications[$alumnoId][] = [
+                        'alumno'    => $alumno['nombre'] . ' ' . $alumno['apPaterno'],
+                        'actividad' => $actividad
+                    ];
                 }
 
                 unset($alumno['_id']);
@@ -128,7 +139,7 @@ class Index extends Controller
             }
         }
 
-        $this->response->sendMessage($data)
+        $this->response->sendMessage($notifications)
             ->setCode(200);
     }
 
