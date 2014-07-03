@@ -127,7 +127,9 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno, Us
 
 		User.find({_id: $scope.actualContacto._id, app: $scope.currentApp})
 		.then(function(data) {
-			$scope.actualContacto = data.response[$scope.actualContacto._id];
+			if (typeof data.response[$scope.actualContacto._id] !== 'undefined') {
+				$scope.actualContacto = data.response[$scope.actualContacto._id];
+			}
 		});
 	}
 
