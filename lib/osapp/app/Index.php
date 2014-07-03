@@ -56,6 +56,8 @@ class Index extends Controller
             $conditions = ['_id' => new MongoId($data->_id)];
             unset($data->_id);
 
+            $data->tel1 = (string) $data->tel1;
+
             $result = $model_app->update($conditions, ['$set' => $data]);
         } else {
             if (isset($data->_id)) {
