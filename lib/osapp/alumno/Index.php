@@ -170,14 +170,17 @@ EOD;
         if (in_array('maestro', $roles)) {
             $model_maestro = new Model_Maestro();
             $maestro       = $model_maestro->findOne(['email' => $loggedUser['_id']]);
-            $maestroId     = $maestro['_id']->__toString();
 
-            $model_grupo = new Model_Grupo();
-            $grupos      = $model_grupo->find(['maestros' => ['$in' => [$maestroId]]]);
-            $alumnos     = [];
-            
-            foreach($grupos as $grupo) {
-                $alumnos = array_merge($alumnos, $grupo['alumnos']);
+            if (isset($maestro['_id']))
+            {
+                $maestroId = $maestro['_id']->__toString();
+
+                $model_grupo = new Model_Grupo();
+                $grupos = $model_grupo->find(['maestros' => ['$in' => [$maestroId]]]);
+                
+                foreach($grupos as $grupo) {
+                    $alumnos = array_merge($alumnos, $grupo['alumnos']);
+                }
             }
 
             foreach ($alumnos as $index => $alumno) {
