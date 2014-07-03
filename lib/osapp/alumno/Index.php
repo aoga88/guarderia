@@ -166,6 +166,7 @@ EOD;
         $result       = $model_alumno->find($conditions);
         $data         = iterator_to_array($result);
         $isValid      = false;
+        $alumnos      = [];
 
         if (in_array('maestro', $roles)) {
             $model_maestro = new Model_Maestro();
@@ -181,17 +182,19 @@ EOD;
                 foreach($grupos as $grupo) {
                     $alumnos = array_merge($alumnos, $grupo['alumnos']);
                 }
-            }
 
-            foreach ($alumnos as $index => $alumno) {
-                if ($alumno instanceof MongoId) {
-                    $alumnos[$index] = $alumno->__toString();
+                foreach ($alumnos as $index => $alumno) {
+                    if ($alumno instanceof MongoId) {
+                        $alumnos[$index] = $alumno->__toString();
+                    }
+                }
+
+                if (in_array($conditions->_id, $alumnos)) {
+                    $isValid = true;
                 }
             }
 
-            if (in_array($conditions->_id, $alumnos)) {
-                $isValid = true;
-            }
+            
         }
 
         if (in_array('padre', $roles)) {
