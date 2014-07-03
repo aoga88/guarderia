@@ -63,16 +63,11 @@ class Index extends Controller
             }
 
             $fechaCorte = $data->pagos[0]->fecha;
-            $parts = explode("/", $fechaCorte);
-            $day   = $parts[0];
-            $month = $parts[1];
-            $year  = $parts[2];
-
-            $fechaCorte = strtotime($year . '-' . $month . '-' . $day . ' 00:00:00');
+            $fechaCorte = strtotime(str_replace("/", "-", $fechaCorte . ' 00:00:00'));
             $data->pagos[0]->fecha = new MongoDate($fechaCorte);
             $data->pagos[0]->pago = new MongoDate($fechaCorte);
 
-            $fechaSiguiente = strtotime(date("Y-m-d", strtotime($year . '-' . $month . '-' . $day)) . " +1 month");
+            $fechaSiguiente = strtotime(date("Y-m-d", $fechaCorte . " +1 month");
             $data->pagos[] = [
                 'fecha' => new MongoDate($fechaSiguiente),
                 'monto' => 50.00

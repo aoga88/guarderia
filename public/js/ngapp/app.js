@@ -261,7 +261,7 @@ define([
                 require : 'ngModel',
                 link : function (scope, element, attrs, ngModelCtrl) {
                         $(element).datepicker({
-                            dateFormat:'dd/mm/yy',
+                            dateFormat:'yy/mm/dd',
                             changeYear: true,
                             changeMonth: true,
                             onSelect: function (date) {
