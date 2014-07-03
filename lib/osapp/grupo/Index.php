@@ -52,7 +52,7 @@ class Index extends Controller
         $model_maestro = new Model_Maestro();
         $conditions    = ['app' => $app];
 
-        if (in_array('maestro', $loggedUser['roles'])) {
+        if (in_array('maestro', $loggedUser['roles']) && !in_array('admin', $loggedUser['roles'])) {
             $maestro = $model_maestro->findOne(['email' => $loggedUser['_id']]);
             $conditions['maestros'] = ['$in' => [$maestro['_id']->__toString()]];
         }
