@@ -1,0 +1,52 @@
+<ng-include src="'views/common/header.html'"></ng-include>
+
+<div class="container" ng-init="load()" ng-controller="CalendarioMobileController">
+	<div class="row">
+		<h3 class="text-warning">Calendario de {{ actualAlumno.nombre }} {{ actualAlumno.apPaterno }} {{ actualAlumno.apMaterno }}</h3>
+	</div>
+
+	<table class="table table-striped">
+		<tr>
+			<th colspan="2">
+				<a href="javascript: void(0)" ng-click="anterior()" class="btn btn-success btn-xs"><< Anterior</a>
+				<a href="javascript: void(0)" ng-click="siguiente()" class="btn btn-success btn-xs">Siguiente >></a>
+			</th>
+		</tr>
+		<tr ng-repeat="(dia,info) in dias" ng-click="setActualFecha(dia, info)"
+			ng-class="{danger: actualFecha.info.fecha == info.fecha, info: getClass(dia, info)}">
+			<td>
+				{{info.nombre}}
+			</td>
+			<td>
+				{{info.fecha}}
+			</td>
+		</tr>
+	</table>
+
+	<table class="table" ng-show="actualFecha">
+		<thead>
+			<tr>
+				<th>
+					Hora
+				</th>
+				<td class="danger">
+					{{actualFecha.info.nombre}}<br/>
+					{{actualFecha.info.fecha}}
+				</td>
+			</tr>
+		</thead>
+		<tbody ng-repeat="(hora,value) in horas">
+			<tr>
+				<th>{{hora}}</th>
+				<td class="danger">
+					<div ng-repeat="ac in actualActividades[actualFecha.info.fecha][hora]">
+						<button class="btn btn-primary btn-xs calendar-activity"
+						   ng-click="doAlert(ac.hora + ' ' + ac.actividad);">
+							{{ac.actividad}}
+						</button>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

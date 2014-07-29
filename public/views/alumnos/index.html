@@ -23,7 +23,7 @@
 			<thead>
 				<tr>
 					<th>Nombre</th>
-					<th>Tipo de Sangre</th>
+					<th class="hidden-xs hidden-sm">Tipo de Sangre</th>
 					<th>Contactos</th>
 					<th></th>
 				</tr>
@@ -31,17 +31,20 @@
 			<tbody>
 				<tr ng-repeat="alumno in alumnos">
 					<td>{{ alumno.nombre }}</td>
-					<td>{{ alumno.tipoSangre }}</td>
+					<td class="hidden-xs hidden-sm">{{ alumno.tipoSangre }}</td>
 					<td>
 						<span ng-repeat="contacto in alumno.contactos">
-							{{ contacto.name }} , 
+							{{ contacto.name }}<br/>
 						</span>
 					</td>
-					<td>
-						<a href="/#/alumnos/{{ alumno._id.$id }}/calendario">Calendario de actividades</a>
+					<td class="visible-md visible-lg">
+						<a href="/#/alumnos/{{ alumno._id.$id }}/calendario">Calendario</a>
+					</td>
+					<td class="hidden-md hidden-lg">
+						<a href="/#/alumnos/{{ alumno._id.$id }}/calendario-mobile">Calendario</a>
 					</td>
 					<td>
-						<a href="/#/alumnos/{{ alumno._id.$id }}">Ver Detalle</a>
+						<a href="/#/alumnos/{{ alumno._id.$id }}">Detalle</a>
 					</td>
 				</tr>
 			</tbody>

@@ -44,6 +44,10 @@ class Index extends Controller
         $data       = json_decode(file_get_contents("php://input"));
         $model_user = new Model_User();
 
+        if (!isset($data->email)) {
+            $data = (object) ['email' => '', 'password' => ''];
+        }
+
         $conditions = [
             '_id'      => $data->email,
             'password' => $data->password,

@@ -192,6 +192,16 @@ define([
                       controller: AlumnosController,
                       templateUrl: 'views/alumnos/calendario.html'
                   })
+                  .when('/alumnos/:id/calendario-mobile', {
+                      resolve: {
+                        isLoggedIn: isLoggedIn,
+                        isAdmin: isAdmin,
+                        isPadre: isPadre,
+                        isMaestro: isMaestro
+                    },
+                      controller: AlumnosController,
+                      templateUrl: 'views/alumnos/calendario-mobile.html'
+                  })
                   .when('/actividades', {
                       resolve: {
                         isLoggedIn: isLoggedIn,
