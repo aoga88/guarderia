@@ -47,7 +47,7 @@
 			</h3>
 			<div class="col-md-6">
 				<div class="col-md-4" ng-repeat="contacto in actualAlumno.contactos" ng-init="contacto.showImageField = false">
-					<a href="javascript: void(0)" data-toggle="modal" data-target="#imgModal" ng-click="contactoIndex = {{ $index }}">
+					<a href="javascript: void(0)" data-toggle="modal" data-target="#imgModal" ng-click="contactoIndex = $index">
 						<img class="img-responsive img-circle" ng-show="!contacto.foto" src="/img/noimage.png" />
 						<img class="img-responsive img-rounded" ng-show="contacto.foto" ng-src="/api/alumno/cfoto/{{ alumnoId }}/{{ $index }}" />
 					</a>
