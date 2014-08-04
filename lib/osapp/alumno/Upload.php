@@ -65,7 +65,17 @@ class Upload extends Controller
     {
         $model_alumno = new Model_Alumno();
         $alumno = $model_alumno->findOne(['_id' => new MongoId($id)]);
-        $foto = $alumno['contactos'][$index]['foto'];
+        if (isset($alumno['contactos'][$index]['foto']))
+        {
+            $foto = $alumno['contactos'][$index]['foto'];    
+        } else {
+            $foto = [
+                'header' => 'image/png',
+                'url' => '../public/img/noimage.png'
+            ];
+        }
+        
+
         header('Content-Type: ' . $foto['header']);
         $this->setResponse(null);
         echo file_get_contents(getcwd() . '/' . $foto['url']);

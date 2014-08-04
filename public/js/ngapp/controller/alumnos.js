@@ -178,4 +178,9 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno, Us
 	$scope.cancelImage = function(contacto) {
 		contacto.showImageField = false;
 	}
+
+	$scope.viewModal = function(index) {
+		$scope.contactoIndex = index;
+		$("#imgModal").modal();
+	}
 }
