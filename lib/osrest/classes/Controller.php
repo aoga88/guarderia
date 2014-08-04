@@ -42,7 +42,7 @@ abstract class Controller
      *
      * @return void
      */
-    protected function setResponse(Response $response)
+    protected function setResponse($response)
     {
         $this->response = $response;
     }

@@ -14,6 +14,7 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno, Us
 	$scope.showContactForm = false;
 	$scope.actualActividades = {};
 	$scope.isAdmin        = false;
+	$scope.contactoIndex = 0;
 
     User.getCurrent()
     .then(function(data) {
@@ -168,5 +169,13 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno, Us
 		}
 
 		return $scope.actualActividades[fecha][hora];
+	}
+
+	$scope.uploadImage = function(contacto) {
+		contacto.showImageField = true;
+	}
+
+	$scope.cancelImage = function(contacto) {
+		contacto.showImageField = false;
 	}
 }

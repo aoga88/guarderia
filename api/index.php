@@ -31,4 +31,7 @@ try
         ->setCode(500);
 }
 
-echo $response;
+if ($response !== null)
+{
+	echo $response;	
+}

@@ -46,25 +46,30 @@
 				&nbsp;
 			</h3>
 			<div class="col-md-6">
-				<table ng-show="actualAlumno.contactos.length != 0" class="table table-condensed">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="contacto in actualAlumno.contactos">
-							<td>{{ contacto.name }}</td>
-							<td>
-								<a href="javascript: void(0)" ng-click="verDetalle(contacto)">Detalle</a>
-							</td>
-							<td>
-								<a href="javascript: void(0)" ng-click="eliminarContacto($index)">Eliminar</a>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="col-md-4" ng-repeat="contacto in actualAlumno.contactos" ng-init="contacto.showImageField = false">
+					<a href="javascript: void(0)" data-toggle="modal" data-target="#imgModal" ng-click="contactoIndex = {{ $index }}">
+						<img class="img-responsive img-circle" ng-show="!contacto.foto" src="/img/noimage.png" />
+						<img class="img-responsive img-rounded" ng-show="contacto.foto" ng-src="/api/alumno/cfoto/{{ alumnoId }}/{{ $index }}" />
+					</a>
+					<div class="text-center">
+						<div class="text-center">{{ contacto.name }}</div>
+						<a class="btn btn-xs btn-primary" href="javascript: void(0)" ng-click="verDetalle(contacto)">Detalle</a>
+
+						<button class="btn btn-xs btn-warning" ng-click="uploadImage(contacto)">Cambiar</button>
+
+						<a class="btn btn-xs btn-danger" href="javascript: void(0)" ng-click="eliminarContacto($index)">Eliminar</a>
+
+						<form></form>
+						<form name="upload" action="/api/alumno/upload" method="post" enctype="multipart/form-data" novalidate class="simple-form">
+								<input type="hidden" name="alumno_id" value="{{ alumnoId }}" />
+								<input type="hidden" name="contacto_index" value="{{ $index }}" />
+								<input type="file" name="foto" ng-show="contacto.showImageField == true"/>
+								<br ng-show="contacto.showImageField == true"/>
+								<input type="submit" class="btn btn-success btn-xs" ng-show="contacto.showImageField == true" value="Guardar" />
+								<button type="button" ng-click="cancelImage(contacto)" class="btn btn-warning btn-xs" ng-show="contacto.showImageField == true">Cancelar</button>
+						</form>
+					</div>
+				</div>
 			</div>
 			<div class="col-md-6" ng-show="showContactForm">
 				<div class="form-group has-feedback" ng-class="{'has-success': actualContacto._id != '', 'has-error': !actualContacto._id || actualContacto._id == ''}">
@@ -94,6 +99,9 @@
 				</div>
 			</div>
 			<div class="col-md-12">
+				<br/><br/><br/>
+			</div>
+			<div class="col-md-12">
 				<button type="button" ng-click="save()" class="btn btn-success" ng-disabled="alumnoForm.$invalid || actualAlumno.contactos.length == 0">Guardar</button>
 				<a href="/#/alumnos" class="btn btn-danger">Cancelar</a>
 			</div>
@@ -102,4 +110,17 @@
 			<span class="alert alert-success" ng-show="successSave">Los cambios han sido guardados</span>
 		</form>
 	</div>
+</div>
+
+<div class="modal fade" id="imgModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <img ng-src="/api/alumno/cfoto/{{alumnoId}}/{{contactoIndex}}" class="img-responsive" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>

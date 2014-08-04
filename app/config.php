@@ -85,6 +85,13 @@ return [
 				'requiredLogin' => true,
 			],
 
+			'/alumno/cfoto/:id/:index' => [
+				'module'        => 'alumno',
+				'controller'    => 'upload',
+				'action'        => 'showContacto',
+				'requiredLogin' => true
+			]
+
 		],
 
 		'POST' => [
@@ -197,6 +204,13 @@ return [
 				'module'        => 'app',
 				'controller'    => 'pago',
 				'action'        => 'pagar',
+				'requiredLogin' => true
+			],
+
+			'/alumno/upload'    => [
+				'module'        => 'alumno',
+				'controller'    => 'upload',
+				'action'        => 'contacto',
 				'requiredLogin' => true
 			],
 		],
