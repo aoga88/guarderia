@@ -29,11 +29,13 @@ function GruposController($scope, $location, $timeout, $routeParams, User, Grupo
             angular.forEach(data.response, function(alumno){
                 $scope.alumnos.push(alumno);
 
-                angular.forEach($scope.alumnos, function(alumno) {
-                    if ($scope.actualGrupo.alumnos.indexOf(alumno._id.$id) !== -1) {
-                        alumno.selected = true;
-                    }
-                });
+                if (typeof $scope.actualGrupo.alumnos !== 'undefined') {
+                    angular.forEach($scope.alumnos, function(alumno) {
+                        if ($scope.actualGrupo.alumnos.indexOf(alumno._id.$id) !== -1) {
+                            alumno.selected = true;
+                        }
+                    });
+                }
             });
         });
 
@@ -42,11 +44,13 @@ function GruposController($scope, $location, $timeout, $routeParams, User, Grupo
             angular.forEach(data.response, function(maestro){
                 $scope.maestros.push(maestro);
 
-                angular.forEach($scope.maestros, function(maestro) {
-                    if ($scope.actualGrupo.maestros.indexOf(maestro._id.$id) !== -1) {
-                        maestro.selected = true;
-                    }
-                });
+                if (typeof $scope.actualGrupo.maestros !== 'undefined') {
+                    angular.forEach($scope.maestros, function(maestro) {
+                        if ($scope.actualGrupo.maestros.indexOf(maestro._id.$id) !== -1) {
+                            maestro.selected = true;
+                        }
+                    });
+                }
             });
         });
 

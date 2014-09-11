@@ -91,6 +91,14 @@ function MaestrosController($scope, $location, $timeout, $routeParams, Apps, Mae
 				return false;
 			}
 
+			roles = data.response[mail].roles;
+			
+			if (roles.indexOf('maestro') !== -1) {
+				$("#error").modal();
+				$scope.actualMaestro = {};
+				return false;
+			}
+
 			$scope.actualMaestro = data.response[mail];
 			$scope.actualMaestro.email = data.response[mail]._id;
 		});
