@@ -113,20 +113,18 @@
 				</div>
 			</div>
 			<div class="col-md-12">
-				<br/><br/><br/>
+				<br/>
+				<span class=" col-md-6 alert alert-success" ng-show="successSave">Los cambios han sido guardados</span>
+				<br/>
 			</div>
 			<div class="col-md-12">
 				<button type="button" ng-click="save()" class="btn btn-success" ng-disabled="alumnoForm.$invalid || actualAlumno.contactos.length == 0">Guardar</button>
-				<a href="/#/alumnos" class="btn btn-danger">Cancelar</a>
+				<a href="/#/alumnos" class="btn btn-danger ">Cancelar</a>
 			</div>
 			<!-- ALERGIAS -->
 			<!-- FOTO -->
 		</form>
 
-	</div>
-	<br/><br/>
-	<div class="row">
-		<span class=" col-md-12 alert alert-success" ng-show="successSave">Los cambios han sido guardados</span>
 	</div>
 </div>
 

@@ -96,6 +96,7 @@ class Index extends Controller
                         $usuario['alumnos'][] = $alumnoId;
                     }
                 }
+		unset($usuario['_id']);
                 $model_usuario->update($userConditions, ['$set' => $usuario]);
             } else {
                 $contacto->roles    = ['padre'];
