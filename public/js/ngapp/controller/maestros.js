@@ -93,7 +93,7 @@ function MaestrosController($scope, $location, $timeout, $routeParams, Apps, Mae
 
 			roles = data.response[mail].roles;
 			
-			if (roles.indexOf('maestro') !== -1) {
+			if ($scope.maestroId === '0' && roles.indexOf('maestro') !== -1) {
 				$("#error").modal();
 				$scope.actualMaestro = {};
 				return false;
