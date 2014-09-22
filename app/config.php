@@ -151,6 +151,20 @@ return [
 				'requiredLogin' => true
 			],
 
+			'/alumno/:id/asistencia' => [
+				'module'        => 'alumno',
+				'controller'    => 'index',
+				'action'        => 'asistencia',
+				'requiredLogin' => true
+			],
+
+			'/alumno/:id/salida' => [
+				'module'        => 'alumno',
+				'controller'    => 'index',
+				'action'        => 'salida',
+				'requiredLogin' => true
+			],
+
 			'/actividad' => [
 				'module'        => 'actividad',
 				'controller'    => 'index',

@@ -41,6 +41,34 @@ function Alumno($http, $q) {
             });
 
             return defer.promise;
+        },
+
+        asistencia: function(alumno_id, asistencia) {
+            var defer = $q.defer();
+
+            $http.post('/api/alumno/' + alumno_id + '/asistencia', asistencia)
+            .success( function(data) {
+                defer.resolve(data);
+            })
+            .error( function(data) {
+                defer.reject(data);
+            });
+
+            return defer.promise;
+        },
+
+        salida: function(alumno_id, asistencia) {
+            var defer = $q.defer();
+
+            $http.post('/api/alumno/' + alumno_id + '/salida', asistencia)
+            .success( function(data) {
+                defer.resolve(data);
+            })
+            .error( function(data) {
+                defer.reject(data);
+            });
+
+            return defer.promise;
         }
     }
 };

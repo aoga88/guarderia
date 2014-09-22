@@ -254,7 +254,6 @@ EOD;
         }
 
         if (in_array('padre', $roles)) {
-            //var_dump($loggedUser);
             $alumnos = array_merge($alumnos, $loggedUser['alumnos']);
         }
 
@@ -274,6 +273,44 @@ EOD;
         }
 
         $this->response->sendMessage($alumnos)
+            ->setCode(200);
+    }
+
+    public function asistencia($alumno_id)
+    {
+        $conditions   = json_decode(file_get_contents("php://input"));
+        $model_alumno = new Model_Alumno();
+
+        $actividad = [
+            'hora' => date('H:m'),
+            'actividad' => 'Asistencia',
+            'type' => 'asistencia',
+            'fecha' => new MongoDate(),
+            'contacto_id' => $conditions->contacto_id,
+            'contacto' => $conditions->contacto_name
+        ];
+
+        $model_alumno->update(['_id' => new MongoId($alumno_id)], ['$push' => [ 'actividades' => $actividad] ]);
+        $this->response->sendMessage($actividad)
+            ->setCode(200);
+    }
+
+    public function salida($alumno_id)
+    {
+        $conditions   = json_decode(file_get_contents("php://input"));
+        $model_alumno = new Model_Alumno();
+
+        $actividad = [
+            'hora' => date('H:m'),
+            'actividad' => 'Salida',
+            'type' => 'salida',
+            'fecha' => new MongoDate(),
+            'contacto_id' => $conditions->contacto_id,
+            'contacto' => $conditions->contacto_name
+        ];
+
+        $model_alumno->update(['_id' => new MongoId($alumno_id)], ['$push' => [ 'actividades' => $actividad] ]);
+        $this->response->sendMessage($actividad)
             ->setCode(200);
     }
 }

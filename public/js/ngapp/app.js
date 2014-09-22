@@ -131,6 +131,7 @@ define([
                     resolve: {
                         isLoggedIn: isLoggedIn
                     },
+                      controller: DashboardController,
                       templateUrl: 'views/dashboard.html',
                   })
                   .when('/profile', {

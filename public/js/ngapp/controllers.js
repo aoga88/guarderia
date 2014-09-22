@@ -10,4 +10,5 @@ requirejs([
     'js/ngapp/controller/registro',
     'js/ngapp/controller/calendario',
     'js/ngapp/controller/calendario-mobile',
+    'js/ngapp/controller/dashboard',
 ]);

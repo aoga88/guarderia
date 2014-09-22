@@ -26,8 +26,14 @@
 					ng-class="getClass(dia,info.horas[hora])">
 
 					<div ng-repeat="ac in actualActividades[info.fecha][hora]">
-						<button class="btn btn-primary btn-xs calendar-activity"
-						   ng-click="doAlert(ac.hora + ' ' + ac.actividad);">
+						<button class="btn btn-xs calendar-activity"
+						   ng-click="doAlert(ac.hora + ' ' + ac.actividad);"
+						   ng-class="{'btn-success': ac.type == 'asistencia', 'btn-danger': ac.type == 'salida', 'btn-primary': !ac.type}" ng-show="!ac.type">
+							{{ac.actividad}}
+						</button>
+						<button class="btn btn-xs calendar-activity"
+						   ng-click="doAlert(ac.hora + ' ' + ac.actividad + '\n' + 'Por: ' + ac.contacto);"
+						   ng-class="{'btn-success': ac.type == 'asistencia', 'btn-danger': ac.type == 'salida', 'btn-primary': !ac.type}" ng-hide="!ac.type">
 							{{ac.actividad}}
 						</button>
 					</div>

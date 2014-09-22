@@ -1,1 +1,54 @@
 <ng-include src="'/views/common/header.html'"></ng-include>
+
+<div class="container" ng-init="">
+	<div class="row">
+		<div class="col-md-6">
+			<h2>Alumnos</h2>
+		</div>
+		<div class="col-md-6">
+			<h2>{{ alumnoDetalle.nombre }} {{ alumnoDetalle.apPaterno }} {{ alumnoDetalle.apMaterno }}</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<table class="table condensed">
+				<thead>
+					<tr>
+						<th>Alumno</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<input type="text" ng-model="alumnoSearch" class="form-control" />
+						</td>
+					</tr>
+				</tbody>
+				<tbody>
+					<tr ng-repeat="alumno in alumnos | filter:alumnoFilter">
+						<td>
+							<a href="javascript: ;;" ng-click="detalleAlumno(alumno)">
+								{{ alumno.nombre }} {{ alumno.apPaterno }} {{ alumno.apMaterno }}
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-6" ng-show="alumnoDetalle">
+			<div class="alert alert-danger">NOTA: Solo se muestran los contactos con fotografía</div>
+			<h4 ng-show="isAsistencia">¿Quién la trae?</h4>
+			<h4 ng-hide="isAsistencia">¿Quién viene por ella?</h4>
+			<div class="col-sm-6" ng-repeat="contacto in alumnoDetalle.contactos" ng-show="contacto.foto">
+				<img class="img-responsive img-circle" ng-show="!contacto.foto" src="/img/noimage.png" />
+				<img style="cursor: pointer" class="img-responsive img-rounded" ng-show="contacto.foto" ng-src="/api/alumno/cfoto/{{ alumnoDetalle._id.$id }}/{{ $index }}" ng-click="seleccionaContacto(contacto)"/>
+			</div>
+			
+			<div class="col-xs-12">
+				<br/><br/>
+				<button class="btn btn-lg btn-success col-xs-12" ng-disabled="!actualAsistencia.contacto_id" ng-show="isAsistencia" ng-click="asistencia()">Asistencia</button>
+				<button class="btn btn-lg btn-danger col-xs-12" ng-disabled="!actualAsistencia.contacto_id" ng-hide="isAsistencia" ng-click="salida()">Salida</button>
+			</div>
+		</div>
+	</div>
+</div>

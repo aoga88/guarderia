@@ -32,6 +32,8 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno, Us
 	    });
 	}
 
+	
+
 	$scope.load = function()
     {
     	if ($scope.alumnoId === "0")

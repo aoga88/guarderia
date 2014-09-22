@@ -18,6 +18,9 @@
         <center>
             <div class="navbar-collapse collapse" id="navbar-main">
                 <ul class="nav navbar-nav">
+                    <li ng-class="{active: menu == 'home'}">
+                        <a href="/#">Inicio</a>
+                    </li>
                     <li ng-show="isSuperAdmin == true" ng-class="{active: menu == 'guarderias'}">
                         <a href="/#/guarderias">Guarderias</a>
                     </li>

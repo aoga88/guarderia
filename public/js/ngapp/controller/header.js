@@ -99,4 +99,9 @@ function HeaderController($scope, $http, $q, $location, Alumno)
     {
         $scope.menu = 'pagos';
     }
+
+    if (!$scope.menu)
+    {
+        $scope.menu = 'home';
+    }
 }
