@@ -40,7 +40,7 @@ class Upload extends Controller
      */
     public function contacto()
     {
-        parent::validateRoles(['admin']);
+        parent::validateRoles(['admin', 'padre']);
         $config        = osrestConfig('auth');
         $loggedUser    = Auth::getSession($config);
         $app           = $loggedUser['app'];

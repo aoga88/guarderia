@@ -75,6 +75,7 @@ class Index extends Controller
         }
 
         $notifications = [];
+        $model_alumno = new Model_Alumno();
 
         if (isset($data->grupos)) {
             $model = new Model_Grupo();
@@ -92,12 +93,51 @@ class Index extends Controller
                 }
 
                 foreach ($grupo['alumnos'] as $alumno) {
+
+                    $dataAlumno  = $model_alumno->findOne(['_id' => new MongoId($alumno)]);
+                    $actividades = $dataAlumno['actividades'];
+                    $haveAsistencia = false;
+                    $haveSalida = false;
+
+                    if (!empty($actividades))
+                    {
+                        foreach ($actividades as $actividad)
+                        {
+                            if ($actividad['type'] == 'asistencia')
+                            {
+                                $fecha = $actividad['fecha'];
+                                $fechaActividad = date("m.d.y", $fecha->sec);
+                                $hoy = date("m.d.y");
+                                
+                                if ($fechaActividad == $hoy)
+                                {
+                                    $haveAsistencia = true;
+                                }
+                            }
+
+                            if ($actividad['type'] == 'salida')
+                            {
+                                $fecha = $actividad['fecha'];
+                                $fechaActividad = date("m.d.y", $fecha->sec);
+                                $hoy = date("m.d.y");
+                                
+                                if ($fechaActividad == $hoy)
+                                {
+                                    $haveSalida = true;
+                                }
+                            }
+                        }
+                    }
+
                     if (!isset($data->alumnos)) {
                         $data->alumnos = [];
                     }
 
                     if (!in_array($alumno, $data->alumnos)) {
-                        $data->alumnos[] = $alumno;
+                        if ($haveAsistencia == true && $haveSalida == false)
+                        {
+                            $data->alumnos[] = $alumno;
+                        }
                     }
                 }
 

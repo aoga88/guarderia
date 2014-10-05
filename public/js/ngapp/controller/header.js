@@ -5,8 +5,22 @@ function HeaderController($scope, $http, $q, $location, Alumno)
     $scope.isAdmin      = false;
     $scope.isPadre      = false;
     $scope.isMaestro    = false;
+    $scope.showMenu = false;
 
     var defer = $q.defer();
+
+    $scope.toggleMenu = function(){
+        var menuRes = $('#bs-example-navbar-collapse-1');
+
+        if ($scope.showMenu == true)
+        {
+            $(menuRes).slideUp(800);
+            $scope.showMenu = false;
+        } else {
+          $(menuRes).slideDown(800);
+          $scope.showMenu = true;
+        }
+      }
 
     $http.get('/api/user/current')
     .success(function(data){
@@ -32,7 +46,7 @@ function HeaderController($scope, $http, $q, $location, Alumno)
             $scope.isPadre = true;
         }
 
-        Alumno.current()
+        /*Alumno.current()
             .then(function(data){
                 angular.forEach(data.response, function(alumno, index){
 
@@ -44,7 +58,7 @@ function HeaderController($scope, $http, $q, $location, Alumno)
                           }).show(); 
                     });
                 });
-            })
+            })*/
 
     })
     .error(function(data) {
@@ -56,52 +70,58 @@ function HeaderController($scope, $http, $q, $location, Alumno)
     {
         $http.get('/api/logout')
         .success(function() {
-            $location.path('/login').replace();
+            //$location.path('/login').replace();
+            //location.href = '/#/login';
+            location.reload();
         });
     }
 
-    if ($location.path().indexOf('/guarderias') !== -1)
-    {
-        $scope.menu = 'guarderias';
-    }
+    $scope.$watch(function() {
+        return $location.path();
+     }, function(){
+        if ($location.path().indexOf('/guarderias') !== -1)
+        {
+            $scope.menu = 'guarderias';
+        }
 
-    if ($location.path().indexOf('/alumnos') !== -1)
-    {
-        $scope.menu = 'alumnos';
-    }
+        if ($location.path().indexOf('/alumnos') !== -1)
+        {
+            $scope.menu = 'alumnos';
+        }
 
-    if ($location.path().indexOf('/profile') !== -1)
-    {
-        $scope.menu = 'profile';
-    }
+        if ($location.path().indexOf('/profile') !== -1)
+        {
+            $scope.menu = 'profile';
+        }
 
-    if ($location.path().indexOf('/maestro') !== -1)
-    {
-        $scope.menu = 'maestro';
-    }
+        if ($location.path().indexOf('/maestro') !== -1)
+        {
+            $scope.menu = 'maestro';
+        }
 
-    if ($location.path().indexOf('/actividades') !== -1)
-    {
-        $scope.menu = 'actividades';
-    }
+        if ($location.path().indexOf('/actividades') !== -1)
+        {
+            $scope.menu = 'actividades';
+        }
 
-    if ($location.path().indexOf('/grupos') !== -1)
-    {
-        $scope.menu = 'grupos';
-    }
+        if ($location.path().indexOf('/grupos') !== -1)
+        {
+            $scope.menu = 'grupos';
+        }
 
-    if ($location.path().indexOf('/registro') !== -1)
-    {
-        $scope.menu = 'registro';
-    }
+        if ($location.path().indexOf('/registro') !== -1)
+        {
+            $scope.menu = 'registro';
+        }
 
-    if ($location.path().indexOf('/pagos') !== -1)
-    {
-        $scope.menu = 'pagos';
-    }
+        if ($location.path().indexOf('/pagos') !== -1)
+        {
+            $scope.menu = 'pagos';
+        }
 
-    if (!$scope.menu)
-    {
-        $scope.menu = 'home';
-    }
+        if (!$scope.menu)
+        {
+            $scope.menu = 'home';
+        }
+     });
 }

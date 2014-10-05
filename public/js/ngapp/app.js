@@ -22,6 +22,22 @@ define([
         return defer.promise;
     }
 
+    function isNotLoggedIn($http, $q, $timeout, $location) {
+
+        var defer = $q.defer();
+
+        $http.get('/api/user/current')
+        .success(function(data){
+            $location.path('/').replace();
+        })
+        .error(function(data) {
+            $location.path('/login').replace();
+            $timeout(defer.reject(data));
+        });
+
+        return defer.promise;
+    }
+
     function isSuperAdmin($http, $q, $timeout, $location) {
         var defer = $q.defer();
 
@@ -149,6 +165,9 @@ define([
                       templateUrl: 'views/profile/new-password.html'
                   })
                   .when('/login', {
+                    resolve: {
+                        //isNotLoggedIn: isNotLoggedIn
+                    },
                       controller: LoginController,
                       templateUrl: 'views/login.html'
                   })

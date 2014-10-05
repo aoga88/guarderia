@@ -1,6 +1,4 @@
-<ng-include src="'/views/common/header.html'"></ng-include>
-
-<div class="container" ng-init="">
+<div class="container" ng-show="isAdmin">
 	<div class="row">
 		<div class="col-md-6">
 			<h2>Alumnos</h2>
@@ -39,15 +37,20 @@
 			<div class="alert alert-danger">NOTA: Solo se muestran los contactos con fotografía</div>
 			<h4 ng-show="isAsistencia">¿Quién la trae?</h4>
 			<h4 ng-hide="isAsistencia">¿Quién viene por ella?</h4>
-			<div class="col-sm-6" ng-repeat="contacto in alumnoDetalle.contactos" ng-show="contacto.foto">
+			<div class="col-xs-6" ng-repeat="contacto in alumnoDetalle.contactos" ng-show="contacto.foto">
 				<img class="img-responsive img-circle" ng-show="!contacto.foto" src="/img/noimage.png" />
-				<img style="cursor: pointer" class="img-responsive img-rounded" ng-show="contacto.foto" ng-src="/api/alumno/cfoto/{{ alumnoDetalle._id.$id }}/{{ $index }}" ng-click="seleccionaContacto(contacto)"/>
+				<img style="cursor: pointer; width: 250px; height: 220px" class="img-responsive img-circle" ng-show="contacto.foto" ng-src="/api/alumno/cfoto/{{ alumnoDetalle._id.$id }}/{{ $index }}" ng-click="seleccionaContacto(contacto)"/>
+				<br/><br/>
 			</div>
 			
-			<div class="col-xs-12">
+			<div class="col-xs-12" ng-hide="haveSalida == true">
 				<br/><br/>
-				<button class="btn btn-lg btn-success col-xs-12" ng-disabled="!actualAsistencia.contacto_id" ng-show="isAsistencia" ng-click="asistencia()">Asistencia</button>
-				<button class="btn btn-lg btn-danger col-xs-12" ng-disabled="!actualAsistencia.contacto_id" ng-hide="isAsistencia" ng-click="salida()">Salida</button>
+				<button class="btn btn-lg btn-success col-xs-12" ng-disabled="!actualAsistencia.contacto_id" ng-show="isAsistencia" ng-click="asistencia()">Asistencia por {{actualAsistencia.contacto_name}}</button>
+				<button class="btn btn-lg btn-danger col-xs-12" ng-disabled="puedeSalida()" ng-hide="isAsistencia" ng-click="salida()">Salida por {{actualAsistencia.contacto_name}}</button>
+			</div>
+
+			<div class="col-xs-12 alert alert-warning" ng-show="haveSalida == true">
+				El alumno ya tiene asistencia y salida el día de hoy.
 			</div>
 		</div>
 	</div>

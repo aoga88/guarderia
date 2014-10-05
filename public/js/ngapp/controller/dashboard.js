@@ -1,15 +1,27 @@
-function DashboardController($scope, $timeout, Alumno)
+function DashboardController($scope, $timeout, $http, Alumno)
 {
-	$scope.alumnos = [];
-	$scope.alumnoSearch = '';
+	$scope.alumnos          = [];
+	$scope.alumnoSearch     = '';
 	$scope.actualAsistencia = {};
-    $scope.isAsistencia = true;
+    $scope.isAsistencia     = true;
+    $scope.haveSalida       = false;
+    $scope.isAdmin          = false;
 
 	Alumno.current()
     .then(function(data){
         angular.forEach(data.response, function(alumno){
             $scope.alumnos.push(alumno);
         });
+    });
+
+    $http.get('/api/user/current')
+    .success(function(data){
+        $scope.user = data.response;
+        var roles = data.response.roles;
+
+        if (roles.indexOf('admin') !== -1) {
+            $scope.isAdmin = true;
+        }
     });
 
     $scope.alumnoFilter = function(item) {
@@ -29,6 +41,7 @@ function DashboardController($scope, $timeout, Alumno)
     }
 
     $scope.detalleAlumno = function(alumno) {
+        $scope.haveSalida = false;
     	$scope.alumnoDetalle = alumno;
     	$scope.actualAsistencia = {};
 
@@ -44,6 +57,10 @@ function DashboardController($scope, $timeout, Alumno)
                 if (typeof value.type !== 'undefined') {
                     if (value.type === 'asistencia') {
                         haveAsistencia = true;
+                    }
+
+                    if (value.type === 'salida') {
+                        $scope.haveSalida = true;
                     }
                 }
             }
@@ -67,6 +84,14 @@ function DashboardController($scope, $timeout, Alumno)
     	.then(function(){
     		$scope.actualAsistencia = {};
     		$scope.alumnoDetalle = {};
+
+            $scope.alumnos = [];
+            Alumno.current()
+            .then(function(data){
+                angular.forEach(data.response, function(alumno){
+                    $scope.alumnos.push(alumno);
+                });
+            });
     	});
     }
 
@@ -75,6 +100,31 @@ function DashboardController($scope, $timeout, Alumno)
         .then(function(){
             $scope.actualAsistencia = {};
             $scope.alumnoDetalle = {};
+
+            $scope.alumnos = [];
+            Alumno.current()
+            .then(function(data){
+                angular.forEach(data.response, function(alumno){
+                    $scope.alumnos.push(alumno);
+                });
+            });
         });
+    }
+
+    $scope.puedeSalida = function()
+    {
+        var tieneContacto = false;
+
+        if (typeof $scope.actualAsistencia.contacto_id !== 'undefined')
+        {
+            tieneContacto = true;
+        }
+
+        if (tieneContacto == false || $scope.haveSalida == true)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

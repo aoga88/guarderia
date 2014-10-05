@@ -8,8 +8,7 @@ requirejs.config({
 		angularCookies:  'vendor/angular-cookies/angular-cookies',
 		angularResource: 'vendor/angular-resource/angular-resource',
 		angularRoute:    'vendor/angular-route/angular-route',
-		twbootstrap:     'vendor/bootstrap/dist/js/bootstrap',
-		charts:          'js/highcharts-ng.min'
+		twbootstrap:     'vendor/bootstrap/dist/js/bootstrap'
 	},
 
 	shim: {
@@ -42,5 +41,5 @@ requirejs.config({
 		}
 	},
 
-	deps: ['js/sha1', 'notify', 'charts','js/ngapp/services', 'js/ngapp/controllers', 'js/ngapp/app', 'js/ngapp/ui-date']
+	deps: ['js/sha1', 'notify','js/ngapp/services', 'js/ngapp/controllers', 'js/ngapp/app', 'js/ngapp/ui-date']
 });

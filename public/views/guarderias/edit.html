@@ -1,5 +1,3 @@
-	<ng-include src="'/views/common/header.html'"></ng-include>
-
 <div class="container" ng-init="load()">
 	<div class="row">
 		<h1>{{data.app}}</h1>
@@ -167,8 +165,8 @@
 			        			<td>{{ user._id }}</td>
 			        			<td>{{ user.name }} {{ user.apPaterno }} {{user.apMaterno}}</td>
 			        			<td>
-			        				<button class="btn btn-warning" ng-show="user.active == true" ng-click="inactiveUser(user._id, user)"><span class="glyphicon glyphicon-chevron-down"></span></button>
-			        				<button class="btn btn-success" ng-show="user.active == false" ng-click="activeUser(user._id, user)"><span class="glyphicon glyphicon-chevron-up"></span></button>
+			        				<button class="btn btn-warning" ng-show="user.active == true" ng-click="inactiveUser(user._id, user)"><span class="fa fa-chevron-down"></span></button>
+			        				<button class="btn btn-success" ng-show="user.active == false" ng-click="activeUser(user._id, user)"><span class="fa fa-chevron-up"></span></button>
 			        			</td>
 			        		</tr>
 			        	</tbody>

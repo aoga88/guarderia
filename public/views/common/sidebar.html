@@ -1,0 +1,85 @@
+<!-- Sidebar Start -->
+  <div class="sidebar" ng-controller="HeaderController">
+
+    <!-- Logo Start -->
+    <a href="/#/" class="menu-link">
+      <div class="logo-container" id="step1">
+        <img src="/images/logo-header.png" />
+      </div>
+    </a>
+    <!-- Logo End -->
+
+    <!-- Sidebar User Profile Start -->
+    <div class="sidebar-profile">
+      <div class="user-info">
+
+        <a href="/#/profile" class="menu-link">
+          <i class="fa fa-user"></i>
+          &nbsp;
+          {{ currentUser.name }} {{ currentUser.apPaterno }}
+        </a>
+      </div>
+    </div>
+
+    <div class="responsive-menu collapsed">
+      <a href="javascript:;" ng-click="toggleMenu()"><i class="fa fa-bars"></i></a>
+    </div>
+    <!-- Sidebar User Profile End -->
+
+    <!-- Menu Start -->
+    <ul class="menu navbar-collapse" id="bs-example-navbar-collapse-1">
+      <li class="purple" ng-class="{active: menu == 'home'}">
+        <a href="/#" class="menu-link">
+          <span class="menu-icon"><i class="fa fa-home"></i></span>
+          <span class="menu-text">Inicio</span>
+        </a>
+      </li>
+      <li class="cream" ng-show="isSuperAdmin == true" ng-class="{active: menu == 'guarderias'}">
+        <a href="/#/guarderias" class="menu-link">
+          <span class="menu-icon"><i class="fa fa-book"></i></span>
+          <span class="menu-text">Guarderias</span>
+        </a>
+      </li>
+      <li class="purple" ng-show="isAdmin == true || isMaestro == true || isPadre == true" ng-class="{active: menu == 'alumnos'}">
+        <a href="/#/alumnos" class="menu-link">
+          <span class="menu-icon"><i class="fa fa-user"></i></span>
+          <span class="menu-text">Alumnos</span>
+        </a>
+      </li>
+      <li class="purple" ng-show="isAdmin == true" ng-class="{active: menu == 'maestro'}">
+        <a href="/#/maestro" class="menu-link">
+          <span class="menu-icon"><i class="fa fa-pencil"></i></span>
+          <span class="menu-text">Maestros</span>
+        </a>
+      </li>
+      <li class="purple" ng-show="isAdmin == true" ng-class="{active: menu == 'actividades'}">
+        <a href="/#/actividades" class="menu-link">
+          <span class="menu-icon"><i class="fa fa-file-text-o"></i></span>
+          <span class="menu-text">Catálogo</span>
+        </a>
+      </li>
+      <li class="purple" ng-show="isAdmin == true || isMaestro == true" ng-class="{active: menu == 'grupos'}">
+        <a href="/#/grupos" class="menu-link">
+          <span class="menu-icon"><i class="fa fa-table"></i></span>
+          <span class="menu-text">Grupos</span>
+        </a>
+      </li>
+      <li class="purple" ng-show="isAdmin == true || isMaestro == true" 
+      ng-class="{active: menu == 'registro'}">
+        <a href="/#/registro" class="menu-link">
+          <span class="menu-icon"><i class="fa fa-exchange"></i></span>
+          <span class="menu-text">Registro</span>
+        </a>
+      </li>
+      <li class="purple" ng-show="isAdmin == true" 
+      ng-class="{active: menu == 'pagos'}">
+        <a href="/#/pagos" class="menu-link">
+          <span class="menu-icon"><i class="fa fa-money"></i></span>
+          <span class="menu-text">Pagos</span>
+        </a>
+      </li>
+    </ul>
+    <!-- Menu End -->
+
+  </div>
+  <!-- Sidebar End -->

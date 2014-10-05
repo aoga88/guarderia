@@ -30,7 +30,32 @@ function RegistroController($scope, $location, $timeout, User, Grupo, Alumno, Ac
 	    Alumno.current()
 	    .then(function(data){
             angular.forEach(data.response, function(alumno){
-                $scope.alumnos.push(alumno);
+
+                alumno.haveAsistencia = false;
+                alumno.haveSalida     = false;
+                angular.forEach(alumno.actividades, function(value){
+                    var date     = new Date(value.fecha.sec * 1000);
+                    var today    = new Date();
+                    var dateStr  = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+                    var todayStr = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+
+                    if (dateStr === todayStr) {
+                        if (typeof value.type !== 'undefined') {
+                            if (value.type === 'asistencia') {
+                                alumno.haveAsistencia = true;
+                            }
+
+                            if (value.type === 'salida') {
+                                alumno.haveSalida = true;
+                            }
+                        }
+                    }
+                });
+                
+                if (alumno.haveAsistencia == true && alumno.haveSalida == false)
+                {
+                    $scope.alumnos.push(alumno);
+                }
             });
 	    });
 
@@ -129,12 +154,12 @@ function RegistroController($scope, $location, $timeout, User, Grupo, Alumno, Ac
     	.then(function(data){
     		$scope.showSuccess = true;
 
-            angular.forEach(data.response, function(actividades, alumnoId) {
+            /*angular.forEach(data.response, function(actividades, alumnoId) {
                 angular.forEach(actividades, function(actividad) {
                     notifications[alumnoId].emit('notification', 'Registro de actividad para ' 
                     + actividad.alumno + ': ' + actividad.actividad);
                 })
-            });
+            }); */
 
     		$timeout(function(){
                 $scope.showSuccess = false;
@@ -150,5 +175,14 @@ function RegistroController($scope, $location, $timeout, User, Grupo, Alumno, Ac
 		    	});
             }, 2000);
     	});
+    }
+
+    $scope.alumnoFilter = function(item) {
+        if (item.haveAsistencia && !item.haveSalida)
+        {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

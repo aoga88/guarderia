@@ -1,11 +1,26 @@
-<style>
-    body
-    {
-        padding-top: 70px;
-    }
-</style>
+<!-- Header Bar Start -->
+  <div class="row header-bar" id="step2" ng-controller="HeaderController">
 
-<div class="navbar navbar-inverse navbar-fixed-top" ng-controller="HeaderController">
+    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 hidden-xs hidden-sm">
+    </div>
+
+    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+      <ul class="right-icons" id="step3">
+        <li>
+          <a href="#" class="user"><i class="fa fa-user"></i></a>
+          <ul class="dropdown">
+            <li><a href="/#/profile"><i class="fa fa-user"></i>Mi Perfil</a></li>
+            <li><a href="javascript: void(0)" ng-click="logout()"><i class="fa fa-sign-out"></i>Cerrar Sesion</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="javascript: void(0)" ng-click="logout()" class="lock"><i class="fa fa-lock"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- Header Bar End -->
+<!-- <div class="navbar navbar-default navbar-fixed-top" ng-controller="HeaderController">
     <div class="container">
         <div class="navbar-header">
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
@@ -56,4 +71,4 @@
             </div>
         </center>
     </div>
-</div>
+</div> -->
