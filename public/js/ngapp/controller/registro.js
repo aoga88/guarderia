@@ -9,14 +9,15 @@ function RegistroController($scope, $location, $timeout, User, Grupo, Alumno, Ac
 	$scope.actualRegistro = {};
 	$scope.showGrupo      = true;
 	$scope.showIndividual = false;
+    $scope.alumnoSearch   = '';
 
 	User.getCurrent()
     .then(function(data) {
     	$scope.currentApp = data.response.app;
 
     	$scope.isMaestro = data.response.roles.indexOf('maestro') !== -1;
-    	$scope.isAdmin = data.response.roles.indexOf('admin') !== -1;
-    	$scope.isPadre = data.response.roles.indexOf('padre') !== -1;
+    	$scope.isAdmin   = data.response.roles.indexOf('admin') !== -1;
+    	$scope.isPadre   = data.response.roles.indexOf('padre') !== -1;
     });
 
     $scope.list = function() {
@@ -178,7 +179,14 @@ function RegistroController($scope, $location, $timeout, User, Grupo, Alumno, Ac
     }
 
     $scope.alumnoFilter = function(item) {
-        if (item.haveAsistencia && !item.haveSalida)
+        var nombreCompleto = item.nombre + ' ' + item.apPaterno;
+
+        if (typeof item.apMaterno !== 'undefined')
+        {
+            nombreCompleto = nombreCompleto + ' ' + item.apMaterno;
+        }
+
+        if (nombreCompleto.toLowerCase().indexOf($scope.alumnoSearch.toLowerCase()) !== -1)
         {
             return true;
         } else {
