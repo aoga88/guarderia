@@ -16,12 +16,17 @@
 			<!-- Tab panes -->
 			<div class="tab-content">
 			  <div class="tab-pane active" id="grupal">
-			  	<table class="table table-striped">
+			  	<table class="table table-condensed">
 					<tbody>
 						<tr>
 							<td>
-								<input type="text" ng-model="grupoFilter" class="form-control" placeholder="Buscar..."/>
+								<div class="col-lg-12">
+									<input type="text" ng-model="grupoFilter" class="form-control" placeholder="Buscar..." style="width: 50%; float: right" />
+								</div>
 							</td>
+						</tr>
+						<tr>
+							<th>&nbsp;</th>
 						</tr>
 						<tr ng-repeat="grupo in grupos | filter:grupoFilter" ng-class="{'success': grupo.selected == true}">
 							<td>
@@ -34,12 +39,17 @@
 				</table>
 			  </div>
 			  <div class="tab-pane" id="alumnos">
-				<table class="table table-striped">
+				<table class="table table-condensed">
 					<tbody>
 						<tr>
 							<td>
-								<input type="text" ng-model="alumnoSearch" class="form-control" placeholder="Buscar..."/>
+								<div class="col-lg-12">
+									<input type="text" ng-model="alumnoSearch" class="form-control" style="width: 50%; float: right" placeholder="Buscar..."/>
+								</div>
 							</td>
+						</tr>
+						<tr>
+							<th>&nbsp;</th>
 						</tr>
 						<tr ng-repeat="alumno in alumnos | filter:alumnoFilter" ng-class="{'success': alumno.selected == true}">
 							<td>
@@ -54,28 +64,35 @@
 			</div>
 		</div>
 		<div class="col-md-6">
-			<a class="btn btn-lg btn-info col-xs-12">Actividades</a>
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>Actividad</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<input type="text" ng-model="actividadFilter" class="form-control" placeholder="Buscar..."/>
-						</td>
-					</tr>
-					<tr ng-repeat="actividad in actividades | filter:actividadFilter" ng-class="{'success': actividad.selected == true}">
-						<td ng-show="actividad.active == true">
-							<a href="javascript: void(0)" ng-click="toggleActividad(actividad)">
-								{{ actividad.nombre }}
-							</a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+			  <li class="active"><a href="#actividades" role="tab" data-toggle="tab">Actividades</a></li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+			  <div class="tab-pane active" id="actividades">
+			  	<table class="table table-condensed">
+					<tbody>
+						<tr>
+							<td>
+								<input type="text" ng-model="actividadFilter" class="form-control" placeholder="Buscar..."/>
+							</td>
+						</tr>
+						<tr>
+							<th>&nbsp;</th>
+						</tr>
+						<tr ng-repeat="actividad in actividades | filter:actividadFilter" ng-class="{'success': actividad.selected == true}">
+							<td ng-show="actividad.active == true">
+								<a href="javascript: void(0)" ng-click="toggleActividad(actividad)">
+									{{ actividad.nombre }}
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			  </div>
+			</div>
 		</div>
 	</div>
 	<div class="row">
