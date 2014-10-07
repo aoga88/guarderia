@@ -7,50 +7,51 @@
 	</div>
 	<div class="row" ng-show="isAdmin || isMaestro">
 		<div class="col-md-6 col-sm-12">
-			<button class="btn btn-lg col-md-12 col-sm-12 col-xs-12" ng-class="{'btn-warning': showGrupo, 'btn-default': !showGrupo}" ng-click="registroGrupal()">Registro Grupal</button>
-			<table class="table table-striped" ng-show="showGrupo">
-				<thead>
-					<tr>
-						<th>Grupo</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<input type="text" ng-model="grupoFilter" class="form-control" placeholder="Buscar..."/>
-						</td>
-					</tr>
-					<tr ng-repeat="grupo in grupos | filter:grupoFilter" ng-class="{'success': grupo.selected == true}">
-						<td>
-							<a href="javascript: void(0)" ng-click="toggleGrupo(grupo)">
-								{{ grupo.nombre }}
-							</a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<button class="btn btn-lg col-md-12 col-sm-12 col-xs-12" ng-class="{'btn-warning': showIndividual, 'btn-default': !showIndividual}" ng-click="registroIndividual()">Registro Individual</button>
-			<table class="table table-striped" ng-show="showIndividual">
-				<thead>
-					<tr>
-						<th>Alumno</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<input type="text" ng-model="alumnoSearch" class="form-control" placeholder="Buscar..."/>
-						</td>
-					</tr>
-					<tr ng-repeat="alumno in alumnos | filter:alumnoFilter" ng-class="{'success': alumno.selected == true}">
-						<td>
-							<a href="javascript: void(0)" ng-click="toggleAlumno(alumno)">
-								{{ alumno.nombre }} {{ alumno.apPaterno }} {{ alumno.apMaterno }}
-							</a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+			  <li class="active"><a href="#grupal" role="tab" data-toggle="tab" ng-click="registroGrupal()">Grupos</a></li>
+			  <li><a href="#alumnos" role="tab" data-toggle="tab" ng-click="registroIndividual()">Alumnos</a></li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+			  <div class="tab-pane active" id="grupal">
+			  	<table class="table table-striped">
+					<tbody>
+						<tr>
+							<td>
+								<input type="text" ng-model="grupoFilter" class="form-control" placeholder="Buscar..."/>
+							</td>
+						</tr>
+						<tr ng-repeat="grupo in grupos | filter:grupoFilter" ng-class="{'success': grupo.selected == true}">
+							<td>
+								<a href="javascript: void(0)" ng-click="toggleGrupo(grupo)">
+									{{ grupo.nombre }}
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			  </div>
+			  <div class="tab-pane" id="alumnos">
+				<table class="table table-striped">
+					<tbody>
+						<tr>
+							<td>
+								<input type="text" ng-model="alumnoSearch" class="form-control" placeholder="Buscar..."/>
+							</td>
+						</tr>
+						<tr ng-repeat="alumno in alumnos | filter:alumnoFilter" ng-class="{'success': alumno.selected == true}">
+							<td>
+								<a href="javascript: void(0)" ng-click="toggleAlumno(alumno)">
+									{{ alumno.nombre }} {{ alumno.apPaterno }} {{ alumno.apMaterno }}
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			  </div>
+			</div>
 		</div>
 		<div class="col-md-6">
 			<a class="btn btn-lg btn-info col-xs-12">Actividades</a>
