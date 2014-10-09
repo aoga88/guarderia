@@ -4217,3 +4217,18 @@ table.dataTable tr.even td.sorting_1 {
   height: 40px;
   line-height: 40px;
 }
+
+/***** Ticket *****/
+ .ticket {
+   border-bottom:1px dashed #c6ced0;
+   margin-bottom: 20px;
+   padding-bottom: 10px;
+ }
+
+ .ticket .user-info {
+   text-align: center;
+ }
+
+ .ticket-id {
+   margin-bottom: 20px !important;
+ }

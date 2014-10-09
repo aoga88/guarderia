@@ -278,6 +278,7 @@ EOD;
 
     public function asistencia($alumno_id)
     {
+        parent::validateRoles(['admin']);
         $conditions   = json_decode(file_get_contents("php://input"));
         $model_alumno = new Model_Alumno();
 
@@ -297,6 +298,7 @@ EOD;
 
     public function salida($alumno_id)
     {
+        parent::validateRoles(['admin']);
         $conditions   = json_decode(file_get_contents("php://input"));
         $model_alumno = new Model_Alumno();
 
@@ -311,6 +313,29 @@ EOD;
 
         $model_alumno->update(['_id' => new MongoId($alumno_id)], ['$push' => [ 'actividades' => $actividad] ]);
         $this->response->sendMessage($actividad)
+            ->setCode(200);
+    }
+
+    public function comment($alumno_id)
+    {
+        $info         = json_decode(file_get_contents("php://input"));
+        $config       = osrestConfig('auth');
+        $loggedUser   = Auth::getSession($config);
+
+        $model_alumno = new Model_Alumno();
+
+        $mensaje = [
+            'mensaje' => $info->mensaje,
+            'fecha'   => time(),
+            'autor'   => [
+                '_id' => $loggedUser['_id'],
+                'display' => $loggedUser['name'] . ' ' . $loggedUser['apPaterno'] . ' ' . $loggedUser['apMaterno']
+            ]
+        ];
+
+        $model_alumno->update(['_id' => new MongoId($alumno_id)], ['$push' => [ 'mensajes' => $mensaje]]);
+
+        $this->response->sendMessage($mensaje)
             ->setCode(200);
     }
 }

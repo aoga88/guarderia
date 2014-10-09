@@ -165,6 +165,13 @@ return [
 				'requiredLogin' => true
 			],
 
+			'/alumno/:id/comment' => [
+				'module'        => 'alumno',
+				'controller'    => 'index',
+				'action'        => 'comment',
+				'requiredLogin' => true
+			],
+
 			'/actividad' => [
 				'module'        => 'actividad',
 				'controller'    => 'index',

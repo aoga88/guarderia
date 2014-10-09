@@ -21,7 +21,6 @@
 			<thead>
 				<tr>
 					<th>Nombre</th>
-					<th class="hidden-xs hidden-sm">Tipo de Sangre</th>
 					<th>Contactos</th>
 					<th></th>
 				</tr>
@@ -29,20 +28,34 @@
 			<tbody>
 				<tr ng-repeat="alumno in alumnos">
 					<td>{{ alumno.nombre }}</td>
-					<td class="hidden-xs hidden-sm">{{ alumno.tipoSangre }}</td>
 					<td>
 						<span ng-repeat="contacto in alumno.contactos">
 							{{ contacto.name }}<br/>
 						</span>
 					</td>
 					<td class="visible-md visible-lg">
-						<a href="/#/alumnos/{{ alumno._id.$id }}/calendario">Calendario</a>
+						<a class="btn btn-default" href="/#/alumnos/{{ alumno._id.$id }}/calendario">
+							<i class="fa fa-calendar"></i>
+							Calendario
+						</a>
 					</td>
 					<td class="hidden-md hidden-lg">
-						<a href="/#/alumnos/{{ alumno._id.$id }}/calendario-mobile">Calendario</a>
+						<a class="btn btn-default" href="/#/alumnos/{{ alumno._id.$id }}/calendario-mobile">
+							<i class="fa fa-calendar"></i>
+							Calendario
+						</a>
 					</td>
 					<td>
-						<a href="/#/alumnos/{{ alumno._id.$id }}">Detalle</a>
+						<a class="btn btn-default" href="/#/alumnos/{{ alumno._id.$id }}/comment">
+							<i class="fa fa-comment"></i>
+							Comentarios
+						</a>
+					</td>
+					<td>
+						<a class="btn btn-default" href="/#/alumnos/{{ alumno._id.$id }}">
+							<i class="fa fa-search"></i>
+							Detalle
+						</a>
 					</td>
 				</tr>
 			</tbody>

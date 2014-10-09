@@ -11,4 +11,5 @@ requirejs([
     'js/ngapp/controller/calendario',
     'js/ngapp/controller/calendario-mobile',
     'js/ngapp/controller/dashboard',
+    'js/ngapp/controller/comment',
 ]);

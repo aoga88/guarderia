@@ -69,6 +69,20 @@ function Alumno($http, $q) {
             });
 
             return defer.promise;
-        }
+        },
+
+        comentar: function(alumno_id, mensaje) {
+            var defer = $q.defer();
+
+            $http.post('/api/alumno/' + alumno_id + '/comment', mensaje)
+            .success( function(data) {
+                defer.resolve(data);
+            })
+            .error( function(data) {
+                defer.reject(data);
+            });
+
+            return defer.promise;
+        },
     }
 };

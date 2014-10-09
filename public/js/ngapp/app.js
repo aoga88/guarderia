@@ -280,6 +280,13 @@ define([
                       controller: AplicationController,
                       templateUrl: 'views/pagos/index.html'
                   })
+                  .when('/alumnos/:id/comment', {
+                      resolve: {
+                        isLoggedIn: isLoggedIn
+                    },
+                      controller: CommentController,
+                      templateUrl: 'views/alumnos/comment.html'
+                  })
                   .otherwise({
                       redirectTo: '/'
                   });
