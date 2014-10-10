@@ -1,4 +1,4 @@
-function HeaderController($scope, $http, $q, $location, Alumno)
+function HeaderController($scope, $http, $q, $location, $interval, Alumno, Notificacion)
 {
     $scope.menu         = '';
     $scope.isSuperAdmin = false;
@@ -65,16 +65,6 @@ function HeaderController($scope, $http, $q, $location, Alumno)
         $location.path('/login').replace();
         $timeout(defer.reject(data));
     });
-
-    $scope.logout = function()
-    {
-        $http.get('/api/logout')
-        .success(function() {
-            //$location.path('/login').replace();
-            //location.href = '/#/login';
-            location.reload();
-        });
-    }
 
     $scope.$watch(function() {
         return $location.path();

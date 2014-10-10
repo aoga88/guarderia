@@ -13,6 +13,7 @@
 namespace OsApp\User;
 
 use OsApp\Models\User as Model_User;
+use OsApp\Models\Notification as Model_Notification;
 use OsRest\Classes\Response;
 use OsRest\Classes\Controller;
 use Exception;
@@ -196,6 +197,31 @@ EOD;
         $result = $mailer->send($message);
 
         $this->response->sendMessage($data)
+            ->setCode(200);
+    }
+
+    /**
+     * Obtiene las acciones sin leer
+     *
+     * @return void
+     */
+    public function notifications()
+    {
+        $config     = osrestConfig('auth');
+        $loggedUser = Auth::getSession($config);
+
+        $model_notificacion = new Model_Notification();
+        $notifications = $model_notificacion->find(['user' => $loggedUser['_id'], 'leido' => false]);
+
+        $this->response->sendMessage(iterator_to_array($notifications))
+            ->setCode(200);
+    }
+
+    public function readNotification($id)
+    {
+        $model_notificacion = new Model_Notification();
+        $model_notificacion->update(['_id' => new MongoId($id)], ['$set' => ['leido' => true]]);
+        $this->response->sendMessage(['res' => true])
             ->setCode(200);
     }
 
