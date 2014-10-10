@@ -28,10 +28,10 @@
 
     <!-- Menu Start -->
     <ul class="menu navbar-collapse" id="bs-example-navbar-collapse-1">
-      <li class="purple" ng-class="{active: menu == 'home'}">
+      <li class="purple" ng-class="{active: menu == 'home'}" ng-show="isAdmin == true">
         <a href="/#" class="menu-link">
-          <span class="menu-icon"><i class="fa fa-home"></i></span>
-          <span class="menu-text">Inicio</span>
+          <span class="menu-icon"><i class="fa fa-check"></i></span>
+          <span class="menu-text">Asistencia</span>
         </a>
       </li>
       <li class="cream" ng-show="isSuperAdmin == true" ng-class="{active: menu == 'guarderias'}">
