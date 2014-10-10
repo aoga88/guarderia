@@ -38,7 +38,6 @@
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-notify.css" />
     <link rel="stylesheet" type="text/css" href="/css/alert-bangtidy.css" />
     <script type="text/javascript" src="/js/less-1.7.0.min.js"></script>
-    <script type="text/javascript" src="http://guarderia.local:3000/socket.io/socket.io.js"></script>
 
     <!-- Javascript -->
     <script src="/assets/jquery/jquery.min.js"></script>

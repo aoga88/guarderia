@@ -90,6 +90,20 @@ return [
 				'controller'    => 'upload',
 				'action'        => 'showContacto',
 				'requiredLogin' => true
+			],
+
+			'/notifications'	=> [
+				'module'		=> 'user',
+				'controller'	=> 'index',
+				'action'		=> 'notifications',
+				'requiredLogin'	=> true
+			],
+
+			'/notifications/:id/read'	=> [
+				'module'		=> 'user',
+				'controller'	=> 'index',
+				'action'		=> 'readNotification',
+				'requiredLogin'	=> true
 			]
 
 		],

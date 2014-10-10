@@ -1,11 +1,36 @@
 <!-- Header Bar Start -->
-  <div class="row header-bar" id="step2" ng-controller="HeaderController">
+  <div class="row header-bar" id="step2" ng-controller="TopHeaderController">
 
     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 hidden-xs hidden-sm">
     </div>
 
     <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
       <ul class="right-icons" id="step3">
+        <li>
+            <a href="#" class="info">
+              <i class="fa fa-info"></i>
+              <div class="notify" ng-show="notificaciones.length != 0"> {{ notificaciones.length }} </div>
+            </a>
+            <ul class="dropdown big" ng-show="notificaciones.length == 0">
+                <li>
+                    <a href="javascript:;">
+                        <i class="fa fa-warning"></i>
+                        No tiene notificaciones pendientes
+                    </a>
+                </li>
+            </ul>
+            <ul class="dropdown big" ng-show="notificaciones.length != 0">
+              <li ng-repeat="notificacion in notificaciones">
+                <a href="{{ getLinkNotificacion(notificacion) }}" ng-click="marcarLeido(notificacion)">
+                  <i class="fa fa-check-circle blue" ng-class="{'fa-calendar orange': notificacion.tipo == 'actividad', 'fa-comments blue': notificacion.tipo == 'mensajeAlumno', 'fa-check-circle green': notificacion.tipo == ''}"></i>
+                  {{ getDescriptionNotificacion(notificacion) }}
+                  <span class="description">
+                      {{ formatDate(notificacion.fecha) }}
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </li>
         <li>
           <a href="#" class="user"><i class="fa fa-user"></i></a>
           <ul class="dropdown">

@@ -17,6 +17,7 @@ use OsApp\Models\Alumno as Model_Alumno;
 use OsApp\Models\User as Model_User;
 use OsApp\Models\Maestro as Model_Maestro;
 use OsApp\Models\Grupo as Model_Grupo;
+use OsApp\Models\Notification as Model_Notification;
 use MongoId;
 use MongoDate;
 use OsRest\Auth\Authentication as Auth;
@@ -321,8 +322,13 @@ EOD;
         $info         = json_decode(file_get_contents("php://input"));
         $config       = osrestConfig('auth');
         $loggedUser   = Auth::getSession($config);
-
+        $roles        = $loggedUser['roles'];
         $model_alumno = new Model_Alumno();
+        $model_user   = new Model_User();
+        $model_grupo  = new Model_Grupo();
+        $model_maestro = new Model_Maestro();
+        $model_notification = new Model_Notification();
+        $alumno       = $model_alumno->findOne(['_id' => new MongoId($alumno_id)]);
 
         $mensaje = [
             'mensaje' => $info->mensaje,
@@ -332,6 +338,82 @@ EOD;
                 'display' => $loggedUser['name'] . ' ' . $loggedUser['apPaterno'] . ' ' . $loggedUser['apMaterno']
             ]
         ];
+
+
+        $usuarios = [];
+
+        // si es padre, enviar notificacion a [guarderia, maestros]
+        if (in_array('padre', $roles))
+        {
+            $guarderia_id = $alumno['app'];
+            $adminGuarderia = $model_user->find(['app' => $guarderia_id->__toString(), 'roles' => ['$in' => ['admin']], 'active' => true, 'deleted' => false ], ['_id' => true, 'name' => true]);
+            foreach ($adminGuarderia as $id => $value) {
+                //los administradores de la guarderia
+                $usuarios = array_merge($usuarios, [$id]);
+            }
+
+            $gruposAlumno = $model_grupo->find(['alumnos' => ['$in' => [$alumno_id]] ]);
+            foreach($gruposAlumno as $grupo_id => $info)
+            {
+                foreach ($info['maestros'] as $maestro)
+                {
+                    $maestroInfo = $model_maestro->findOne(['_id' => new MongoId($maestro)]);
+                    $usuarios = array_merge($usuarios, [$maestroInfo['email']]);
+                }
+            }
+        }
+        
+        // si es guarderia enviar notificacion a [maestros, contactos]
+        if (in_array('admin', $roles))
+        {
+            $gruposAlumno = $model_grupo->find(['alumnos' => ['$in' => [$alumno_id]] ]);
+            foreach($gruposAlumno as $grupo_id => $info)
+            {
+                foreach ($info['maestros'] as $maestro)
+                {
+                    $maestroInfo = $model_maestro->findOne(['_id' => new MongoId($maestro)]);
+                    $usuarios = array_merge($usuarios, [$maestroInfo['email']]);
+                }
+            }
+
+            $contactosAlumno = $model_user->find(['roles' => ['$in' => ['padre']], 'alumnos' => ['$in' => [new MongoId($alumno_id)] ] ]);
+            foreach ($contactosAlumno as $contacto)
+            {
+                $usuarios = array_merge($usuarios, [$contacto['_id']]);
+            }
+        }
+
+        // si es maestro enviar notificacion a [contactos, guarderia]
+        if (in_array('maestro', $roles))
+        {
+            $contactosAlumno = $model_user->find(['roles' => ['$in' => ['padre']], 'alumnos' => ['$in' => [new MongoId($alumno_id)] ] ]);
+            foreach ($contactosAlumno as $contacto)
+            {
+                $usuarios = array_merge($usuarios, [$contacto['_id']]);
+            }
+
+            $guarderia_id = $alumno['app'];
+            $adminGuarderia = $model_user->find(['app' => $guarderia_id->__toString(), 'roles' => ['$in' => ['admin']], 'active' => true, 'deleted' => false ], ['_id' => true, 'name' => true]);
+            foreach ($adminGuarderia as $id => $value) {
+                //los administradores de la guarderia
+                $usuarios = array_merge($usuarios, [$id]);
+            }
+        }
+
+        $usuarios = array_unique($usuarios);
+
+        foreach ($usuarios as $usuario)
+        {
+            $notif = [
+                'user'  => $usuario,
+                'leido' => false,
+                'tipo'  => 'mensajeAlumno',
+                'mensaje' => 'Nuevo mensaje para ' . $alumno['nombre'] . ' ' . $alumno['apPaterno'] . ' ' . $alumno['apMaterno'],
+                'link' => '/#/alumnos/' . $alumno_id . '/comment'
+            ];
+
+            $model_notification->insert($notif);
+        }
 
         $model_alumno->update(['_id' => new MongoId($alumno_id)], ['$push' => [ 'mensajes' => $mensaje]]);
 

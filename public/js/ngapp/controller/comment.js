@@ -47,7 +47,7 @@ function CommentController($scope, $routeParams, Alumno)
             month = '0' + month;
         }
 
-        var format = day + '/' + month + '/' + fecha.getFullYear() + ' a las  ' + fecha.getUTCHours() + ':' + fecha.getUTCMinutes() + ':' + fecha.getUTCSeconds();
+        var format = fecha.toLocaleDateString() + ' a las  ' + fecha.toLocaleTimeString();
         return format;
     }
 }

@@ -21,7 +21,7 @@
           <!-- Ticket Info -->
           <h2 class="ticket-id">{{ actualAlumno.nombre }} {{ actualAlumno.apPaterno }} {{ actualAlumno.apMaterno }}</h2>
 
-          <div class="ticket" ng-repeat="mensaje in mensajes">
+          <div class="ticket" ng-repeat="mensaje in mensajes | orderBy : 'fecha' : true">
               <div class="row">
                 <div class="col-lg-1 col-md-1 col-sm-4 col-xs-12">
                   <div class="user-info">
