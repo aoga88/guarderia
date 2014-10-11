@@ -335,7 +335,7 @@ EOD;
         ]];
         $model_user->update($conditions, ['$set' => $update]);
         
-        header("location: /#/profile/");
+        header("location: /#/profile");
     }
 
     private function generate_image_thumbnail($new_width, $new_height, $source_image_path, $thumbnail_image_path)
