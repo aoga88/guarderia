@@ -85,6 +85,41 @@ class Index extends Controller
             ->setCode(200);
     }
 
+    public function getPicture($id, $resolution)
+    {
+        $model_user = new Model_User();
+        $user = $model_user->findOne(['_id' => $id]);
+
+        $availableResolutions = [250, 80];
+
+        if (!in_array($resolution, $availableResolutions))
+        {
+            $resolution = 250;
+        }
+
+        if (!isset($user['foto']))
+        {
+            $foto = [
+                'header' => 'image/png',
+                'url' => '../public/img/noimage_' . $resolution . '.png'
+            ];
+            $useResolution = false;
+        } else {
+            $foto = $user['foto'];
+            $useResolution = true;
+        }
+
+        header('Content-Type: ' . $foto['header']);
+        $this->setResponse(null);
+        if ($useResolution)
+        {
+            echo file_get_contents(getcwd() . '/' . $foto['url'] . '_' . $resolution);
+        } else {
+            echo file_get_contents(getcwd() . '/' . $foto['url']);
+        }
+        
+    }
+
     /**
      * Logout
      *

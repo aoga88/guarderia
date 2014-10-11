@@ -23,14 +23,14 @@
 
           <div class="ticket" ng-repeat="mensaje in mensajes | orderBy : 'fecha' : true">
               <div class="row">
-                <div class="col-lg-1 col-md-1 col-sm-4 col-xs-12">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                   <div class="user-info">
-                    <!-- <img src="http://www.placehold.it/80x80" /> -->
-                    <p>{{ mensaje.autor.display }}</p>
+                    <img class="img-responsive img-circle" ng-src="/api/user/{{ mensaje.autor._id }}/picture/80"/>
                   </div>
                 </div>
-                <div class="col-lg-11 col-md-11 col-sm-8 col-xs-12">
-                  <p class="sent"><strong>Enviado:</strong> &nbsp; {{ formatDate(mensaje.fecha) }} </p>
+                <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                  <p><strong>{{ mensaje.autor.display }}</strong> <br/> 
+                  <span style="font-size: 11px; color: #333">{{ formatDate(mensaje.fecha) }}</span></p>
                   <p class="message">{{ mensaje.mensaje }}</p>
                 </div>
               </div>

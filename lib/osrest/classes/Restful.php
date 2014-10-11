@@ -74,7 +74,7 @@ class Restful
                     if ($itemPart[0] != ':') {
                         $urlEx .= "\/" . $itemPart;
                     } else {
-                        $urlEx .= "\/([a-zA-Z0-9_-]+)";
+                        $urlEx .= '\/([^\/]+)';
                         $varName = substr($itemPart, 1, strlen($itemPart));
                     }
                 }

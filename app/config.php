@@ -85,6 +85,13 @@ return [
 				'requiredLogin' => true,
 			],
 
+			'/alumno/cfoto/:id/:index/:resolution' => [
+				'module'        => 'alumno',
+				'controller'    => 'upload',
+				'action'        => 'showContacto',
+				'requiredLogin' => true
+			],
+
 			'/alumno/cfoto/:id/:index' => [
 				'module'        => 'alumno',
 				'controller'    => 'upload',
@@ -103,6 +110,13 @@ return [
 				'module'		=> 'user',
 				'controller'	=> 'index',
 				'action'		=> 'readNotification',
+				'requiredLogin'	=> true
+			],
+
+			'/user/:id/picture/:resolution' => [
+				'module'		=> 'user',
+				'controller'	=> 'index',
+				'action'		=> 'getPicture',
 				'requiredLogin'	=> true
 			]
 
