@@ -262,6 +262,13 @@ return [
 				'action'        => 'contacto',
 				'requiredLogin' => true
 			],
+
+			'/user/upload'    => [
+				'module'        => 'user',
+				'controller'    => 'index',
+				'action'        => 'upload',
+				'requiredLogin' => true
+			],
 		],
 
 		'DELETE' => [

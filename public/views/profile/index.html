@@ -1,31 +1,89 @@
 <div class="container" ng-init="load()">
-	<div class="row">
-		<h1>Perfil de Usuario (<a href="/#/profile/new-password">Cambiar password</a>)</h1>
-	</div>
 
-	<div class="col-md-12">
-		<form role="form" name="newUserForm">
-			<div class="form-group has-feedback" ng-class="{'has-success': newUserForm.email.$valid, 'has-error': newUserForm.email.$invalid}">
-				<label class="control-label">E-mail:</label>
-				<input type="email" class="form-control" ng-disabled="true" ng-required="true" ng-model="newUser._id" name="email">
-				<p class="text-danger" ng-show="emailRepeated">El correo ya se encuentra registrado.</p>
-			</div>
-			<div class="form-group has-feedback" ng-class="{'has-success': newUserForm.name.$valid, 'has-error': newUserForm.name.$invalid}">
-				<label class="control-label">Nombre(s):</label>
-				<input type="text" class="form-control" ng-required="true" ng-model="newUser.name" name="name" />
-			</div>
-			<div class="form-group has-feedback" ng-class="{'has-success': newUserForm.apPaterno.$valid, 'has-error': newUserForm.apPaterno.$invalid}">
-				<label class="control-label">Apellido Paterno:</label>
-				<input type="text" class="form-control" ng-required="true" ng-model="newUser.apPaterno" name="apPaterno" />
-			</div>
-			<div class="form-group has-feedback" ng-class="{'has-success': newUserForm.apMaterno.$valid, 'has-error': newUserForm.apMaterno.$invalid}">
-				<label class="control-label">Apellido Materno:</label>
-				<input type="text" class="form-control" ng-required="true" ng-model="newUser.apMaterno" name="apMaterno" />
-			</div>
-			<div class="form-group">
-				<button class="btn btn-success col-md-2" ng-disabled="newUserForm.$invalid" ng-click="save()">Guardar</button>
-				<div class="alert alert-success col-md-6" ng-show="showSuccess">Los cambios han sido guardados</div>
-			</div>
-		</form>
-	</div>
+	  <!-- Breadcrumbs Start -->
+	  <div class="row breadcrumbs">
+	    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	      <ul class="breadcrumbs">
+	        <li><a href="/#"><i class="fa fa-home"></i></a></li>
+	        <li><a href="/#/profile">Perfil</a></li>
+	      </ul>
+	    </div>
+	  </div>
+	  <!-- Breadcrumbs End -->
+
+	<!-- Light Profile Start -->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+          <div class="boxed profile light">
+            <div class="inner">
+
+              <!-- Profile Title Start -->
+              <div class="title">
+                <h3>Mi Perfil</h3>
+                <a href="/#/profile/new-password" class="share-profile">Cambiar password</a>
+              </div>
+              <!-- Profile Title End -->
+
+              <div class="row profile-data">
+                <!-- Left Side Start -->
+                <div class="col-lg-5 col-md-5 col-sm-3 col-xs-12 text-center">
+
+                  <!-- Profile Avatar Start -->
+                  <div class="">
+                    <img class="img-rounded" ng-src="/api/user/{{ newUser._id }}/picture/250" />
+                  </div>
+                  <!-- Profile Avatar End -->
+
+                  <!-- Send Message Start -->
+                  <div class="send-msg">
+                    <button class="btn btn-sm btn-default" type="button" ng-click="uploadImage()">Cambiar Imagen</button>
+                    <form></form>
+					<form name="upload" action="/api/user/upload" method="post" enctype="multipart/form-data" novalidate class="simple-form">
+							<input type="file" name="foto" ng-show="showImageField == true"/>
+						
+							<button type="submit" class="btn btn-success btn-xs" ng-show="showImageField == true">Guardar</button>
+							<button type="button" ng-click="cancelImage()" class="btn btn-warning btn-xs" ng-show="showImageField == true">Cancelar</button>
+					</form>
+                  </div>
+                  <!-- Send Message End -->
+
+                </div>
+                <!-- Left Side End -->
+
+                <!-- Right Side Start -->
+                <div class="col-lg-7 col-md-7 col-sm-9 col-xs-12">
+
+                  <form role="form" name="newUserForm">
+					<div class="form-group has-feedback" ng-class="{'has-success': newUserForm.email.$valid, 'has-error': newUserForm.email.$invalid}">
+						<label class="control-label">E-mail:</label>
+						<input type="email" class="form-control" ng-disabled="true" ng-required="true" ng-model="newUser._id" name="email">
+						<p class="text-danger" ng-show="emailRepeated">El correo ya se encuentra registrado.</p>
+					</div>
+					<div class="form-group has-feedback" ng-class="{'has-success': newUserForm.name.$valid, 'has-error': newUserForm.name.$invalid}">
+						<label class="control-label">Nombre(s):</label>
+						<input type="text" class="form-control" ng-required="true" ng-model="newUser.name" name="name" />
+					</div>
+					<div class="form-group has-feedback" ng-class="{'has-success': newUserForm.apPaterno.$valid, 'has-error': newUserForm.apPaterno.$invalid}">
+						<label class="control-label">Apellido Paterno:</label>
+						<input type="text" class="form-control" ng-required="true" ng-model="newUser.apPaterno" name="apPaterno" />
+					</div>
+					<div class="form-group has-feedback" ng-class="{'has-success': newUserForm.apMaterno.$valid, 'has-error': newUserForm.apMaterno.$invalid}">
+						<label class="control-label">Apellido Materno:</label>
+						<input type="text" class="form-control" ng-required="true" ng-model="newUser.apMaterno" name="apMaterno" />
+					</div>
+					<div class="form-group">
+						<button class="btn btn-success col-md-2" ng-disabled="newUserForm.$invalid" ng-click="save()">Guardar</button>
+						<div class="alert alert-success col-md-6" ng-show="showSuccess">Los cambios han sido guardados</div>
+					</div>
+				</form>
+
+                </div>
+                <!-- Right Side End -->
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+    <!-- Light Profile End -->
 </div>

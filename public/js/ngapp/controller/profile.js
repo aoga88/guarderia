@@ -1,6 +1,7 @@
 function ProfileController($scope, $location, $http, $timeout, User)
 {
 	$scope.showSuccess = false;
+	$scope.showImageField = false;
 
 	$scope.load = function()
 	{
@@ -34,5 +35,13 @@ function ProfileController($scope, $location, $http, $timeout, User)
 
 		$scope.newUser.password = SHA1($scope.actualUser.password1);
 		$scope.save();
+	}
+
+	$scope.uploadImage = function() {
+		$scope.showImageField = true;
+	}
+
+	$scope.cancelImage = function() {
+		$scope.showImageField = false;
 	}
 }
