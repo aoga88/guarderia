@@ -1,107 +1,139 @@
-<div class="container" ng-init="list()">
-	<div class="row">
-		<h1>Registro</h1>
-	</div>
-	<div class="row">
-		<div class="alert alert-success" ng-show="showSuccess">Las actividades han sido registradas.</div>
-	</div>
-	<div class="row" ng-show="isAdmin || isMaestro">
-		<div class="col-md-6 col-sm-12">
-			<!-- Nav tabs -->
-			<ul class="nav nav-tabs" role="tablist">
-			  <li class="active"><a href="#grupal" role="tab" data-toggle="tab" ng-click="registroGrupal()">Grupos</a></li>
-			  <li><a href="#alumnos" role="tab" data-toggle="tab" ng-click="registroIndividual()">Alumnos</a></li>
-			</ul>
+<!-- Breadcrumbs Start -->
+  <div class="row breadcrumbs">
 
-			<!-- Tab panes -->
-			<div class="tab-content">
-			  <div class="tab-pane active" id="grupal">
-			  	<table class="table table-condensed">
-					<tbody>
-						<tr>
-							<td>
-								<div class="col-lg-12">
-									<input type="text" ng-model="grupoFilter" class="form-control" placeholder="Buscar..." style="width: 50%; float: right" />
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th>&nbsp;</th>
-						</tr>
-						<tr ng-repeat="grupo in grupos | filter:grupoFilter" ng-class="{'success': grupo.selected == true}">
-							<td>
-								<a href="javascript: void(0)" ng-click="toggleGrupo(grupo)">
-									{{ grupo.nombre }}
-								</a>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			  </div>
-			  <div class="tab-pane" id="alumnos">
-				<table class="table table-condensed">
-					<tbody>
-						<tr>
-							<td>
-								<div class="col-lg-12">
-									<input type="text" ng-model="alumnoSearch" class="form-control" style="width: 50%; float: right" placeholder="Buscar..."/>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th>&nbsp;</th>
-						</tr>
-						<tr ng-repeat="alumno in alumnos | filter:alumnoFilter" ng-class="{'success': alumno.selected == true}">
-							<td>
-								<a href="javascript: void(0)" ng-click="toggleAlumno(alumno)">
-									{{ alumno.nombre }} {{ alumno.apPaterno }} {{ alumno.apMaterno }}
-								</a>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <ul class="breadcrumbs">
+      <li><a href="#"><i class="fa fa-home"></i></a></li>
+      <li><a href="/#/registro">Registro</a></li>
+    </ul>
+  </div>
+
+</div>
+<!-- Breadcrumbs End -->
+
+<div class="row" ng-init="list()">
+	<div class="col-lg-12" ng-show="isAdmin || isMaestro">
+		<div class="col-lg-6">
+			<div class="boxed">
+				<div class="inner">
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs" role="tablist">
+					  <li class="active"><a href="#grupal" role="tab" data-toggle="tab" ng-click="registroGrupal()">Grupos</a></li>
+					  <li><a href="#alumnos" role="tab" data-toggle="tab" ng-click="registroIndividual()">Alumnos</a></li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+					  <div class="tab-pane active" id="grupal">
+					  	<table class="table table-condensed">
+							<tbody>
+								<tr>
+									<td>
+										<div class="col-lg-12">
+											<input type="text" ng-model="grupoFilter" class="form-control" placeholder="Buscar..." style="width: 50%; float: right" />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>&nbsp;</th>
+								</tr>
+								<tr ng-repeat="grupo in grupos | filter:grupoFilter" ng-class="{'success': grupo.selected == true}">
+									<td>
+										<a href="javascript: void(0)" ng-click="toggleGrupo(grupo)">
+											{{ grupo.nombre }}
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					  </div>
+					  <div class="tab-pane" id="alumnos">
+						<table class="table table-condensed">
+							<tbody>
+								<tr>
+									<td>
+										<div class="col-lg-12">
+											<input type="text" ng-model="alumnoSearch" class="form-control" style="width: 50%; float: right" placeholder="Buscar..."/>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>&nbsp;</th>
+								</tr>
+								<tr ng-repeat="alumno in alumnos | filter:alumnoFilter" ng-class="{'success': alumno.selected == true}">
+									<td>
+										<a href="javascript: void(0)" ng-click="toggleAlumno(alumno)">
+											{{ alumno.nombre }} {{ alumno.apPaterno }} {{ alumno.apMaterno }}
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					  </div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="col-md-6">
-			<!-- Nav tabs -->
-			<ul class="nav nav-tabs" role="tablist">
-			  <li class="active"><a href="#actividades" role="tab" data-toggle="tab">Actividades</a></li>
-			</ul>
 
-			<!-- Tab panes -->
-			<div class="tab-content">
-			  <div class="tab-pane active" id="actividades">
-			  	<table class="table table-condensed">
-					<tbody>
-						<tr>
-							<td>
-								<input type="text" ng-model="actividadFilter" class="form-control" placeholder="Buscar..."/>
-							</td>
-						</tr>
-						<tr>
-							<th>&nbsp;</th>
-						</tr>
-						<tr ng-repeat="actividad in actividades | filter:actividadFilter" ng-class="{'success': actividad.selected == true}">
-							<td ng-show="actividad.active == true">
-								<a href="javascript: void(0)" ng-click="toggleActividad(actividad)">
-									{{ actividad.nombre }}
-								</a>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			  </div>
+		<div class="col-lg-6">
+			<div class="boxed">
+				<div class="inner">
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs" role="tablist">
+					  <li class="active"><a href="#actividades" role="tab" data-toggle="tab">Actividades</a></li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content">
+					  <div class="tab-pane active" id="actividades">
+					  	<table class="table table-condensed">
+							<tbody>
+								<tr>
+									<td>
+										<input type="text" ng-model="actividadFilter" class="form-control" placeholder="Buscar..."/>
+									</td>
+								</tr>
+								<tr>
+									<th>&nbsp;</th>
+								</tr>
+								<tr ng-repeat="actividad in actividades | filter:actividadFilter" ng-class="{'success': actividad.selected == true}">
+									<td ng-show="actividad.active == true">
+										<a href="javascript: void(0)" ng-click="toggleActividad(actividad)">
+											{{ actividad.nombre }}
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					  </div>
+					</div>
+				</div>
 			</div>
 		</div>
+
 	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<button class="btn btn-lg btn-success col-xs-12" ng-disabled="!actualRegistro.actividades || actualRegistro.actividades.length == 0 || (!actualRegistro.grupos && !actualRegistro.alumnos) || (actualRegistro.grupos.length == 0 || actualRegistro.alumnos.length == 0)" ng-click="save()">
-				Registrar 
-				<span ng-show="actualRegistro.actividades.length > 1">Actividades</span>
-				<span ng-hide="actualRegistro.actividades.length > 1">Actividad</span>
-			</button>
+</div>
+
+<div class="row">
+	<div class="col-lg-12">
+		<div class="boxed">
+			<div class="inner">
+				<div class="row">
+					<div class="alert alert-success" ng-show="showSuccess">Las actividades han sido registradas.</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<button class="btn btn-lg btn-success col-xs-12" ng-disabled="!actualRegistro.actividades || actualRegistro.actividades.length == 0 || (!actualRegistro.grupos && !actualRegistro.alumnos) || (actualRegistro.grupos.length == 0 || actualRegistro.alumnos.length == 0)" ng-click="save()">
+							Registrar 
+							<span ng-show="actualRegistro.actividades.length > 1">Actividades</span>
+							<span ng-hide="actualRegistro.actividades.length > 1">Actividad</span>
+						</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
+
+	

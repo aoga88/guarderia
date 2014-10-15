@@ -69,6 +69,9 @@ function HeaderController($scope, $http, $q, $location, $interval, Alumno, Notif
     $scope.$watch(function() {
         return $location.path();
      }, function(){
+
+        $scope.menu = 'home';
+
         if ($location.path().indexOf('/guarderias') !== -1)
         {
             $scope.menu = 'guarderias';

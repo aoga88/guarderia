@@ -1,48 +1,68 @@
-<div class="container" ng-init="list()">
-	<div class="row">
-		<h1>Actividades</h1>
-	</div>
-
-	<div class="row">
-		<div class="col-xs-12">
-			<button class="btn btn-success" ng-click="newActividad()">Registrar Actividad</button>
-		</div>
-	</div>
-	<br/>
-	<form role="form" name="actividadForm" ng-show="showForm">
-		<div class="form-group has-feedback" ng-class="{'has-success': actividadForm.nombre.$valid, 'has-error': actividadForm.nombre.$invalid}">
-			<label class="control-label">Actividad:</label>
-			<textarea class="form-control" ng-model="actualActividad.nombre" ng-required="true" rows="3" name="nombre"></textarea>
-		</div>
-		<div class="form-group">
-			<button class="btn btn-success" type="button" ng-disabled="actividadForm.$invalid" ng-click="save()">Guardar</button>
-			<button class="btn btn-danger" type="button" ng-click="actualActividad = {}; showForm = false">Cancelar</button>
-		</div>
-	</form>
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="alert alert-danger" ng-show="actividades.length == 0">
-				No hay actividades registrados
+<!-- Breadcrumbs Start -->
+<div class="row breadcrumbs">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+  <ul class="breadcrumbs">
+     <li><a href="/#/"><i class="fa fa-home"></i></a></li>
+     <li><a href="/#/actividades">Catálogo</a></li>
+  </ul>
+</div>
+</div>
+<!-- Breadcrumbs End -->
+<div class="row" ng-init="list()">
+	<div class="col-lg-12">
+		<h3>Catálogo de Actividades</h3>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="boxed">
+					<!-- Title Bart Start -->
+			        <div class="title-bar white" ng-show="isAdmin">
+			        	  <a class="btn btn-success pull-right" href="javascript:;" ng-click="newActividad()">Registrar Actividad</a>
+			        </div>
+				</div>
 			</div>
-			<br/><br/>
+			<div class="col-lg-12" ng-show="showForm">
+				<div class="boxed">
+					<div class="inner">
+						<form role="form" name="actividadForm" >
+							<div class="form-group has-feedback" ng-class="{'has-success': actividadForm.nombre.$valid, 'has-error': actividadForm.nombre.$invalid}">
+								<label class="control-label">Actividad:</label>
+								<textarea class="form-control" ng-model="actualActividad.nombre" ng-required="true" rows="3" name="nombre"></textarea>
+							</div>
+							<div class="form-group">
+								<button class="btn btn-success" type="button" ng-disabled="actividadForm.$invalid" ng-click="save()">Guardar</button>
+								<button class="btn btn-danger" type="button" ng-click="actualActividad = {}; showForm = false">Cancelar</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-12">
+				<div class="boxed">
+			        <!-- Title Bart End -->
+			        <div class="inner">
+			        	<div class="notification notification-danger" ng-show="actividades.length == 0">
+							No hay actividades registrados
+						</div>
+						<table class="table table-condensed">
+							<thead>
+								<tr>
+									<th>Actividad</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="actividad in actividades" ng-class="{danger: actividad.active == false}">
+									<td>{{ actividad.nombre }}</td>
+									<td>
+										<button class="btn btn-danger" ng-click="desactivar(actividad, actividad._id.$id)" ng-show="actividad.active == true">Desactivar</button>
+										<button class="btn btn-success" ng-click="activar(actividad, actividad._id.$id)" ng-show="actividad.active == false">Activar</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+			        </div>
+			    </div>
+			</div>
 		</div>
-
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Actividad</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="actividad in actividades" ng-class="{danger: actividad.active == false}">
-					<td>{{ actividad.nombre }}</td>
-					<td>
-						<button class="btn btn-danger" ng-click="desactivar(actividad)" ng-show="actividad.active == true">Desactivar</button>
-						<button class="btn btn-success" ng-click="activar(actividad)" ng-show="actividad.active == false">Activar</button>
-					</td>
-				</tr>
-			</tbody>
-		</table>
 	</div>
 </div>

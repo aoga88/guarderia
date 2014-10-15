@@ -3,9 +3,10 @@ function MaestrosController($scope, $location, $timeout, $routeParams, Apps, Mae
 	$scope.maestros = [];
 	$scope.maestroId = $routeParams.id;
 
-	Apps.getCurrent()
+    User.getCurrent()
     .then(function(data) {
     	$scope.currentApp = data.response.app;
+    	$scope.isAdmin = data.response.roles.indexOf('admin') !== -1;
     });
 
     $scope.list = function()

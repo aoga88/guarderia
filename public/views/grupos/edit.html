@@ -1,61 +1,86 @@
-<div class="container" ng-init="load()">
-	<div class="row">
-		<h1 ng-show="grupoId == 0">Nuevo Grupo</h1>
-		<h1 ng-show="grupoId != 0">Editar Grupo</h1>
+<!-- Breadcrumbs Start -->
+  <div class="row breadcrumbs">
+
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <ul class="breadcrumbs">
+      <li><a href="#"><i class="fa fa-home"></i></a></li>
+      <li><a href="/#/grupos">Grupos</a></li>
+      <li><a href="/#/grupos/{{ grupoId }}">
+      	<span ng-show="grupoId != 0">{{ actualGrupo.nombre }}</span>
+      	<span ng-show="grupoId == 0">Nuevo grupo</span>
+      </a></li>
+    </ul>
+  </div>
+
+</div>
+<!-- Breadcrumbs End -->
+
+<div class="row" ng-init="load()">
+	<div class="col-lg-12">
+		<h3 ng-show="grupoId == 0">Nuevo Grupo</h3>
+		<h3 ng-show="grupoId != 0">Editar Grupo</h3>
+
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="boxed">
+			        <div class="inner">
+			        	<form role="form" name="grupoForm">
+							<div class="form-group has-feedback col-md-12" ng-class="{'has-success': grupoForm.nombre.$valid, 'has-error': grupoForm.nombre.$invalid}">
+								<label class="control-label">
+									Nombre(s):
+								</label>
+								<input type="text" name="nombre" ng-model="actualGrupo.nombre" class="form-control" ng-required="true" />
+							</div>
+							<h5 class="col-md-6">Alumnos</h5>
+							<h5 class="col-md-6">Maestros</h5>
+							<div class="col-md-6">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>Nombre</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="alumno in alumnos" ng-class="{'success': alumno.selected == true}">
+											<td>{{ alumno.nombre }} {{ alumno.apPaterno }} {{ alumno.apMaterno }}</td>
+											<td>
+												<button ng-click="addAlumno(alumno, $index)" ng-hide="alumno.selected == true" class="btn btn-warning btn-xs">Agregar al grupo</button>
+												<button ng-click="removeAlumno(alumno, $index)" ng-show="alumno.selected == true" class="btn btn-danger btn-xs">Quitar del grupo</button>
+											</td>
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+							<div class="col-md-6">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>Nombre</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="maestro in maestros" ng-class="{'success': maestro.selected == true}">
+											<td>{{ maestro.name }} {{ maestro.apPaterno }} {{ maestro.apMaterno }}</td>
+											<td>
+												<button ng-click="addMaestro(maestro, $index)" ng-hide="maestro.selected == true" class="btn btn-warning btn-xs">Agregar al grupo</button>
+												<button ng-click="removeMaestro(maestro, $index)" ng-show="maestro.selected == true" class="btn btn-danger btn-xs">Quitar del grupo</button>
+											</td>
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+							<div class="col-md-12 form-group">
+								<button type="button" ng-click="save()" class="btn btn-success" ng-disabled="grupoForm.$invalid || !actualGrupo.alumnos || !actualGrupo.maestros || actualGrupo.alumnos.length == 0 || actualGrupo.maestros.length == 0">Guardar</button>
+								<a href="/#/grupos" class="btn btn-danger">Cancelar</a>
+							</div>
+						</form>
+			        </div>
+			    </div>
+			</div>
+		</div>
 	</div>
-	<div class="row">
-		<form role="form" name="grupoForm">
-			<div class="form-group has-feedback col-md-12" ng-class="{'has-success': grupoForm.nombre.$valid, 'has-error': grupoForm.nombre.$invalid}">
-				<label class="control-label">
-					Nombre(s):
-				</label>
-				<input type="text" name="nombre" ng-model="actualGrupo.nombre" class="form-control" ng-required="true" />
-			</div>
-			<h3 class="col-md-6">Alumnos</h3>
-			<h3 class="col-md-6">Maestros</h3>
-			<div class="col-md-6">
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="alumno in alumnos" ng-class="{'success': alumno.selected == true}">
-							<td>{{ alumno.nombre }} {{ alumno.apPaterno }} {{ alumno.apMaterno }}</td>
-							<td>
-								<button ng-click="addAlumno(alumno, $index)" ng-hide="alumno.selected == true" class="btn btn-warning">Agregar al grupo</button>
-								<button ng-click="removeAlumno(alumno, $index)" ng-show="alumno.selected == true" class="btn btn-danger">Quitar del grupo</button>
-							</td>
-						</tr>
-
-					</tbody>
-				</table>
-			</div>
-			<div class="col-md-6">
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="maestro in maestros" ng-class="{'success': maestro.selected == true}">
-							<td>{{ maestro.name }} {{ maestro.apPaterno }} {{ maestro.apMaterno }}</td>
-							<td>
-								<button ng-click="addMaestro(maestro, $index)" ng-hide="maestro.selected == true" class="btn btn-warning">Agregar al grupo</button>
-								<button ng-click="removeMaestro(maestro, $index)" ng-show="maestro.selected == true" class="btn btn-danger">Quitar del grupo</button>
-							</td>
-						</tr>
-
-					</tbody>
-				</table>
-			</div>
-			<div class="col-md-12 form-group">
-				<button type="button" ng-click="save()" class="btn btn-success" ng-disabled="grupoForm.$invalid || !actualGrupo.alumnos || !actualGrupo.maestros || actualGrupo.alumnos.length == 0 || actualGrupo.maestros.length == 0">Guardar</button>
-				<a href="/#/grupos" class="btn btn-danger">Cancelar</a>
-			</div>
-		</form>
 </div>

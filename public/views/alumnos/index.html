@@ -1,64 +1,85 @@
-<div class="container" ng-init="list()">
-	<div class="row">
-		<h1>Alumnos</h1>
-	</div>
+<!-- Breadcrumbs Start -->
+  <div class="row breadcrumbs">
 
-	<div class="row" ng-show="isAdmin">
-		<div class="col-xs-12">
-			<a class="btn btn-success" href="/#/alumnos/0">Registrar Alumno</a>
-		</div>
-	</div>
-	<br/>
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="alert alert-danger" ng-show="alumnos.length == 0">
-				No hay Alumnos registrados
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <ul class="breadcrumbs">
+      <li><a href="#"><i class="fa fa-home"></i></a></li>
+      <li><a href="/#/alumnos">Alumnos</a></li>
+    </ul>
+  </div>
+
+</div>
+<!-- Breadcrumbs End -->
+
+<div class="row" ng-init="list()">
+	<div class="col-lg-12">
+		<h3>Alumnos</h3>
+
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="boxed">
+					<!-- Title Bart Start -->
+			        <div class="title-bar white" ng-show="isAdmin">
+			        	  <a class="btn btn-success pull-right" href="/#/alumnos/0">Registrar Alumno</a>
+			        </div>
+			        <!-- Title Bart End -->
+			        <div class="inner">
+						<div class="notification notification-danger" ng-show="alumnos.length == 0">
+							No hay Alumnos registrados
+						</div>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Nombre</th>
+									<th class="hidden-xs">Contactos</th>
+									<th></th>
+									<th></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="alumno in alumnos">
+									<td>{{ alumno.nombre }}</td>
+									<td class="hidden-xs">
+										<span ng-repeat="contacto in alumno.contactos">
+											{{ contacto.name }}<br/>
+										</span>
+									</td>
+									<td class="visible-md visible-lg">
+										<a class="btn btn-default btn-xs" href="/#/alumnos/{{ alumno._id.$id }}/calendario">
+											<i class="fa fa-calendar"></i>
+											Calendario
+										</a>
+									</td>
+									<td class="hidden-md hidden-lg">
+										<a class="btn btn-default btn-xs" href="/#/alumnos/{{ alumno._id.$id }}/calendario-mobile">
+											<i class="fa fa-calendar"></i>
+											Calendario
+										</a>
+									</td>
+									<td>
+										<a class="btn btn-default btn-xs" href="/#/alumnos/{{ alumno._id.$id }}/comment">
+											<i class="fa fa-comment"></i>
+											Comentarios
+										</a>
+									</td>
+									<td>
+										<a class="btn btn-default btn-xs" href="/#/alumnos/{{ alumno._id.$id }}">
+											<i class="fa fa-search"></i>
+											Detalle
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
-			<br/><br/>
 		</div>
+	</div>
+</div>
 
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Nombre</th>
-					<th>Contactos</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="alumno in alumnos">
-					<td>{{ alumno.nombre }}</td>
-					<td>
-						<span ng-repeat="contacto in alumno.contactos">
-							{{ contacto.name }}<br/>
-						</span>
-					</td>
-					<td class="visible-md visible-lg">
-						<a class="btn btn-default" href="/#/alumnos/{{ alumno._id.$id }}/calendario">
-							<i class="fa fa-calendar"></i>
-							Calendario
-						</a>
-					</td>
-					<td class="hidden-md hidden-lg">
-						<a class="btn btn-default" href="/#/alumnos/{{ alumno._id.$id }}/calendario-mobile">
-							<i class="fa fa-calendar"></i>
-							Calendario
-						</a>
-					</td>
-					<td>
-						<a class="btn btn-default" href="/#/alumnos/{{ alumno._id.$id }}/comment">
-							<i class="fa fa-comment"></i>
-							Comentarios
-						</a>
-					</td>
-					<td>
-						<a class="btn btn-default" href="/#/alumnos/{{ alumno._id.$id }}">
-							<i class="fa fa-search"></i>
-							Detalle
-						</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+
+		
 	</div>
 </div>

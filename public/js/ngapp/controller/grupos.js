@@ -24,11 +24,6 @@ function GruposController($scope, $location, $timeout, $routeParams, User, Grupo
 
     $scope.load = function()
     {
-        if ($scope.grupoId === "0")
-        {
-            return false;
-        }
-        
         Alumno.current()
         .then(function(data) {
             angular.forEach(data.response, function(alumno){
@@ -59,7 +54,10 @@ function GruposController($scope, $location, $timeout, $routeParams, User, Grupo
             });
         });
 
-    	
+        if ($scope.grupoId === "0")
+        {
+            return false;
+        }
 
         Grupo.find({_id: $scope.grupoId})
         .then(function(data){

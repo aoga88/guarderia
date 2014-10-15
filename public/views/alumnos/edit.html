@@ -1,81 +1,106 @@
-<div class="container" ng-init="load()">
-	<div class="row">
-		<h1 ng-show="alumnoId == 0">Nuevo Alumno</h1>
-		<h1 ng-show="alumnoId != 0">Editar Alumno</h1>
-	</div>
+<!-- Breadcrumbs Start -->
+<div class="row breadcrumbs">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+  <ul class="breadcrumbs">
+     <li><a href="/#/"><i class="fa fa-home"></i></a></li>
+     <li><a href="/#/alumnos">Alumnos</a></li>
+     <li>
+     	<a ng-show="alumnoId != 0" href="/#/alumnos/{{ alumnoId }}">{{ actualAlumno.nombre }} {{ actualAlumno.apPaterno }} {{ actualAlumno.apMaterno }}</a>
+     	<a ng-show="alumnoId == 0" href="/#/alumnos/0">Nuevo Alumno</a>
+     </li>
+  </ul>
+</div>
+</div>
+<!-- Breadcrumbs End -->
 
-	<div class="row">
-		<form role="form" name="alumnoForm">
-			<div class="form-group has-feedback col-md-12" ng-class="{'has-success': alumnoForm.nombre.$valid, 'has-error': alumnoForm.nombre.$invalid}">
-				<label class="control-label">
-					Nombre(s):
-				</label>
-				<input type="text" name="nombre" ng-model="actualAlumno.nombre" class="form-control" ng-required="true" />
-			</div>
-			<div class="form-group has-feedback col-md-6" ng-class="{'has-success': alumnoForm.apPaterno.$valid, 'has-error': alumnoForm.apPaterno.$invalid}">
-				<label class="control-label">
-					Apellido Paterno:
-				</label>
-				<input type="text" name="apPaterno" ng-model="actualAlumno.apPaterno" class="form-control" ng-required="true" />
-			</div>
-			<div class="form-group has-feedback col-md-6" ng-class="{'has-success': alumnoForm.apMaterno.$valid, 'has-error': alumnoForm.apMaterno.$invalid}">
-				<label class="control-label">
-					Apellido Materno:
-				</label>
-				<input type="text" name="apMaterno" ng-model="actualAlumno.apMaterno" class="form-control" ng-required="!actualAlumno.extranjero || actualAlumno.extranjero == false" />
-			</div>
-			<div class="form-group has-feedback col-md-4" ng-class="{'has-success': alumnoForm.fechaNacimiento.$valid, 'has-error': alumnoForm.fechaNacimiento.$invalid}">
-				<label class="control-label">
-					Fecha de nacimiento:
-				</label>
-				<input type="text" datepicker name="fechaNacimiento" ng-model="actualAlumno.fechaNacimiento" class="form-control" ng-required="true" />
-			</div>
-			<div class="form-group has-feedback col-md-4" ng-class="{'has-success': alumnoForm.tipoSangre.$valid, 'has-error': alumnoForm.tipoSangre.$invalid}">
-				<label class="control-label">
-					Tipo de sangre:
-				</label>
-				<select name="tipoSangre" ng-model="actualAlumno.tipoSangre" class="form-control" 
-				ng-options="value for value in tiposSangre"
-				ng-required="true"></select>
-			</div>
-			<div class="checkbox col-md-4">
-				<br/>
-			    <label>
-			    	¿Es extranjero? <input type="checkbox" ng-model="actualAlumno.extranjero" /> 
-				</label>
-			</div>
-			<h3 class="col-md-6">Contactos</h3>
-			<h3 class="col-md-6">
-				<button type="button" class="btn btn-success" ng-click="actualContacto = {}; showContactForm = true" ng-show="!showContactForm">Nuevo contacto</button>
-				&nbsp;
-			</h3>
-			<div class="col-md-6">
-				<div class="col-md-4" ng-repeat="contacto in actualAlumno.contactos" ng-init="contacto.showImageField = false">
-					<a href="javascript: void(0)" ng-click="viewModal($index)">
-						<img class="img-responsive img-circle" ng-show="!contacto.foto" src="/img/noimage.png" style="width: 125px; height: 125px"/>
-						<img class="img-responsive img-rounded" ng-show="contacto.foto" ng-src="/api/alumno/cfoto/{{ alumnoId }}/{{ $index }}" style="width: 125px; height: 125px"/>
-					</a>
-					<div class="text-center">
-						<div class="text-center">{{ contacto.name }}</div>
-						<a class="btn btn-xs btn-primary" href="javascript: void(0)" ng-click="verDetalle(contacto)">Detalle</a>
-
-						<!-- <button class="btn btn-xs btn-warning" ng-click="uploadImage(contacto)">Cambiar</button> -->
-
-						<a class="btn btn-xs btn-danger" href="javascript: void(0)" ng-click="eliminarContacto($index)">Eliminar</a>
-
-						<form></form>
-						<form name="upload" action="/api/alumno/upload" method="post" enctype="multipart/form-data" novalidate class="simple-form">
-								<input type="hidden" name="alumno_id" value="{{ alumnoId }}" />
-								<input type="hidden" name="contacto_index" value="{{ $index }}" />
-								<input type="file" name="foto" ng-show="contacto.showImageField == true"/>
-								<br ng-show="contacto.showImageField == true"/>
-								<input type="submit" class="btn btn-success btn-xs" ng-show="contacto.showImageField == true" value="Guardar" />
-								<button type="button" ng-click="cancelImage(contacto)" class="btn btn-warning btn-xs" ng-show="contacto.showImageField == true">Cancelar</button>
-						</form>
+<div class="row" ng-init="load()">
+	<div class="col-lg-8">
+		<div class="boxed">
+			<!-- Title Bart Start -->
+	          <div class="title-bar white">
+	            <h4 ng-show="alumnoId == 0">Nuevo Alumno</h4>
+				<h4 ng-show="alumnoId != 0">Editar Alumno</h4>
+	          </div>
+	          <!-- Title Bart End -->
+	        <div class="inner">
+	        	<form role="form" name="alumnoForm">
+					<div class="form-group has-feedback col-md-12" ng-class="{'has-success': alumnoForm.nombre.$valid, 'has-error': alumnoForm.nombre.$invalid}">
+						<label class="control-label">
+							Nombre(s):
+						</label>
+						<input type="text" name="nombre" ng-model="actualAlumno.nombre" class="form-control" ng-required="true" />
 					</div>
-				</div>
+					<div class="form-group has-feedback col-md-6" ng-class="{'has-success': alumnoForm.apPaterno.$valid, 'has-error': alumnoForm.apPaterno.$invalid}">
+						<label class="control-label">
+							Apellido Paterno:
+						</label>
+						<input type="text" name="apPaterno" ng-model="actualAlumno.apPaterno" class="form-control" ng-required="true" />
+					</div>
+					<div class="form-group has-feedback col-md-6" ng-class="{'has-success': alumnoForm.apMaterno.$valid, 'has-error': alumnoForm.apMaterno.$invalid}">
+						<label class="control-label">
+							Apellido Materno:
+						</label>
+						<input type="text" name="apMaterno" ng-model="actualAlumno.apMaterno" class="form-control" ng-required="!actualAlumno.extranjero || actualAlumno.extranjero == false" />
+					</div>
+					<div class="form-group has-feedback col-md-4" ng-class="{'has-success': alumnoForm.fechaNacimiento.$valid, 'has-error': alumnoForm.fechaNacimiento.$invalid}">
+						<label class="control-label">
+							Fecha de nacimiento:
+						</label>
+						<input type="text" datepicker name="fechaNacimiento" ng-model="actualAlumno.fechaNacimiento" class="form-control" ng-required="true" />
+					</div>
+					<div class="form-group has-feedback col-md-4" ng-class="{'has-success': alumnoForm.tipoSangre.$valid, 'has-error': alumnoForm.tipoSangre.$invalid}">
+						<label class="control-label">
+							Tipo de sangre:
+						</label>
+						<select name="tipoSangre" ng-model="actualAlumno.tipoSangre" class="form-control" 
+						ng-options="value for value in tiposSangre"
+						ng-required="true"></select>
+					</div>
+					<div class="checkbox col-md-4">
+						<br/>
+					    <label>
+					    	¿Es extranjero? <input type="checkbox" ng-model="actualAlumno.extranjero" /> 
+						</label>
+					</div>
+				</form>
 			</div>
-			<div class="col-md-6" ng-show="showContactForm">
+		</div>
+	</div>
+	<div class="col-lg-4 col-xs-12 col-sm-12">
+		<div class="boxed">
+			<!-- Title Bart Start -->
+	          <div class="title-bar white">
+	            <h4>Contactos</h4>
+	            <ul class="actions">
+	            	<li><a href="javascript:;" ng-click="actualContacto = {}; showContactForm = true" ng-show="!showContactForm"><i class="fa fa-plus"></i> Nuevo</a></li>
+	            </ul>
+	          </div>
+	          <!-- Title Bart End -->
+	        <div class="inner">
+						<div class="col-sm-6 col-sm-6 text-center col-lg-12" ng-repeat="contacto in actualAlumno.contactos" ng-init="contacto.showImageField = false" style="margin-bottom: 15px">
+							<a class="col-lg-6 col-sm-6 col-xs-6 text-center" href="javascript: void(0)" ng-click="verDetalle(contacto)">
+								<img class="img-responsive img-circle" ng-show="!contacto.foto" src="/img/noimage.png" style="width: 125px; height: 125px"/>
+								<img class="img-responsive img-circle" ng-show="contacto.foto" ng-src="/api/alumno/cfoto/{{ alumnoId }}/{{ $index }}" style="width: 125px; height: 125px"/>
+							</a>
+							<div class="text-center hidden-xs col-lg-6">
+								<div class="text-center">{{ contacto.name }}</div>
+								<a class="btn btn-xs btn-primary" href="javascript: void(0)" ng-click="verDetalle(contacto)">Detalle</a>
+
+								<a class="btn btn-xs btn-danger" href="javascript: void(0)" ng-click="eliminarContacto($index)">Eliminar</a>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-4 col-sm-12 pull-right col-xs-12" ng-show="showContactForm">
+		<div class="boxed">
+			<!-- Title Bart Start -->
+	          <div class="title-bar white">
+	            <h4>Detalles</h4>
+	          </div>
+	          <!-- Title Bart End -->
+	        <div class="inner">
 				<div class="form-group has-feedback" ng-class="{'has-success': actualContacto._id != '', 'has-error': !actualContacto._id || actualContacto._id == ''}">
 					<label class="control-label">Correo:</label>
 					<input type="email" ng-blur="buscaUsuario()" class="form-control" ng-model="actualContacto._id" />
@@ -106,23 +131,21 @@
 					</table>
 				</div>
 				<div class="form-group">
-					<button type="button" class="btn btn-success" ng-disabled="!actualContacto || !actualContacto.telefonos || actualContacto.telefonos.length == 0 || !actualContacto.name || actualContacto.name == '' || !actualContacto._id || actualContacto._id == ''" ng-click="addContacto()">Guardar Contacto</button>
-					<button type="button" class="btn btn-danger" ng-click="actualContacto = {}; showContactForm = false">Cancelar</button>
+					<button type="button" class="btn btn-success btn-xs" ng-disabled="!actualContacto || !actualContacto.telefonos || actualContacto.telefonos.length == 0 || !actualContacto.name || actualContacto.name == '' || !actualContacto._id || actualContacto._id == ''" ng-click="addContacto()">Guardar Contacto</button>
+					<button type="button" class="btn btn-danger btn-xs" ng-click="actualContacto = {}; showContactForm = false">Cancelar</button>
 				</div>
+				</form>
+	        </div>
+		</div>
+	</div>
+		<div class="col-lg-8 pull-left col-xs-12 col-sm-12">
+		<div class="boxed">
+			<div class="inner">
+				<span class="col-md-6 alert alert-success" ng-show="successSave">Los cambios han sido guardados</span>
+				<button type="button" ng-click="save()" class="btn btn-success pull-right" ng-disabled="alumnoForm.$invalid || actualAlumno.contactos.length == 0">Guardar</button>
+				<a href="/#/alumnos" class="btn btn-danger pull-right">Cancelar</a>
 			</div>
-			<div class="col-md-12">
-				<br/>
-				<span class=" col-md-6 alert alert-success" ng-show="successSave">Los cambios han sido guardados</span>
-				<br/>
-			</div>
-			<div class="col-md-12">
-				<button type="button" ng-click="save()" class="btn btn-success" ng-disabled="alumnoForm.$invalid || actualAlumno.contactos.length == 0">Guardar</button>
-				<a href="/#/alumnos" class="btn btn-danger ">Cancelar</a>
-			</div>
-			<!-- ALERGIAS -->
-			<!-- FOTO -->
-		</form>
-
+		</div>
 	</div>
 </div>
 

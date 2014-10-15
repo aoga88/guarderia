@@ -31,44 +31,44 @@
 
     <!-- Menu Start -->
     <ul class="menu navbar-collapse" id="bs-example-navbar-collapse-1">
-      <li class="purple" ng-class="{active: menu == 'home'}" ng-show="isAdmin == true">
+      <li class="lightyellow" ng-class="{'active': menu == 'home'}" ng-show="isAdmin == true">
         <a href="/#" class="menu-link">
           <span class="menu-icon"><i class="fa fa-check"></i></span>
           <span class="menu-text">Asistencia</span>
         </a>
       </li>
-      <li class="cream" ng-show="isSuperAdmin == true" ng-class="{active: menu == 'guarderias'}">
+      <li class="cream" ng-show="isSuperAdmin == true" ng-class="{'active': menu == 'guarderias'}">
         <a href="/#/guarderias" class="menu-link">
           <span class="menu-icon"><i class="fa fa-book"></i></span>
           <span class="menu-text">Guarderias</span>
         </a>
       </li>
-      <li class="purple" ng-show="isAdmin == true || isMaestro == true || isPadre == true" ng-class="{active: menu == 'alumnos'}">
+      <li class="lightyellow" ng-show="isAdmin == true || isMaestro == true || isPadre == true" ng-class="{'active': menu == 'alumnos'}">
         <a href="/#/alumnos" class="menu-link">
           <span class="menu-icon"><i class="fa fa-user"></i></span>
           <span class="menu-text">Alumnos</span>
         </a>
       </li>
-      <li class="purple" ng-show="isAdmin == true" ng-class="{active: menu == 'maestro'}">
+      <li class="lightyellow" ng-show="isAdmin == true" ng-class="{'active': menu == 'maestro'}">
         <a href="/#/maestro" class="menu-link">
           <span class="menu-icon"><i class="fa fa-pencil"></i></span>
           <span class="menu-text">Maestros</span>
         </a>
       </li>
-      <li class="purple" ng-show="isAdmin == true" ng-class="{active: menu == 'actividades'}">
+      <li class="lightyellow" ng-show="isAdmin == true" ng-class="{'active': menu == 'actividades'}">
         <a href="/#/actividades" class="menu-link">
           <span class="menu-icon"><i class="fa fa-file-text-o"></i></span>
           <span class="menu-text">Catálogo</span>
         </a>
       </li>
-      <li class="purple" ng-show="isAdmin == true || isMaestro == true" ng-class="{active: menu == 'grupos'}">
+      <li class="lightyellow" ng-show="isAdmin == true || isMaestro == true" ng-class="{'active': menu == 'grupos'}">
         <a href="/#/grupos" class="menu-link">
           <span class="menu-icon"><i class="fa fa-table"></i></span>
           <span class="menu-text">Grupos</span>
         </a>
       </li>
-      <li class="purple" ng-show="isAdmin == true || isMaestro == true" 
-      ng-class="{active: menu == 'registro'}">
+      <li class="lightyellow" ng-show="isAdmin == true || isMaestro == true" 
+      ng-class="{'active': menu == 'registro'}">
         <a href="/#/registro" class="menu-link">
           <span class="menu-icon"><i class="fa fa-exchange"></i></span>
           <span class="menu-text">Registro</span>
