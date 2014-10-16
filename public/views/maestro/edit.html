@@ -28,7 +28,8 @@
 						<label class="control-label">
 							Correo electrónico:
 						</label>
-						<input type="email" name="email" ng-model="actualMaestro.email" ng-blur="buscaUsuario()" class="form-control" ng-required="true" />
+						<input ng-show="maestroId != 0" type="email" name="email" ng-model="actualMaestro._id" ng-blur="buscaUsuario(actualMaestro._id)" class="form-control" ng-required="maestroId != 0" />
+						<input ng-hide="maestroId != 0" type="email" name="email" ng-model="actualMaestro.email" ng-blur="buscaUsuario(actualMaestro.email)" class="form-control" ng-required="maestroId == 0" />
 					</div>
 					<div class="form-group has-feedback col-md-12" ng-class="{'has-success': maestroForm.nombre.$valid, 'has-error': maestroForm.nombre.$invalid}">
 						<label class="control-label">

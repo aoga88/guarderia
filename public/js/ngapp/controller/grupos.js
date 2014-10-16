@@ -46,7 +46,7 @@ function GruposController($scope, $location, $timeout, $routeParams, User, Grupo
 
                 if (typeof $scope.actualGrupo.maestros !== 'undefined') {
                     angular.forEach($scope.maestros, function(maestro) {
-                        if ($scope.actualGrupo.maestros.indexOf(maestro._id.$id) !== -1) {
+                        if ($scope.actualGrupo.maestros.indexOf(maestro._id) !== -1) {
                             maestro.selected = true;
                         }
                     });
@@ -61,7 +61,7 @@ function GruposController($scope, $location, $timeout, $routeParams, User, Grupo
 
         Grupo.find({_id: $scope.grupoId})
         .then(function(data){
-            $scope.actualGrupo = data.response[$scope.grupoId];
+            $scope.actualGrupo = data.response;
             if (typeof $scope.actualGrupo.alumnos !== 'undefined') {
                     angular.forEach($scope.alumnos, function(alumno) {
                         if ($scope.actualGrupo.alumnos.indexOf(alumno._id.$id) !== -1) {
@@ -71,7 +71,7 @@ function GruposController($scope, $location, $timeout, $routeParams, User, Grupo
                 }
             if (typeof $scope.actualGrupo.maestros !== 'undefined') {
                     angular.forEach($scope.maestros, function(maestro) {
-                        if ($scope.actualGrupo.maestros.indexOf(maestro._id.$id) !== -1) {
+                        if ($scope.actualGrupo.maestros.indexOf(maestro._id) !== -1) {
                             maestro.selected = true;
                         }
                     });
@@ -108,7 +108,7 @@ function GruposController($scope, $location, $timeout, $routeParams, User, Grupo
             $scope.actualGrupo.maestros = [];
         }
 
-        $scope.actualGrupo.maestros.push(maestro._id.$id);
+        $scope.actualGrupo.maestros.push(maestro._id);
         maestro.selected = true;
     }
 
@@ -117,7 +117,7 @@ function GruposController($scope, $location, $timeout, $routeParams, User, Grupo
             $scope.actualGrupo.maestros = [];
         }
 
-        var indexMaestro = $scope.actualGrupo.maestros.indexOf(maestro._id.$id);
+        var indexMaestro = $scope.actualGrupo.maestros.indexOf(maestro._id);
 
         if (indexMaestro === -1) {
             return false;

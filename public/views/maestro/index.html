@@ -39,14 +39,14 @@
 							<tbody>
 								<tr ng-repeat="maestro in maestros">
 									<td>{{ maestro.name }} {{ maestro.apPaterno }} {{ maestro.apMaterno }}</td>
-									<td>{{ maestro.email }}</td>
+									<td>{{ maestro._id }}</td>
 									<td>
 										<span ng-repeat="telefono in maestro.telefonos">
 											{{ telefono }}, 
 										</span>
 									</td>
 									<td>
-										<a class="btn btn-default btn-xs" href="/#/maestro/{{ maestro._id.$id }}">
+										<a class="btn btn-default btn-xs" href="/#/maestro/{{ maestro._id }}">
 											<i class="fa fa-search"></i>
 											Ver Detalle
 										</a>

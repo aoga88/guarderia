@@ -95,6 +95,11 @@ class Index extends Controller
                 foreach ($grupo['alumnos'] as $alumno) {
 
                     $dataAlumno  = $model_alumno->findOne(['_id' => new MongoId($alumno)]);
+                    if (!isset($dataAlumno['actividades']))
+                    {
+                        $dataAlumno['actividades'] = [];
+                    }
+                    
                     $actividades = $dataAlumno['actividades'];
                     $haveAsistencia = false;
                     $haveSalida = false;
@@ -151,16 +156,9 @@ class Index extends Controller
         if (isset($data->alumnos)) {
             $model = new Model_Alumno();
             foreach ($data->alumnos as $alumnoId) {
-                $alumno = $model->findOne(['_id' => new MongoId($alumnoId)]);
-                if (!isset($alumno['actividades'])) {
-                    $alumno['actividades'] = [];
-                }
 
                 foreach ($data->actividades as $actividad) {
-                    $alumno['actividades'][] = [
-                        'fecha' => new MongoDate(),
-                        'actividad' => $actividad
-                    ];
+                    $model_alumno->update(['_id' => new MongoId($alumnoId)], ['$push' => [ 'actividades' => $actividad] ]);
 
                     if (!isset($notifications[$alumnoId])) {
                         $notifications[$alumnoId] = [];
@@ -174,8 +172,6 @@ class Index extends Controller
 
                 unset($alumno['_id']);
                 unset($alumno['created']);
-
-                $model->update(['_id' => new MongoId($alumnoId)],['$set' => $alumno]);
             }
         }
 

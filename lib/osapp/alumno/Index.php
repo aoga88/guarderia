@@ -61,6 +61,16 @@ class Index extends Controller
         $model_usuario = new Model_User();
         $model_alumno  = new Model_Alumno();
 
+        $newContactos = [];
+        foreach ($data->contactos as $contacto)
+        {
+            $newContactos[] = $contacto->_id;
+        }
+
+        $oldContactos = $data->contactos;
+        unset($data->contactos);
+        $data->contactos = $newContactos;
+
         if (isset($data->_id) && $data->_id != 0) {
             $conditions = ['_id' => new MongoId($data->_id)];
             $alumnoId = $data->_id;
@@ -77,7 +87,7 @@ class Index extends Controller
             $alumnoId = $data->_id;
         }
 
-        foreach ($data->contactos as $contacto) {
+        foreach ($oldContactos as $contacto) {
             $userConditions = ['_id' => $contacto->_id];
             $usuario = $model_usuario->findOne($userConditions);
 
@@ -97,7 +107,7 @@ class Index extends Controller
                         $usuario['alumnos'][] = $alumnoId;
                     }
                 }
-		unset($usuario['_id']);
+		        unset($usuario['_id']);
                 $model_usuario->update($userConditions, ['$set' => $usuario]);
             } else {
                 $contacto->roles    = ['padre'];
@@ -238,24 +248,22 @@ EOD;
         $alumnos = [];
 
         if (in_array('maestro', $roles)) {
-            $model_maestro = new Model_Maestro();
-            $maestro = $model_maestro->findOne(['email' => $loggedUser['_id']]);
+            $maestroId = $loggedUser['_id'];
 
-            if (isset($maestro['_id']))
-            {
-                $maestroId = $maestro['_id']->__toString();
-
-                $model_grupo = new Model_Grupo();
-                $grupos = $model_grupo->find(['maestros' => ['$in' => [$maestroId]]]);
-                
-                foreach($grupos as $grupo) {
-                    $alumnos = array_merge($alumnos, $grupo['alumnos']);
-                }
+            $model_grupo = new Model_Grupo();
+            $grupos = $model_grupo->find(['maestros' => ['$in' => [$maestroId]]]);
+            
+            foreach($grupos as $grupo) {
+                $alumnos = array_merge($alumnos, $grupo['alumnos']);
             }
         }
 
         if (in_array('padre', $roles)) {
-            $alumnos = array_merge($alumnos, $loggedUser['alumnos']);
+            $findAlumnos = $model_alumno->find(['contactos' => ['$in' => [$loggedUser['_id']]]], ['contactos']);
+            foreach($findAlumnos as $id => $alumno)
+            {
+                $alumnos[] = $id;
+            }
         }
 
         foreach ($alumnos as $index => $alumno) {
@@ -264,16 +272,16 @@ EOD;
             }
         }
 
-        $alumnos = $model_alumno->find(['_id' => ['$in' => $alumnos]]);
-        $alumnos = iterator_to_array($alumnos);
+        $dataAlumnos = $model_alumno->find(['_id' => ['$in' => $alumnos]]);
+        $dataAlumnos = iterator_to_array($dataAlumnos);
 
         if (in_array('admin', $roles)) {
             $app          = $loggedUser['app'];
             $result = $model_alumno->find(['app' => new MongoId($app)]);
-            $alumnos = iterator_to_array($result);
+            $dataAlumnos = iterator_to_array($result);
         }
 
-        $this->response->sendMessage($alumnos)
+        $this->response->sendMessage($dataAlumnos)
             ->setCode(200);
     }
 
@@ -292,7 +300,7 @@ EOD;
             'contacto' => $conditions->contacto_name
         ];
 
-        $model_alumno->update(['_id' => new MongoId($alumno_id)], ['$push' => [ 'actividades' => $actividad] ]);
+        $model_alumno->update(['_id' => new MongoId($alumno_id)], ['$push' => [ 'actividades' => $actividad] ], ['upsert' => true]);
         $this->response->sendMessage($actividad)
             ->setCode(200);
     }
@@ -355,11 +363,7 @@ EOD;
             $gruposAlumno = $model_grupo->find(['alumnos' => ['$in' => [$alumno_id]] ]);
             foreach($gruposAlumno as $grupo_id => $info)
             {
-                foreach ($info['maestros'] as $maestro)
-                {
-                    $maestroInfo = $model_maestro->findOne(['_id' => new MongoId($maestro)]);
-                    $usuarios = array_merge($usuarios, [$maestroInfo['email']]);
-                }
+                $usuarios = array_merge($usuarios, $info['maestros']);
             }
         }
         
@@ -369,28 +373,20 @@ EOD;
             $gruposAlumno = $model_grupo->find(['alumnos' => ['$in' => [$alumno_id]] ]);
             foreach($gruposAlumno as $grupo_id => $info)
             {
-                foreach ($info['maestros'] as $maestro)
-                {
-                    $maestroInfo = $model_maestro->findOne(['_id' => new MongoId($maestro)]);
-                    $usuarios = array_merge($usuarios, [$maestroInfo['email']]);
-                }
+                $usuarios = array_merge($usuarios, $info['maestros']);
             }
 
-            $contactosAlumno = $model_user->find(['roles' => ['$in' => ['padre']], 'alumnos' => ['$in' => [new MongoId($alumno_id)] ] ]);
-            foreach ($contactosAlumno as $contacto)
-            {
-                $usuarios = array_merge($usuarios, [$contacto['_id']]);
-            }
+            $dataAlumno = $model_alumno->findOne(['_id' => new MongoId($alumno_id)]);
+            $contactosAlumno = $dataAlumno['contactos'];
+            $usuarios = array_merge($usuarios, $contactosAlumno);
         }
 
         // si es maestro enviar notificacion a [contactos, guarderia]
         if (in_array('maestro', $roles))
         {
-            $contactosAlumno = $model_user->find(['roles' => ['$in' => ['padre']], 'alumnos' => ['$in' => [new MongoId($alumno_id)] ] ]);
-            foreach ($contactosAlumno as $contacto)
-            {
-                $usuarios = array_merge($usuarios, [$contacto['_id']]);
-            }
+            $dataAlumno = $model_alumno->findOne(['_id' => new MongoId($alumno_id)]);
+            $contactosAlumno = $dataAlumno['contactos'];
+            $usuarios = array_merge($usuarios, $contactosAlumno);
 
             $guarderia_id = $alumno['app'];
             $adminGuarderia = $model_user->find(['app' => $guarderia_id->__toString(), 'roles' => ['$in' => ['admin']], 'active' => true, 'deleted' => false ], ['_id' => true, 'name' => true]);
@@ -418,6 +414,20 @@ EOD;
         $model_alumno->update(['_id' => new MongoId($alumno_id)], ['$push' => [ 'mensajes' => $mensaje]]);
 
         $this->response->sendMessage($mensaje)
+            ->setCode(200);
+    }
+
+    public function contactos($alumno_id)
+    {
+        $model_alumno = new Model_Alumno();
+        $model_user   = new Model_User();
+
+        $alumno    = $model_alumno->findOne(['_id' => new MongoId($alumno_id)]);
+        $contactos = $alumno['contactos'];
+
+        $infoContactos = $model_user->find(['_id' => ['$in' => $contactos] ],[ 'name' => true, 'apPaterno' => true, 'apMaterno' => true, 'foto' => true ]);
+
+        $this->response->sendMessage(iterator_to_array($infoContactos))
             ->setCode(200);
     }
 }

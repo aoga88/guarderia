@@ -27,7 +27,11 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno, Us
 		Alumno.current()
 	    .then(function(data){
             angular.forEach(data.response, function(alumno){
-                $scope.alumnos.push(alumno);
+            	Alumno.contactos(alumno._id.$id)
+            	.then(function(data){
+            		alumno.contactos = data.response;
+                	$scope.alumnos.push(alumno);
+            	});
             });
 	    });
 	}
@@ -70,8 +74,13 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno, Us
             		
             	});	
             }
-            
         });
+
+
+		Alumno.contactos($scope.alumnoId)
+		.then(function(data){
+			$scope.contactos = data.response;
+		});
     }
 
 	$scope.addTel = function()

@@ -18,6 +18,7 @@ function CalendarioController($scope, Registro, Alumno) {
 		'20:00': {},
 		'21:00': {},
 		'22:00': {},
+		'23:00': {},
 	};
 
 	$scope.dias = {

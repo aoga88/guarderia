@@ -6,6 +6,7 @@ function DashboardController($scope, $timeout, $http, Alumno)
     $scope.isAsistencia     = true;
     $scope.haveSalida       = false;
     $scope.isAdmin          = false;
+    $scope.contactos        = {};
 
 	Alumno.current()
     .then(function(data){
@@ -71,6 +72,11 @@ function DashboardController($scope, $timeout, $http, Alumno)
         } else {
             $scope.isAsistencia = true;
         }
+
+        Alumno.contactos(alumno._id.$id)
+        .then(function(data){
+            $scope.contactos = data.response;
+        });
     }
 
     $scope.seleccionaContacto = function(contacto)

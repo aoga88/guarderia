@@ -206,7 +206,7 @@ function AplicationController($scope, $routeParams, $timeout, $location, Apps, U
     {
         Pago.send($scope.entityApp, $scope.indexPago)
         .then( function(data) {
-            console.log(data);
+            
         });
     }
 

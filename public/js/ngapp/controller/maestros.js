@@ -66,7 +66,7 @@ function MaestrosController($scope, $location, $timeout, $routeParams, Apps, Mae
 		$scope.actualMaestro.app = $scope.currentApp;
 		Maestro.save($scope.actualMaestro, $scope.maestroId)
 		.then(function(data) {
-			$location.path('/maestro/' + data.response._id.$id).replace();
+			$location.path('/maestro/' + data.response._id).replace();
 			$scope.successSave = true;
 			$timeout(function(){
                 $scope.successSave = false
@@ -74,25 +74,21 @@ function MaestrosController($scope, $location, $timeout, $routeParams, Apps, Mae
 		});
 	}
 
-	$scope.buscaUsuario = function()
+	$scope.buscaUsuario = function(email)
 	{
-		if (typeof $scope.actualMaestro.email === 'undefined')
+		if (typeof email === 'undefined')
 		{
 			return false;
 		}
 
-		User.find({_id: $scope.actualMaestro.email, app: $scope.currentApp})
+		User.find({_id: email, app: $scope.currentApp})
 		.then(function(data) {
-			var mail = $scope.actualMaestro.email;
-			if (typeof data.response[mail] === 'undefined') {
-				$scope.actualMaestro = {
-					email: mail
-				};
-
+			var mail = $scope.actualMaestro._id;
+			if (typeof data.response[email] === 'undefined') {
 				return false;
 			}
 
-			roles = data.response[mail].roles;
+			roles = data.response[email].roles;
 			
 			if ($scope.maestroId === '0' && roles.indexOf('maestro') !== -1) {
 				$("#error").modal();
@@ -100,8 +96,8 @@ function MaestrosController($scope, $location, $timeout, $routeParams, Apps, Mae
 				return false;
 			}
 
-			$scope.actualMaestro = data.response[mail];
-			$scope.actualMaestro.email = data.response[mail]._id;
+			$scope.actualMaestro = data.response[email];
+			$scope.actualMaestro.email = data.response[email]._id;
 		});
 	}
 }

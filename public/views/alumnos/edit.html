@@ -77,19 +77,19 @@
 	          </div>
 	          <!-- Title Bart End -->
 	        <div class="inner">
-						<div class="col-sm-6 col-sm-6 text-center col-lg-12" ng-repeat="contacto in actualAlumno.contactos" ng-init="contacto.showImageField = false" style="margin-bottom: 15px">
-							<a class="col-lg-6 col-sm-6 col-xs-6 text-center" href="javascript: void(0)" ng-click="verDetalle(contacto)">
-								<img class="img-responsive img-circle" ng-show="!contacto.foto" src="/img/noimage.png" style="width: 125px; height: 125px"/>
-								<img class="img-responsive img-circle" ng-show="contacto.foto" ng-src="/api/alumno/cfoto/{{ alumnoId }}/{{ $index }}" style="width: 125px; height: 125px"/>
-							</a>
-							<div class="text-center hidden-xs col-lg-6">
-								<div class="text-center">{{ contacto.name }}</div>
-								<a class="btn btn-xs btn-primary" href="javascript: void(0)" ng-click="verDetalle(contacto)">Detalle</a>
+					<div class="col-sm-6 col-sm-6 text-center col-lg-12" ng-repeat="contacto in contactos" ng-init="contacto.showImageField = false" style="margin-bottom: 15px">
+						<a class="col-lg-6 col-sm-6 col-xs-6 text-center" href="javascript: void(0)" ng-click="verDetalle(contacto)">
+							<img class="img-responsive img-circle" ng-show="!contacto.foto" src="/img/noimage.png" style="width: 125px; height: 125px"/>
+							<img class="img-responsive img-circle" ng-show="contacto.foto" ng-src="/api/user/{{ contacto._id }}/picture/250" style="width: 125px; height: 125px"/>
+						</a>
+						<div class="text-center hidden-xs col-lg-6">
+							<div class="text-center">{{ contacto.name }} {{ contacto.apPaterno }}</div>
+							<a class="btn btn-xs btn-primary" href="javascript: void(0)" ng-click="verDetalle(contacto)">Detalle</a>
 
-								<a class="btn btn-xs btn-danger" href="javascript: void(0)" ng-click="eliminarContacto($index)">Eliminar</a>
-							</div>
+							<a class="btn btn-xs btn-danger" href="javascript: void(0)" ng-click="eliminarContacto($index)">Eliminar</a>
 						</div>
 					</div>
+				</div>
 			</div>
 		</div>
 	</div>

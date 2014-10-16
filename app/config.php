@@ -92,6 +92,13 @@ return [
 				'requiredLogin' => true
 			],
 
+			'/alumno/:id/contactos' => [
+				'module'        => 'alumno',
+				'controller'    => 'index',
+				'action'        => 'contactos',
+				'requiredLogin' => true
+			],
+
 			'/alumno/cfoto/:id/:index' => [
 				'module'        => 'alumno',
 				'controller'    => 'upload',

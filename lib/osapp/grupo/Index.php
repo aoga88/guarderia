@@ -49,20 +49,23 @@ class Index extends Controller
         $loggedUser    = Auth::getSession($config);
         $app           = $loggedUser['app'];
         $model_grupo   = new Model_Grupo();
-        $model_maestro = new Model_Maestro();
+        $model_maestro = new Model_User();
         $conditions    = ['app' => $app];
 
-        if (in_array('maestro', $loggedUser['roles']) && !in_array('admin', $loggedUser['roles'])) {
-            $maestro = $model_maestro->findOne(['email' => $loggedUser['_id']]);
-            $conditions['maestros'] = ['$in' => [$maestro['_id']->__toString()]];
+        if (in_array('maestro', $loggedUser['roles'])) {
+            $conditions['maestros'] = ['$in' => [$loggedUser['_id']]];
         }
 
-        $result        = $model_grupo->find($conditions);
-        $result        = iterator_to_array($result);
+        if (in_array('admin', $loggedUser['roles'])) {
+            unset($conditions['maestros']);
+        }
+
+        $result = $model_grupo->find($conditions);
+        $result = iterator_to_array($result);
 
         foreach($result as $index => $grupo) {
             foreach($grupo['maestros'] as $indexMaestro => $maestro) {
-                $result[$index]['maestros'][$indexMaestro] = $model_maestro->findOne(['_id' => new MongoId($maestro)]);
+                $result[$index]['maestros'][$indexMaestro] = $model_maestro->findOne(['_id' => $maestro]);
             }
         }
 
@@ -121,18 +124,22 @@ class Index extends Controller
         $config       = osrestConfig('auth');
         $roles        = Auth::getSession($config, 'roles');
         $conditions   = json_decode(file_get_contents("php://input"));
+
+        $search = [
+            '_id' => new MongoId($conditions->_id)
+        ];
+
         $model_grupo = new Model_Grupo();
-        $result       = $model_grupo->find($conditions);
-        $data         = iterator_to_array($result);
+        $data       = $model_grupo->findOne($search);
 
         if (!in_array('superadmin', $roles)) {
             $currentApp = Auth::getSession($config, 'app');
-            if ($currentApp !== $data[$conditions->_id->__toString()]['app']) {
+            if ($currentApp !== $data['app']) {
                throw new Exception("notAllowed", 1);
             }
         }
 
-        $this->response->sendMessage(iterator_to_array($result))
+        $this->response->sendMessage($data)
             ->setCode(200);
     }
 }

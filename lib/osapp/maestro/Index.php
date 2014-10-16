@@ -47,8 +47,10 @@ class Index extends Controller
         $config          = osrestConfig('auth');
         $loggedUser      = Auth::getSession($config);
         $app             = $loggedUser['app'];
-        $model_maestro = new Model_Maestro();
-        $result          = $model_maestro->find(['app' => $app]);
+
+
+        $model_user = new Model_User();
+        $result = $model_user->find(['app' => $app, 'roles' => ['$in' => ['maestro']]]);
 
         $this->response->sendMessage(iterator_to_array($result))
             ->setCode(200);
@@ -63,9 +65,12 @@ class Index extends Controller
     {    
         parent::validateRoles(['admin']);
         $model_maestro = new Model_Maestro();
-        $data       = json_decode(file_get_contents("php://input"));
-        $config     = osrestConfig('auth');
-        $roles      = Auth::getSession($config, 'roles');
+        $data          = json_decode(file_get_contents("php://input"));
+        $config        = osrestConfig('auth');
+        $loggedUser    = Auth::getSession($config);
+        $app           = $loggedUser['app'];
+        $roles         = Auth::getSession($config, 'roles');
+        $data->app     = $app;
 
         if (!in_array('superadmin', $roles)) {
             $currentApp = Auth::getSession($config, 'app');
@@ -80,22 +85,20 @@ class Index extends Controller
         	$data->active = true;
         }
 
-        if (isset($data->_id) && $data->_id !== "0") {
-            $conditions = ['_id' => new MongoId($data->_id)];
-            unset($data->_id);
-            unset($data->created);
-            $result = $model_maestro->update($conditions, ['$set' => $data]);
-        } else {
-            unset($data->_id);
-            $data->created = new MongoDate();
-            $result = $model_maestro->insert($data);
+        if ($data->_id === "0" && isset($data->email))
+        {
+            $data->_id = $data->email;
+            unset($data->email);
         }
 
-        $userConditions = ['_id' => $data->email];
+        $userConditions = ['_id' => $data->_id];
         $usuario        = $model_usuario->findOne($userConditions);
         $dataResponse   = clone $data;
 
         if (!empty($usuario)) {
+
+            $usuario = array_merge($usuario, (array) $data);
+
             if (!in_array('maestro', $usuario['roles']))
             {
                 $usuario['roles'][] = 'maestro';
@@ -103,7 +106,15 @@ class Index extends Controller
 
             unset($usuario['created']);
             $usuario['telefonos'] = $data->telefonos;
+            $user_id = $usuario['_id'];
+            unset($usuario['_id']);
             $model_usuario->update($userConditions, ['$set' => $usuario]);
+            $usuario['_id'] = $user_id;
+            if ($loggedUser['_id'] === $data->_id)
+            {
+                $sessionName = $config['sessionName'];
+                $_SESSION[$sessionName]['osrest_user'] = serialize($usuario);
+            }
         } else {
             $data->roles    = ['maestro'];
             $plainPassword      = uniqid();
@@ -112,7 +123,6 @@ class Index extends Controller
             $data->active   = true;
             $data->deleted  = false;
             $data->app      = $currentApp;
-            $data->_id      = $data->email;
             $data->token    = uniqid();
             unset($data->email);
 
@@ -166,15 +176,18 @@ EOD;
     {
         parent::validateRoles(['superadmin', 'admin']);
         $config       = osrestConfig('auth');
+        $loggedUser      = Auth::getSession($config);
+        $app             = $loggedUser['app'];
         $roles        = Auth::getSession($config, 'roles');
         $conditions   = json_decode(file_get_contents("php://input"));
-        $model_maestro = new Model_Maestro();
-        $result       = $model_maestro->find($conditions);
+        $conditions->app = $app;
+        $model_user = new Model_User();
+        $result       = $model_user->find($conditions);
         $data         = iterator_to_array($result);
 
         if (!in_array('superadmin', $roles)) {
             $currentApp = Auth::getSession($config, 'app');
-            if ($currentApp !== $data[$conditions->_id->__toString()]['app']) {
+            if ($currentApp !== $data[$conditions->_id]['app']) {
                throw new Exception("notAllowed", 1);
             }
         }
