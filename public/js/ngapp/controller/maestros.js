@@ -66,7 +66,7 @@ function MaestrosController($scope, $location, $timeout, $routeParams, Apps, Mae
 		$scope.actualMaestro.app = $scope.currentApp;
 		Maestro.save($scope.actualMaestro, $scope.maestroId)
 		.then(function(data) {
-			$location.path('/maestro/' + data.response._id).replace();
+			$location.path('/maestro/').replace();
 			$scope.successSave = true;
 			$timeout(function(){
                 $scope.successSave = false

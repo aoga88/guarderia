@@ -63,7 +63,13 @@
 						</label>
 					</div>
 				</form>
+				<div class="col-lg-12">
+					<div class="notification notification-danger" ng-show="actualAlumno.contactos.length == 0">
+					Debe registrar por lo menos 1 contacto
+				</div>
+				</div>
 			</div>
+
 		</div>
 	</div>
 	<div class="col-lg-4 col-xs-12 col-sm-12">
@@ -93,7 +99,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-4 col-sm-12 pull-right col-xs-12" ng-show="showContactForm">
+	<div class="col-lg-12 col-sm-12 pull-right col-xs-12" ng-show="showContactForm">
 		<div class="boxed">
 			<!-- Title Bart Start -->
 	          <div class="title-bar white">
@@ -101,6 +107,11 @@
 	          </div>
 	          <!-- Title Bart End -->
 	        <div class="inner">
+	        	<div class="col-xs-12">
+	        		<div class="notification notification-warning">
+	        			<strong>IMPORTANTE:</strong> Este usuario debe iniciar sesión para actualizar su foto de perfil. Es necesario para poder registrar Asistencia y Salida de alumnos.
+	        		</div>
+	        	</div>
 				<div class="form-group has-feedback" ng-class="{'has-success': actualContacto._id != '', 'has-error': !actualContacto._id || actualContacto._id == ''}">
 					<label class="control-label">Correo:</label>
 					<input type="email" ng-blur="buscaUsuario()" class="form-control" ng-model="actualContacto._id" />
