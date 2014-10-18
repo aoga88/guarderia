@@ -132,7 +132,7 @@ function GruposController($scope, $location, $timeout, $routeParams, User, Grupo
         $scope.actualGrupo.app = $scope.currentApp;
         Grupo.save($scope.actualGrupo, $scope.grupoId)
         .then(function(data) {
-            $location.path('/grupos/' + data.response._id.$id).replace();
+            $location.path('/grupos').replace();
             $scope.successSave = true;
             $timeout(function(){
                 $scope.successSave = false
