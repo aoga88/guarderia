@@ -64,7 +64,13 @@ class Index extends Controller
         $newContactos = [];
         foreach ($data->contactos as $contacto)
         {
-            $newContactos[] = $contacto->_id;
+            if (isset($contacto->_id))
+            {
+                $newContactos[] = $contacto->_id;
+            } else {
+                $newContactos[] = $contacto;
+            }
+            
         }
 
         $oldContactos = $data->contactos;
@@ -88,6 +94,11 @@ class Index extends Controller
         }
 
         foreach ($oldContactos as $contacto) {
+            if (!isset($contacto->_id))
+            {
+                continue;
+            }
+            
             $userConditions = ['_id' => $contacto->_id];
             $usuario = $model_usuario->findOne($userConditions);
 

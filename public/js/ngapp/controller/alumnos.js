@@ -118,7 +118,8 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno, Us
 
 		if (index === -1)
 		{
-			$scope.actualAlumno.contactos.push($scope.actualContacto);	
+			$scope.actualAlumno.contactos.push($scope.actualContacto);
+			$scope.contactos[$scope.actualContacto._id] = $scope.actualContacto;
 		}
 		
 		$scope.actualContacto  = {};
@@ -159,7 +160,18 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno, Us
 
 	$scope.eliminarContacto = function(index)
 	{
+		var email = $scope.actualAlumno.contactos[index];
+
+		angular.forEach($scope.contactos, function(contacto, index){
+			if (contacto._id == email)
+			{
+				console.log($scope.contactos);
+				delete $scope.contactos[index];
+			}
+		})
+
 		$scope.actualAlumno.contactos.splice(index, 1);
+
 	}
 
 	$scope.verDetalle = function(item)
