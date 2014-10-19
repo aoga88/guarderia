@@ -1,5 +1,9 @@
-<?php $config = include '../app/config.php'; ?>
-<?php session_start() ?>
+<?php 
+session_start();
+$config      = include '../app/config.php';
+$environment = getenv('APPLICATION_ENV');
+$commit      = file_get_contents('../lastCommit.txt');
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,15 +15,6 @@
       href="/img/favicon.png">
     <title><?php echo $config['appName']?></title>
 
-    <?php
-      $commit = exec('git log --format="%H" -n 1');
-    ?>
-
-    <script type="text/javascript">
-      //var ioServer = 'http://guarderia.os-cloud.net:3000';
-      //var ioServer = 'http://guarderia.local:3000';
-      var notifications = [];
-    </script>
     <link rel="stylesheet" type="text/css" href="/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/assets/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
@@ -31,7 +26,7 @@
 
     <!-- Google Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Lato:400,300,700,700italic,900,100' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,300,700,700italic,900,100' rel='stylesheet' type='text/css'> -->
 
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -41,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="/css/custom-theme/jquery-ui-1.9.2.custom.css?<?php echo $commit?>" />
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-notify.css" />
     <link rel="stylesheet" type="text/css" href="/css/alert-bangtidy.css" />
+
     <script type="text/javascript" src="/js/less-1.7.0.min.js"></script>
 
     <!-- Javascript -->
@@ -56,8 +52,11 @@
     <!-- Demo -->
     <script src="/_demo/all-pages.js"></script>
 
-    <!-- <script type="text/javascript" src="http://guarderia.os-cloud.net:3000/socket.io/socket.io.js"></script> -->
-    <script data-main="/js/main.js?<?php echo $commit?>" src="/js/require.js"></script>
+    <?php if($environment == 'development'): ?>
+      <script data-main="/js/main.js?<?php echo $commit?>" src="/js/require.js"></script>
+    <?php else: ?>
+      <script data-main="/<?php echo $commit?>/main.js" src="/<?php echo $commit?>/require.js"></script>
+    <?php endif; ?>
   
   </head>
   <body
