@@ -2,7 +2,12 @@
 session_start();
 $config      = include '../app/config.php';
 $environment = getenv('APPLICATION_ENV');
-$commit      = file_get_contents('../lastCommit.txt');
+if (file_exists('../lastCommit.txt'))
+{
+  $commit = file_get_contents('../lastCommit.txt');
+} else {
+  $commit = '';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
