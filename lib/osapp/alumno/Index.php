@@ -428,6 +428,16 @@ EOD;
             ->setCode(200);
     }
 
+    public function grupos($alumno_id)
+    {
+        $model_grupo = new Model_Grupo();
+
+        $grupos    = $model_grupo->find(['alumnos' => ['$in' => [$alumno_id]] ]);
+
+        $this->response->sendMessage(iterator_to_array($grupos))
+            ->setCode(200);
+    }
+
     public function contactos($alumno_id)
     {
         $model_alumno = new Model_Alumno();

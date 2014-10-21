@@ -99,6 +99,13 @@ return [
 				'requiredLogin' => true
 			],
 
+			'/alumno/:id/grupos' => [
+				'module'        => 'alumno',
+				'controller'    => 'index',
+				'action'        => 'grupos',
+				'requiredLogin' => true
+			],
+
 			'/alumno/cfoto/:id/:index' => [
 				'module'        => 'alumno',
 				'controller'    => 'upload',

@@ -18,11 +18,35 @@
 		<div class="boxed">
 			<!-- Title Bart Start -->
 	          <div class="title-bar white">
-	            <h4 ng-show="alumnoId == 0">Nuevo Alumno</h4>
-				<h4 ng-show="alumnoId != 0">Editar Alumno</h4>
+	            <h4 ng-show="alumnoId == 0 && isAdmin">Nuevo Alumno</h4>
+				<h4 ng-show="alumnoId != 0 && isAdmin">Editar Alumno</h4>
+				<h4 ng-show="!isAdmin">Detalle de alumno</h4>
 	          </div>
 	          <!-- Title Bart End -->
-	        <div class="inner">
+	        <div class="inner" ng-show="!isAdmin">
+	        	<h5>{{ actualAlumno.nombre }} {{ actualAlumno.apPaterno }} {{ actualAlumno.apMaterno }}</h5>
+	        	<div class="col-md-12">
+					<dl>
+						<dt>Fecha de nacimiento:</dt>
+						<dd>{{ actualAlumno.fechaNacimiento }}</dd>
+						<dt>Tipo de sangre:</dt>
+						<dd>{{ actualAlumno.tipoSangre }}</dd>
+						<dt>Extranjero:</dt>
+						<dd>
+							<span ng-show="actualAlumno.extranjero == true">Si</span>
+							<span ng-show="!actualAlumno.extranjero">No</span>
+						</dd>
+					</dl>
+	        	</div>
+	        	<h5>Grupos</h5>
+	        	<div class="col-md-12">
+	        		<br/>
+	        		<span class="label label-warning" ng-repeat="grupo in grupos" style="margin: 15px">
+	        			{{ grupo.nombre }}
+	        		</span>
+	        	</div>
+	        </div>
+	        <div class="inner" ng-show="isAdmin">
 	        	<form role="form" name="alumnoForm">
 					<div class="form-group has-feedback col-md-12" ng-class="{'has-success': alumnoForm.nombre.$valid, 'has-error': alumnoForm.nombre.$invalid}">
 						<label class="control-label">
@@ -72,7 +96,7 @@
 
 		</div>
 	</div>
-	<div class="col-lg-4 col-xs-12 col-sm-12">
+	<div class="col-lg-4 col-xs-12 col-sm-12 pull-right">
 		<div class="boxed">
 			<!-- Title Bart Start -->
 	          <div class="title-bar white">
@@ -92,14 +116,37 @@
 							<div class="text-center">{{ contacto.name }} {{ contacto.apPaterno }}</div>
 							<a class="btn btn-xs btn-primary" href="javascript: void(0)" ng-click="verDetalle(contacto)">Detalle</a>
 
-							<a class="btn btn-xs btn-danger" href="javascript: void(0)" ng-click="eliminarContacto($index)">Eliminar</a>
+							<a class="btn btn-xs btn-danger" href="javascript: void(0)" ng-click="eliminarContacto($index)" ng-show="isAdmin">Eliminar</a>
 						</div>
 					</div>
 				</div>
 			</div>
+	</div>
+	<div class="col-lg-8" ng-show="showContactForm && !isAdmin">
+		<div class="boxed">
+			<div class="title-bar white">
+	            <h4>Detalles</h4>
+	        </div>
+	        <div class="inner">
+	        	<div class="col-md-4">
+		        	<img class="img-responsive img-circle" ng-show="!actualContacto.foto" src="/img/noimage.png" style="width: 125px; height: 125px"/>
+					<img class="img-responsive img-circle" ng-show="actualContacto.foto" ng-src="/api/user/{{ actualContacto._id }}/picture/250" style="width: 125px; height: 125px"/>
+				</div>
+				<div class="col-md-8">
+		        	<dl>
+		        		<dt>{{ actualContacto.name }} {{ actualContacto.apPaterno }} {{ actualContacto.apMaterno }}</dt>
+		        	</dl>
+		        	<dl>
+		        		<dt>Telefonos</dt>
+		        		<dd ng-repeat="telefono in actualContacto.telefonos">
+		        			{{ telefono }}
+		        		</dd>
+		        	</dl>
+		        </div>
+	        </div>
 		</div>
 	</div>
-	<div class="col-lg-12 col-sm-12 pull-right col-xs-12" ng-show="showContactForm">
+	<div class="col-lg-8 col-sm-12 col-xs-12" ng-show="showContactForm && isAdmin">
 		<div class="boxed">
 			<!-- Title Bart Start -->
 	          <div class="title-bar white">
@@ -149,7 +196,9 @@
 	        </div>
 		</div>
 	</div>
-		<div class="col-lg-8 pull-left col-xs-12 col-sm-12">
+</div>
+	
+	<div class="col-lg-8 pull-left col-xs-12 col-sm-12" ng-show="isAdmin">
 		<div class="boxed">
 			<div class="inner">
 				<span class="col-md-6 alert alert-success" ng-show="successSave">Los cambios han sido guardados</span>

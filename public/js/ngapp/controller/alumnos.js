@@ -81,6 +81,11 @@ function AlumnosController($scope, $location, $routeParams, $timeout, Alumno, Us
 		.then(function(data){
 			$scope.contactos = data.response;
 		});
+
+		Alumno.grupos($scope.alumnoId)
+		.then(function(data){
+			$scope.grupos = data.response;
+		});
     }
 
 	$scope.addTel = function()
